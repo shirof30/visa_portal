@@ -239,11 +239,11 @@ function SlotButton({
   const selected = selectedSlot === slot;
 
   let label: string;
-  if (isCurrentBooking) label = "Jadwal Anda";
-  else if (taken) label = "Penuh";
+  if (isCurrentBooking) label = "Your Slot";
+  else if (taken) label = "Full";
   else if (closedBySameDay) label = "Tutup";
-  else if (selected) label = "✓ Dipilih";
-  else label = "Tersedia";
+  else if (selected) label = "✓ Selected";
+  else label = "Available";
 
   return (
     <button
@@ -503,9 +503,9 @@ export default function AppointmentPageClient() {
   // ── Book ──────────────────────────────────────────────────────────────────
   const handleBook = useCallback(async () => {
     setError(null);
-    if (!selectedSlot) { setError("Pilih waktu terlebih dahulu."); return; }
+    if (!selectedSlot) { setError("Please select a time slot first."); return; }
     if (isReschedule && !dob) { setError("Tanggal lahir belum dikonfirmasi. Silakan kembali ke halaman Cek Status."); return; }
-    if (!isSameDayService && selectedDate < minBookingDateStr) { setError("Janji temu harus dibuat minimal 3 hari kerja sebelumnya."); return; }
+    if (!isSameDayService && selectedDate < minBookingDateStr) { setError("Appointment must be booked at least 3 business days in advance."); return; }
 
     setLoading(true);
     const res = await fetch(isReschedule ? "/api/submissions/reschedule" : "/api/submissions", {
@@ -539,7 +539,7 @@ export default function AppointmentPageClient() {
   }, [selectedSlot, isReschedule, dob, isSameDayService, selectedDate, minBookingDateStr, registrationId, resolvedId, router]);
 
   const monthMatrix = useMemo(() => buildMonthMatrix(monthViewDate), [monthViewDate]);
-  const monthLabel = monthViewDate.toLocaleString("id-ID", { month: "long", year: "numeric" });
+  const monthLabel = monthViewDate.toLocaleString("en-CA", { month: "long", year: "numeric" });
   const canConfirm = !loading && !!selectedSlot && (isSameDayService || selectedDate >= minBookingDateStr);
 
   if (missingId) return (
@@ -562,7 +562,7 @@ export default function AppointmentPageClient() {
             <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-1">KJRI Vancouver</p>
             <h1 className="text-xl font-extrabold text-gray-900">Verifikasi Identitas</h1>
             <p className="text-sm text-gray-500 mt-2">
-              Masukkan tanggal lahir Anda untuk mengakses halaman pemilihan jadwal.
+              Enter your date of birth to access the appointment booking page.
             </p>
           </div>
 
@@ -624,13 +624,13 @@ export default function AppointmentPageClient() {
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-1 mb-3">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-red-600">
-                {isSameDayService ? "Layanan Satu Hari Jadi" : isReschedule ? "Ubah Jadwal" : "Pilih Jadwal"}
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-600" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600">
+                {isSameDayService ? "Same-Day Service" : isReschedule ? "Reschedule" : "Book Appointment"}
               </span>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 leading-tight">
-              {isReschedule ? "Ubah Janji Temu" : "Pilih Waktu Kedatangan"}
+              {isReschedule ? "Reschedule Appointment" : "Select Appointment Time"}
             </h1>
             {submissionName && (
               <p className="text-sm text-gray-500 mt-1">
@@ -643,7 +643,7 @@ export default function AppointmentPageClient() {
             onClick={() => window.history.length > 1 ? router.back() : router.push("/submit")}
             className="shrink-0 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-gray-600 hover:border-gray-300 hover:text-gray-900 hover:-translate-y-0.5 transition-all cursor-pointer"
           >
-            ← Kembali
+            ← Back
           </button>
         </div>
 
@@ -654,9 +654,9 @@ export default function AppointmentPageClient() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
             </svg>
             <p className="text-sm text-amber-800">
-              Jadwal Anda saat ini:{" "}
+              Your current appointment:{" "}
               <span className="font-bold">
-                {new Date(initialBookedSlot.current.split("T")[0] + "T12:00:00").toLocaleDateString("id-ID", { weekday: "short", day: "numeric", month: "short" })}
+                {new Date(initialBookedSlot.current.split("T")[0] + "T12:00:00").toLocaleDateString("en-CA", { weekday: "short", day: "numeric", month: "short" })}
                 {" · "}
                 {initialBookedSlot.current.split("T")[1].slice(0, 5)}
               </span>
@@ -677,7 +677,7 @@ export default function AppointmentPageClient() {
         {isSameDayService && (
           <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50/80 px-5 py-4">
             <p className="text-sm font-bold text-amber-900">⚡ Layanan Paspor Satu Hari Jadi</p>
-            <p className="text-xs text-amber-700 mt-1">Slot tersedia pukul 09.00–11.30. Pastikan Anda datang tepat waktu.</p>
+            <p className="text-xs text-amber-700 mt-1">Slots available 09:00–11:30. Please arrive on time.</p>
           </div>
         )}
 
@@ -687,11 +687,11 @@ export default function AppointmentPageClient() {
           {/* Calendar */}
           <div className="rounded-2xl border border-gray-200/80 bg-white/75 backdrop-blur-xl shadow-xl shadow-black/5 overflow-hidden">
             <div className="border-b border-gray-100 px-5 py-4 bg-white/80">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Kalender</p>
-              <p className="text-sm font-semibold text-gray-800">Pilih tanggal kedatangan</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Calendar</p>
+              <p className="text-sm font-semibold text-gray-800">Select appointment date</p>
               {!isSameDayService && (
                 <p className="text-[11px] text-gray-400 mt-1">
-                  Min. <span className="font-semibold text-gray-600">3 hari kerja</span> sebelum kedatangan
+                  Min. <span className="font-semibold text-gray-600">3 business days</span> before appointment
                 </p>
               )}
             </div>
@@ -699,24 +699,24 @@ export default function AppointmentPageClient() {
             <div className="px-5 py-5">
               {configLoading ? (
                 <div className="flex items-center justify-center h-40">
-                  <div className="h-6 w-6 rounded-full border-2 border-red-500 border-t-transparent animate-spin" />
+                  <div className="h-6 w-6 rounded-full border-2 border-emerald-600 border-t-transparent animate-spin" />
                 </div>
               ) : (
                 <>
                   <div className="flex items-center justify-between mb-4">
                     <button type="button" onClick={() => setMonthViewDate(addMonths(monthViewDate, -1))}
-                      className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all cursor-pointer">
+                      className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all cursor-pointer">
                       ←
                     </button>
                     <span className="text-sm font-bold text-gray-800">{monthLabel}</span>
                     <button type="button" onClick={() => setMonthViewDate(addMonths(monthViewDate, 1))}
-                      className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all cursor-pointer">
+                      className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all cursor-pointer">
                       →
                     </button>
                   </div>
 
                   <div className="grid grid-cols-7 mb-1">
-                    {["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"].map((d) => (
+                    {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
                       <div key={d} className="py-1 text-center text-[10px] font-bold uppercase tracking-wide text-gray-400">{d}</div>
                     ))}
                   </div>
@@ -753,9 +753,9 @@ export default function AppointmentPageClient() {
                               "relative flex flex-col items-center justify-center h-12 w-full rounded-xl text-sm font-semibold transition-all duration-150 select-none border",
                               disabled && "cursor-not-allowed text-gray-300 bg-transparent border-transparent",
                               isBookedDate && !isSelected && !disabled && "cursor-pointer bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100 hover:scale-[1.05]",
-                              isSelected && !disabled && "cursor-pointer bg-red-500 border-red-500 text-white shadow-lg shadow-red-500/30 scale-[1.08] z-10",
-                              !isSelected && !isBookedDate && !disabled && isToday && "cursor-pointer bg-white border-red-400 text-red-600 hover:bg-red-500 hover:text-white hover:border-red-500 hover:scale-[1.05]",
-                              !isSelected && !isBookedDate && !disabled && !isToday && "cursor-pointer bg-white border-gray-200 text-gray-700 hover:bg-red-500 hover:text-white hover:border-red-500 hover:scale-[1.05]",
+                              isSelected && !disabled && "cursor-pointer bg-emerald-600 border-emerald-600 text-white shadow-lg shadow-emerald-600/30 scale-[1.08] z-10",
+                              !isSelected && !isBookedDate && !disabled && isToday && "cursor-pointer bg-white border-red-400 text-red-600 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:scale-[1.05]",
+                              !isSelected && !isBookedDate && !disabled && !isToday && "cursor-pointer bg-white border-gray-200 text-gray-700 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:scale-[1.05]",
                             )}
                           >
                             <span className="font-semibold leading-none">{dateObj.getDate()}</span>
@@ -772,10 +772,10 @@ export default function AppointmentPageClient() {
                   </div>
 
                   <div className="mt-4 pt-4 border-t border-gray-100 flex flex-wrap gap-3 text-[10px] text-gray-400">
-                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-red-500" />Dipilih</span>
-                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-400" />Libur</span>
-                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-gray-300" />Penuh</span>
-                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-200 border border-amber-300" />Jadwal Anda</span>
+                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-600" />Selected</span>
+                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-400" />Holiday</span>
+                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-gray-300" />Full</span>
+                    <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-200 border border-amber-300" />Your Slot</span>
                   </div>
                 </>
               )}
@@ -787,15 +787,15 @@ export default function AppointmentPageClient() {
             <div className="rounded-2xl border border-gray-200/80 bg-white/75 backdrop-blur-xl shadow-xl shadow-black/5 overflow-hidden flex-1">
               <div className="border-b border-gray-100 px-5 py-4 bg-white/80 flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Waktu</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Time</p>
                   <p className="text-sm font-semibold text-gray-800">
-                    {new Date(selectedDate + "T12:00:00").toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+                    {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-CA", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
                   </p>
                 </div>
                 {selectedSlot && (
-                  <div className="flex items-center gap-2 rounded-full bg-red-50 border border-red-100 px-3 py-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                    <span className="text-xs font-bold text-red-600">{selectedSlot.split("T")[1].slice(0, 5)}</span>
+                  <div className="flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-100 px-3 py-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+                    <span className="text-xs font-bold text-emerald-600">{selectedSlot.split("T")[1].slice(0, 5)}</span>
                   </div>
                 )}
               </div>
@@ -804,7 +804,7 @@ export default function AppointmentPageClient() {
                 {morningSlots.length > 0 && (
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <p className="text-xs font-bold uppercase tracking-wide text-gray-500">🌅 Pagi</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-gray-500">🌅 Morning</p>
                       <p className="text-[10px] text-gray-400">{isSameDayService ? "09:00 – 11:30" : "09:30 – 11:30"}</p>
                     </div>
                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
@@ -827,7 +827,7 @@ export default function AppointmentPageClient() {
                 {afternoonSlots.length > 0 && !isSameDayService && (
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <p className="text-xs font-bold uppercase tracking-wide text-gray-500">🌤 Siang</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-gray-500">🌤 Afternoon</p>
                       <p className="text-[10px] text-gray-400">
                         {(() => {
                           const w = windowsForDate(selectedDate, specialHoursMap, siteConfig?.weekendHours);
@@ -858,7 +858,7 @@ export default function AppointmentPageClient() {
                   <div className="flex flex-col items-center justify-center py-10 text-center">
                     <div className="text-3xl mb-2">📅</div>
                     <p className="text-sm font-semibold text-gray-700">Tidak ada slot tersedia</p>
-                    <p className="text-xs text-gray-400 mt-1">Pilih tanggal lain di kalender</p>
+                    <p className="text-xs text-gray-400 mt-1">Select another date on the calendar</p>
                   </div>
                 )}
               </div>
@@ -868,15 +868,15 @@ export default function AppointmentPageClient() {
             <div className="rounded-2xl border border-gray-200/80 bg-white/75 backdrop-blur-xl shadow-xl shadow-black/5 px-5 py-4">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Konfirmasi Jadwal</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Confirm Appointment</p>
                   {selectedSlot ? (
                     <p className="text-sm font-bold text-gray-900">
-                      {new Date(selectedDate + "T12:00:00").toLocaleDateString("id-ID", { weekday: "short", day: "numeric", month: "short" })}
+                      {new Date(selectedDate + "T12:00:00").toLocaleDateString("en-CA", { weekday: "short", day: "numeric", month: "short" })}
                       {" · "}
-                      <span className="text-red-600">{selectedSlot.split("T")[1].slice(0, 5)}</span>
+                      <span className="text-emerald-600">{selectedSlot.split("T")[1].slice(0, 5)}</span>
                     </p>
                   ) : (
-                    <p className="text-sm text-gray-400">Belum ada waktu dipilih</p>
+                    <p className="text-sm text-gray-400">No time selected yet</p>
                   )}
                 </div>
                 <button
@@ -894,7 +894,7 @@ export default function AppointmentPageClient() {
                       <span className="h-3.5 w-3.5 rounded-full border-2 border-white border-t-transparent animate-spin" />
                       Memproses…
                     </>
-                  ) : selectedDate < minBookingDateStr ? "Pilih tanggal lain" : "Konfirmasi Jadwal →"}
+                  ) : selectedDate < minBookingDateStr ? "Select another date" : "Confirm Appointment →"}
                 </button>
               </div>
             </div>

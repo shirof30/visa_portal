@@ -42,26 +42,26 @@ async function sendOtpEmail(toEmail: string, code: string): Promise<void> {
     <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
       <div style="background: #0d2b5e; padding: 20px 24px; border-bottom: 3px solid #c0392b;">
         <p style="color: rgba(255,255,255,0.6); font-size: 11px; font-weight: bold; letter-spacing: 0.15em; text-transform: uppercase; margin: 0 0 4px 0;">KJRI Vancouver</p>
-        <h2 style="color: white; margin: 0; font-size: 18px;">Kode Verifikasi</h2>
+        <h2 style="color: white; margin: 0; font-size: 18px;">Email Verification Code</h2>
       </div>
       <div style="padding: 32px 24px; background: #f8f7f4;">
         <p style="margin: 0 0 20px 0; color: #444; font-size: 14px;">
-          Gunakan kode berikut untuk memverifikasi alamat email Anda:
+          Use the following code to verify your email address:
         </p>
         <div style="background: white; border-radius: 12px; padding: 28px; text-align: center; border: 1px solid #e8e5df; margin-bottom: 20px;">
           <div style="font-size: 42px; font-weight: 900; color: #0d2b5e; font-family: monospace; letter-spacing: 0.2em;">
             ${code}
           </div>
-          <p style="color: #999; font-size: 12px; margin: 12px 0 0 0;">Berlaku selama 10 menit</p>
+          <p style="color: #999; font-size: 12px; margin: 12px 0 0 0;">Valid for 10 minutes</p>
         </div>
         <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px;">
           <p style="margin: 0; font-size: 12px; color: #92400e;">
-            ⚠️ Jangan bagikan kode ini kepada siapapun. KJRI Vancouver tidak akan pernah meminta kode ini.
+            ⚠️ Never share this code with anyone. KJRI Vancouver will never ask for this code.
           </p>
         </div>
       </div>
       <div style="background: #0d2b5e; padding: 14px; text-align: center;">
-        <p style="color: rgba(255,255,255,0.5); font-size: 11px; margin: 0;">Konsulat Jenderal Republik Indonesia – Vancouver</p>
+        <p style="color: rgba(255,255,255,0.5); font-size: 11px; margin: 0;">Consulate General of the Republic of Indonesia — Vancouver</p>
       </div>
     </div>
   `;
@@ -76,7 +76,7 @@ async function sendOtpEmail(toEmail: string, code: string): Promise<void> {
       },
       body: JSON.stringify({
         message: {
-          subject: "Kode Verifikasi KJRI Vancouver",
+          subject: "Email Verification Code — KJRI Vancouver",
           body: { contentType: "HTML", content: emailBody },
           toRecipients: [{ emailAddress: { address: toEmail } }],
           from: { emailAddress: { address: process.env.MAIL_FROM, name: "KJRI Vancouver" } },
@@ -99,15 +99,15 @@ export async function POST(req: NextRequest) {
     const emailAddr = String(email ?? "").trim();
 
     if (digits.length !== 10) {
-      return NextResponse.json({ error: "Nomor telepon tidak valid." }, { status: 400 });
+      return NextResponse.json({ error: "Invalid phone number." }, { status: 400 });
     }
     if (!emailAddr || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddr)) {
-      return NextResponse.json({ error: "Alamat email tidak valid." }, { status: 400 });
+      return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
     }
 
     if (isRateLimited(digits)) {
       return NextResponse.json(
-        { error: "Terlalu banyak permintaan. Coba lagi dalam beberapa menit." },
+        { error: "Too many requests. Please try again in a few minutes." },
         { status: 429 }
       );
     }
@@ -118,6 +118,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   } catch (e: any) {
     console.error("[send-otp]", e);
-    return NextResponse.json({ error: "Gagal mengirim OTP. Silakan coba lagi." }, { status: 500 });
+    return NextResponse.json({ error: "Failed to send verification code. Please try again." }, { status: 500 });
   }
 }

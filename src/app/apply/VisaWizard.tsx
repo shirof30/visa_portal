@@ -1,5 +1,7 @@
 "use client";
 
+import CanadaAddressStep from "./steps/CanadaAddressStep";
+
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -201,139 +203,6 @@ function OtpStep({ phone, email, onVerified }: { phone: string; email: string; o
   );
 }
 
-// ── Address Step with Google Places ─────────────────────────────────────────
-function AddressStep({ form, touched, setForm }: { form: Form; touched: boolean; setForm: React.Dispatch<React.SetStateAction<Form>> }) {
-  const [suggestions, setSuggestions] = useState<any[]>([]);
-  const [open, setOpen] = useState(false);
-  const [activeIdx, setActiveIdx] = useState(-1);
-  const sessionRef = useRef<any>(null);
-  const placesRef = useRef<any>(null);
-  const debRef = useRef<ReturnType<typeof setTimeout>|null>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  async function ensurePlaces() {
-    if (placesRef.current) return placesRef.current;
-    if (!(window as any).google?.maps?.importLibrary) return null;
-    const lib: any = await (window as any).google.maps.importLibrary("places");
-    placesRef.current = lib; return lib;
-  }
-
-  async function fetchSuggestions(input: string) {
-    const lib = await ensurePlaces();
-    if (!lib?.AutocompleteSuggestion) return;
-    if (!sessionRef.current) sessionRef.current = new lib.AutocompleteSessionToken();
-    try {
-      const { suggestions: results } = await lib.AutocompleteSuggestion.fetchAutocompleteSuggestions({
-        input, sessionToken: sessionRef.current, includedRegionCodes: ["ca"],
-        includedPrimaryTypes: ["street_address","premise","subpremise"], language:"en", region:"ca",
-      });
-      const mapped = (results??[]).filter((r:any)=>r.placePrediction).map((r:any)=>{
-        const p = r.placePrediction;
-        return { placeId: p.placeId, text: p.text?.text ?? "", prediction: p };
-      });
-      setSuggestions(mapped); setOpen(mapped.length>0); setActiveIdx(-1);
-    } catch { setSuggestions([]); setOpen(false); }
-  }
-
-  async function selectSuggestion(s: any) {
-    setOpen(false); setSuggestions([]);
-    try {
-      const place = s.prediction.toPlace();
-      await place.fetchFields({ fields: ["addressComponents"] });
-      let streetNumber="", streetName="", city="", province="", postalCode="";
-      for (const c of place.addressComponents??[]) {
-        const t = c.types;
-        if (t.includes("street_number")) streetNumber = c.longText;
-        if (t.includes("route")) streetName = c.longText;
-        if (t.includes("locality")) city = c.longText;
-        if (t.includes("administrative_area_level_1")) {
-          const code = c.shortText?.toUpperCase()??""
-          province = CA_PROVINCES[code] ?? c.longText;
-        }
-        if (t.includes("postal_code")) postalCode = c.longText;
-      }
-      setForm(prev=>({...prev, addressStreet:`${streetNumber} ${streetName}`.trim()||s.text, addressCity:city, addressProvince:province, addressPostalCode:postalCode}));
-    } catch { setForm(prev=>({...prev, addressStreet:s.text})); }
-    finally { sessionRef.current=null; }
-  }
-
-  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (!open||!suggestions.length) return;
-    if (e.key==="ArrowDown") { e.preventDefault(); setActiveIdx(i=>(i+1)%suggestions.length); }
-    else if (e.key==="ArrowUp") { e.preventDefault(); setActiveIdx(i=>(i-1+suggestions.length)%suggestions.length); }
-    else if (e.key==="Enter" && activeIdx>=0) { e.preventDefault(); selectSuggestion(suggestions[activeIdx]); }
-    else if (e.key==="Escape") setOpen(false);
-  }
-
-  useEffect(()=>{
-    const fn=(ev:MouseEvent)=>{ if(wrapRef.current&&!wrapRef.current.contains(ev.target as Node)) setOpen(false); };
-    document.addEventListener("mousedown",fn); return ()=>document.removeEventListener("mousedown",fn);
-  },[]);
-
-  const inv = (c:boolean) => touched&&c;
-
-  return (
-    <Card title="3. Address in Canada" subtitle="Your current residential address. Start typing for autocomplete.">
-      <div>
-        <Label req>Street Address</Label>
-        <div ref={wrapRef} className="relative">
-          <input className={cls(inv(!form.addressStreet.trim()))} name="addressStreet" value={form.addressStreet} maxLength={150}
-            autoComplete="off" placeholder="Start typing your address…"
-            onChange={e=>{
-              setForm(prev=>({...prev,addressStreet:e.target.value}));
-              if(debRef.current) clearTimeout(debRef.current);
-              if(!e.target.value.trim()) { setSuggestions([]); setOpen(false); return; }
-              debRef.current=setTimeout(()=>fetchSuggestions(e.target.value),250);
-            }}
-            onKeyDown={onKeyDown} onFocus={()=>{ if(suggestions.length) setOpen(true); }} />
-          {open&&suggestions.length>0&&(
-            <ul className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg overflow-hidden">
-              {suggestions.map((s,idx)=>(
-                <li key={s.placeId} onMouseDown={ev=>{ev.preventDefault();selectSuggestion(s);}} onMouseEnter={()=>setActiveIdx(idx)}
-                  className={`cursor-pointer px-3 py-2 text-sm ${idx===activeIdx?"bg-emerald-50 text-emerald-700":"text-gray-700 hover:bg-gray-50"}`}>
-                  {s.text}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <p className="mt-1 text-[11px] text-gray-400">Type to search for your Canadian address automatically</p>
-        <Err show={inv(!form.addressStreet.trim())} msg="Required" />
-      </div>
-      <div>
-        <Label>Unit / Apt / Suite <span className="text-gray-400 font-normal">(optional)</span></Label>
-        <input className={cls(false)} name="addressUnit" value={form.addressUnit} maxLength={20} placeholder="e.g. Unit 302" onChange={e=>setForm(prev=>({...prev,addressUnit:e.target.value}))} />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div>
-          <Label req>City</Label>
-          <input className={cls(inv(!form.addressCity.trim()))} value={form.addressCity} maxLength={70} onChange={e=>setForm(prev=>({...prev,addressCity:e.target.value}))} />
-          <Err show={inv(!form.addressCity.trim())} msg="Required" />
-        </div>
-        <div>
-          <Label req>Province</Label>
-          <input className={cls(inv(!form.addressProvince.trim()))} value={form.addressProvince} maxLength={30}
-            onChange={e=>setForm(prev=>({...prev,addressProvince:e.target.value}))}
-            onBlur={e=>{
-              const raw=e.target.value.trim();
-              if(!raw) return;
-              const upper=raw.toUpperCase();
-              if(CA_PROVINCES[upper]) { setForm(prev=>({...prev,addressProvince:CA_PROVINCES[upper]})); return; }
-              const norm=Object.values(CA_PROVINCES).find(x=>x.toLowerCase()===raw.toLowerCase());
-              if(norm) setForm(prev=>({...prev,addressProvince:norm}));
-            }} />
-          <Err show={inv(!form.addressProvince.trim())} msg="Required" />
-        </div>
-        <div>
-          <Label req>Postal Code</Label>
-          <input className={cls(inv(!form.addressPostalCode.trim()))} value={form.addressPostalCode} maxLength={7}
-            onChange={e=>setForm(prev=>({...prev,addressPostalCode:e.target.value.toUpperCase()}))} placeholder="V6G 1A6" />
-          <Err show={inv(!form.addressPostalCode.trim())} msg="Required" />
-        </div>
-      </div>
-    </Card>
-  );
-}
 
 // ── Main Wizard ──────────────────────────────────────────────────────────────
 export default function VisaWizard() {
@@ -546,7 +415,7 @@ export default function VisaWizard() {
                 <div><Label>Occupation</Label><input className={cls(false)} value={f.occupation} maxLength={60} onChange={e=>set("occupation",e.target.value)} placeholder="e.g. Engineer" /></div>
                 <div><Label>Present Employer</Label><input className={cls(false)} value={f.employer} maxLength={80} onChange={e=>set("employer",e.target.value)} placeholder="Company name" /></div>
                 <div><Label>Position / Title</Label><input className={cls(false)} value={f.position} maxLength={60} onChange={e=>set("position",e.target.value)} /></div>
-                <div><Label>Work Phone</Label><input className={cls(false)} value={f.workPhone} maxLength={20} onChange={e=>set("workPhone",e.target.value)} /></div>
+                <div><Label>Work Phone</Label><input type="tel" className={cls(false)} value={f.workPhone} maxLength={15} placeholder="e.g. 6041234567" onChange={e=>set("workPhone",e.target.value.replace(/[^0-9+\-() ]/g,"").slice(0,15))} /></div>
               </div>
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="sm:col-span-3"><Label>Company Address</Label><input className={cls(false)} value={f.companyAddress} maxLength={150} onChange={e=>set("companyAddress",e.target.value)} placeholder="Street address" /></div>
@@ -607,7 +476,47 @@ export default function VisaWizard() {
         )}
 
         {/* ── STEP 4: Address ── */}
-        {step.id==="address"&&<AddressStep form={form} touched={touched} setForm={setForm}/>}
+        {step.id==="address"&&(
+          <CanadaAddressStep
+            form={{
+              addressCanadaStreet: form.addressStreet,
+              addressCanadaCity: form.addressCity,
+              addressCanadaProvince: form.addressProvince,
+              addressCanadaUnit: form.addressUnit,
+              addressCanadaPostalCode: form.addressPostalCode,
+            }}
+            inv={(cond) => touched && cond}
+            fieldCls={(invalid) => `w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 ${invalid ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}`}
+            handleChange={(e) => {
+              const map: Record<string,keyof typeof form> = {
+                addressCanadaStreet: "addressStreet",
+                addressCanadaCity: "addressCity",
+                addressCanadaProvince: "addressProvince",
+                addressCanadaUnit: "addressUnit",
+                addressCanadaPostalCode: "addressPostalCode",
+              };
+              const key = map[e.target.name];
+              if (key) setForm(prev => ({...prev, [key]: e.target.value}));
+            }}
+            setForm={(updater) => setForm(prev => {
+              const mapped = typeof updater === "function" ? updater({
+                addressCanadaStreet: prev.addressStreet,
+                addressCanadaCity: prev.addressCity,
+                addressCanadaProvince: prev.addressProvince,
+                addressCanadaUnit: prev.addressUnit,
+                addressCanadaPostalCode: prev.addressPostalCode,
+              }) : updater;
+              return {
+                ...prev,
+                addressStreet: mapped.addressCanadaStreet ?? prev.addressStreet,
+                addressCity: mapped.addressCanadaCity ?? prev.addressCity,
+                addressProvince: mapped.addressCanadaProvince ?? prev.addressProvince,
+                addressUnit: mapped.addressCanadaUnit ?? prev.addressUnit,
+                addressPostalCode: mapped.addressCanadaPostalCode ?? prev.addressPostalCode,
+              };
+            })}
+          />
+        )}
 
         {/* ── STEP 5: Purpose ── */}
         {step.id==="purpose"&&(
@@ -650,7 +559,7 @@ export default function VisaWizard() {
             <div><Label>Intended Address in Indonesia</Label><input className={cls(false)} value={f.intendedAddressIndonesia} maxLength={200} onChange={e=>set("intendedAddressIndonesia",e.target.value)} placeholder="Hotel name or address" /></div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><Label>City & Province</Label><input className={cls(false)} value={f.intendedCityIndonesia} maxLength={100} onChange={e=>set("intendedCityIndonesia",e.target.value)} placeholder="e.g. Bali, Bali" /></div>
-              <div><Label>Phone Number</Label><input className={cls(false)} value={f.intendedPhone} maxLength={20} onChange={e=>set("intendedPhone",e.target.value)} /></div>
+              <div><Label>Phone Number (Indonesia)</Label><input type="tel" className={cls(false)} value={f.intendedPhone} maxLength={15} placeholder="+62..." onChange={e=>set("intendedPhone",e.target.value.replace(/[^0-9+\-() ]/g,"").slice(0,15))} /></div>
             </div>
             <div className="border-t border-gray-100 pt-4">
               <p className="text-xs font-semibold text-gray-600 mb-3">Flight / Vessel Information</p>
@@ -678,7 +587,7 @@ export default function VisaWizard() {
               <div><Label>Full Name</Label><input className={cls(false)} value={f.sponsorName} maxLength={80} onChange={e=>set("sponsorName",e.target.value)} /></div>
               <div><Label>Position / Title</Label><input className={cls(false)} value={f.sponsorPosition} maxLength={60} onChange={e=>set("sponsorPosition",e.target.value)} /></div>
               <div><Label>Company / Institution</Label><input className={cls(false)} value={f.sponsorCompany} maxLength={80} onChange={e=>set("sponsorCompany",e.target.value)} /></div>
-              <div><Label>Phone</Label><input className={cls(false)} value={f.sponsorPhone} maxLength={20} onChange={e=>set("sponsorPhone",e.target.value)} /></div>
+              <div><Label>Phone</Label><input type="tel" className={cls(false)} value={f.sponsorPhone} maxLength={15} placeholder="+62..." onChange={e=>set("sponsorPhone",e.target.value.replace(/[^0-9+\-() ]/g,"").slice(0,15))} /></div>
             </div>
             <div><Label>Address</Label><input className={cls(false)} value={f.sponsorAddress} maxLength={200} onChange={e=>set("sponsorAddress",e.target.value)} placeholder="Street, city, province & postal code" /></div>
           </Card>

@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
     if (isIpRateLimited(ip)) {
       return NextResponse.json(
-        { error: "Terlalu banyak percobaan. Silakan coba lagi dalam beberapa saat." },
+        { error: "Too many attempts. Please try again in a moment." },
         { status: 429 }
       );
     }
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     const submitted = String(code ?? "").trim();
 
     if (digits.length !== 10 || !emailAddr || !submitted) {
-      return NextResponse.json({ error: "Input tidak valid." }, { status: 400 });
+      return NextResponse.json({ error: "Invalid input." }, { status: 400 });
     }
 
     // FIX 3: verifyOtp now takes email to match the exact phone+email pair
@@ -40,17 +40,17 @@ export async function POST(req: NextRequest) {
     if (result === "ok") return NextResponse.json({ ok: true });
 
     const messages: Record<string, string> = {
-      expired: "Kode OTP sudah kedaluwarsa. Mohon minta kode baru.",
-      invalid: "Kode OTP salah. Silakan coba lagi.",
-      too_many_attempts: "Terlalu banyak percobaan salah. Mohon minta kode baru.",
+      expired: "Verification code has expired. Please request a new one.",
+      invalid: "Incorrect code. Please try again.",
+      too_many_attempts: "Too many incorrect attempts. Please request a new code.",
     };
 
     return NextResponse.json(
-      { error: messages[result] ?? "Verifikasi gagal." },
+      { error: messages[result] ?? "Verification failed." },
       { status: 400 }
     );
   } catch (e: any) {
     console.error("[verify-otp]", e);
-    return NextResponse.json({ error: "Terjadi kesalahan. Silakan coba lagi." }, { status: 500 });
+    return NextResponse.json({ error: "An error occurred. Please try again." }, { status: 500 });
   }
 }
