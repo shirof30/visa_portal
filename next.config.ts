@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: https: https://maps.gstatic.com",
               "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https://maps.googleapis.com",
+              "connect-src 'self' https://maps.googleapis.com https://places.googleapis.com https://login.microsoftonline.com https://graph.microsoft.com",
             ].join("; "),
           },
         ],
