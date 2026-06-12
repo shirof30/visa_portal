@@ -95,7 +95,17 @@ function CompleteContent() {
                 <span className="font-mono text-base font-bold text-gray-900 tracking-wide">{appRef}</span>
               </div>
               <button type="button" onClick={async () => {
-                try { await navigator.clipboard.writeText(appRef); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch {}
+                try {
+                if (navigator.clipboard && window.isSecureContext) {
+                  await navigator.clipboard.writeText(appRef);
+                } else {
+                  const ta = document.createElement("textarea");
+                  ta.value = appRef; ta.style.position = "fixed"; ta.style.opacity = "0";
+                  document.body.appendChild(ta); ta.focus(); ta.select();
+                  document.execCommand("copy"); document.body.removeChild(ta);
+                }
+                setCopied(true); setTimeout(() => setCopied(false), 1500);
+              } catch {}
               }} className={`shrink-0 flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-all cursor-pointer active:scale-[0.97] ${copied ? "bg-emerald-500 text-white" : "bg-[#0d2b5e] text-white hover:bg-[#0f3570]"}`}>
                 {copied ? "✓ Copied!" : "Copy"}
               </button>
