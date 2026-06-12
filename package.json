@@ -1,0 +1,44 @@
+{
+  "name": "kjri-visa",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "db:migrate": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.4.1",
+    "@prisma/client": "^7.4.1",
+    "cheerio": "^1.1.2",
+    "clamscan": "^2.4.0",
+    "dotenv": "^17.3.1",
+    "framer-motion": "^12.34.0",
+    "jszip": "^3.10.1",
+    "lucide-react": "^0.563.0",
+    "next": "^16.1.6",
+    "pdf-lib": "^1.17.1",
+    "prisma": "^7.4.1",
+    "puppeteer": "^24.34.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/clamscan": "^2.4.1",
+    "@types/google.maps": "^3.58.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.6",
+    "tailwindcss": "^4",
+    "typescript": "5.9.3"
+  }
+}

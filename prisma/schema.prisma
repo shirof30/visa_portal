@@ -1,0 +1,178 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Submission {
+  // ── System Fields ──────────────────────────────
+  id              String    @id @default(uuid())
+  applicationRef  String    @unique
+  status          String    @default("Permohonan diterima")
+  statusNote      String?
+  createdAt       DateTime  @default(now())
+  appointmentSlot DateTime?
+
+  // ── Application Type ───────────────────────────
+  portalType              String  @default("paspor")
+  isChildPassportRequest  Boolean
+  previousPassportStatus  String
+  reason                  String
+
+  // ── Personal Information ───────────────────────
+  fullName          String
+  aliasName         String
+  gender            String
+  dateOfBirth       String
+  birthCity         String
+  birthCountry      String
+  birthCertIssuedIn String
+  religion          String
+  nationality       String
+
+  // ── Current Passport ───────────────────────────
+  passportId         String
+  passportIssueDate  String
+  passportExpiryDate String
+
+  // ── Previous Passport ──────────────────────────
+  registrationId        String
+  oldPassportNumber     String
+  oldPassportIssueDate  String
+  oldPassportExpiryDate String
+  oldPassportIssuer     String
+
+  // ── Indonesian Civil Documents ─────────────────
+  ktpNumber       String
+  ktpIssueDate    String
+  birthCertNumber String
+
+  // ── Address Canada ─────────────────────────────
+  addressCanadaStreet     String
+  addressCanadaCity       String
+  addressCanadaProvince   String
+  addressCanadaPostalCode String
+
+  // ── Address Indonesia ──────────────────────────
+  addressIndonesiaStreet     String
+  addressIndonesiaCity       String
+  addressIndonesiaProvince   String
+  addressIndonesiaDistrict   String
+  addressIndonesiaPostalCode String
+
+  // ── Contact ────────────────────────────────────
+  phoneNumber String
+  email       String
+
+  // ── Employment & Status ────────────────────────
+  maritalStatus    String
+  occupation       String
+  workplace        String
+  workplaceAddress String
+  stayStatus       String
+
+  // ── Father ─────────────────────────────────────
+  fatherName        String
+  fatherBirthPlace  String
+  fatherBirthDate   String
+  fatherNationality String
+  fatherAddress     String
+
+  // ── Mother ─────────────────────────────────────
+  motherName        String
+  motherBirthPlace  String
+  motherBirthDate   String
+  motherNationality String
+  motherAddress     String
+
+  // ── Spouse ─────────────────────────────────────
+  spouseName        String
+  spouseBirthPlace  String
+  spouseBirthDate   String
+  spouseNationality String
+  spouseAddress     String
+
+  // ── Emergency Contacts ─────────────────────────
+  emergencyCanadaName        String
+  emergencyCanadaAddress     String
+  emergencyCanadaPhone       String
+  emergencyCanadaRelation    String
+  emergencyIndonesiaName     String
+  emergencyIndonesiaAddress  String
+  emergencyIndonesiaPhone    String
+  emergencyIndonesiaRelation String
+
+  // ── Legal ──────────────────────────────────────
+  disclaimerAccepted Boolean
+
+  // ── Required Document Uploads ──────────────────
+  passportScanName String?
+  oldPassportScan  String?
+  birthCertScan    String?
+  ktpScan          String?
+  permitScan       String?
+  otherIdScan      String?
+  formScan         String?
+  statementScan    String?
+  addressProofScan String?
+
+  // ── Conditional Documents ──────────────────────
+  policeReportLetter     String?
+  damageChronologyLetter String?
+  completionLetter       String?
+  loa                    String?
+  jobOffer               String?
+  workContract           String?
+
+  // ── Child Passport Documents ───────────────────
+  fatherPassport       String?
+  fatherPermit         String?
+  motherPassport       String?
+  motherPermit         String?
+  parentsMarriageDoc   String?
+  otherForeignPassport String?
+
+  @@map("submissions")
+}
+
+model SiteConfig {
+  id                   Int      @id @default(1)
+  enableSameDayService Boolean  @default(false)
+  holidays             Json     @default("[]")
+  specialHours         Json     @default("[]")
+  announcement         String   @default("")
+  weekdaySlotInterval  Int      @default(30)
+  weekendSlotInterval  Int      @default(15)
+  weekendHours         Json     @default("{\"saturday\":\"CLOSED\",\"sunday\":\"CLOSED\"}")
+  updatedAt            DateTime @updatedAt
+
+  @@map("site_config")
+}
+
+model Visits {
+  id    Int @id @default(1)
+  total Int @default(0)
+
+  @@map("visits")
+}
+
+model ChatLog {
+  id        String   @id @default(uuid())
+  sessionId String
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+
+  @@map("chat_logs")
+}
+
+model ChatbotPrompt {
+  id        Int      @id @default(1)
+  content   String   @default("")
+  updatedAt DateTime @updatedAt
+
+  @@map("chatbot_prompt")
+}
