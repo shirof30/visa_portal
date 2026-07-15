@@ -12,6 +12,7 @@ import PersonalStep from "./steps/PersonalStep";
 import OtpStep from "./steps/OtpStep";
 import PassportStep from "./steps/PassportStep";
 import CanadaAddressStep from "./steps/CanadaAddressStep";
+import OccupationStep from "./steps/OccupationStep";
 import IndonesiaStayStep from "./steps/IndonesiaStayStep";
 import SponsorStep from "./steps/SponsorStep";
 import BackgroundStep from "./steps/BackgroundStep";
@@ -21,7 +22,6 @@ import ReviewStep from "./steps/ReviewStep";
 import {
   APPLICANT_WN_KANADA,
   APPLICANT_NON_KANADA,
-  categoryNeedsSponsor,
   buildReason,
   getVisaUploads,
 } from "./config/visaConfig";
@@ -29,16 +29,17 @@ import {
 // ─── Steps ───────────────────────────────────────────────────────────────────
 type StepId =
   | "terms" | "applicant" | "purpose" | "personal" | "otp" | "passport"
-  | "address" | "indonesia" | "sponsor" | "background" | "uploads" | "review";
+  | "address" | "occupation" | "indonesia" | "sponsor" | "background" | "uploads" | "review";
 
 const STEPS: { id: StepId; title: string }[] = [
   { id: "terms", title: "Terms & Conditions" },
   { id: "applicant", title: "Applicant Type" },
-  { id: "purpose", title: "Purpose of Visit" },
+  { id: "purpose", title: "Visa Type & Purpose" },
   { id: "personal", title: "Personal Information" },
   { id: "otp", title: "Email Verification" },
   { id: "passport", title: "Passport" },
   { id: "address", title: "Address in Canada" },
+  { id: "occupation", title: "Occupation" },
   { id: "indonesia", title: "Stay in Indonesia" },
   { id: "sponsor", title: "Sponsor" },
   { id: "background", title: "Background" },
@@ -46,56 +47,68 @@ const STEPS: { id: StepId; title: string }[] = [
   { id: "review", title: "Review & Submit" },
 ];
 
-// ─── Form state ──────────────────────────────────────────────────────────────
+// ─── Form state — field names mirror the official Visa Application Form ─────
 type Form = {
   // applicant + purpose
   applicantType: string;
-  categoryCode: string;
+  typeOfVisaRequested: string;
   purposeOfVisit: string;
   purposeOther: string;
-  visaType: string;
   // personal
   firstName: string; middleName: string; familyName: string; sex: string;
   placeOfBirth: string; dateOfBirth: string; nationality: string; maritalStatus: string;
-  phoneNumber: string; email: string;
-  occupation: string; employer: string; position: string; companyAddress: string;
   // passport
   passportNumber: string; passportPlace: string; passportIssueDate: string;
   passportExpiryDate: string; passportType: string;
-  // address (Canada)
+  // address (Canada) — section 13
   addressStreet: string; addressUnit: string; addressCity: string;
-  addressProvince: string; addressPostalCode: string;
-  // Indonesia stay
+  addressProvince: string; addressPostalCode: string; addressCanadaCountry: string;
+  addressCanadaFax: string; addressCanadaCell: string;
+  phoneNumber: string; email: string;
+  // occupation — section 14
+  occupationEmployer: string; occupationPosition: string; occupationCompanyAddress: string;
+  occupationCity: string; occupationProvincePostal: string; occupationCountry: string;
+  occupationPhone: string; occupationFax: string;
+  // Indonesia stay — sections 16-18
   intendedAddressIndonesia: string; intendedCityIndonesia: string; intendedPhone: string;
   portOfEntry: string; dateOfEntry: string; flightIn: string;
   portOfExit: string; dateOfExit: string; flightOut: string;
-  // sponsor
+  hasInvitationLetter: boolean;
+  // sponsor — section 19
   sponsorName: string; sponsorPosition: string; sponsorCompany: string;
-  sponsorAddress: string; sponsorPhone: string;
-  // background
+  sponsorAddress: string; sponsorCityProvincePostal: string; sponsorPhone: string; sponsorFax: string;
+  // background — section 20
   beenToIndonesiaBefore: string; indonesiaVisitDetails: string;
   hasOtherCountryVisa: string; otherVisaDetails: string;
   visaDenied: string; orderedToLeave: string; everArrested: string;
+  // declaration / signature
+  signatureName: string; signatureDate: string;
   // legal
   termsAccepted: boolean;
 };
 
 const INITIAL: Form = {
-  applicantType: "", categoryCode: "", purposeOfVisit: "", purposeOther: "", visaType: "",
+  applicantType: "", typeOfVisaRequested: "", purposeOfVisit: "", purposeOther: "",
   firstName: "", middleName: "", familyName: "", sex: "",
   placeOfBirth: "", dateOfBirth: "", nationality: "Canada", maritalStatus: "",
-  phoneNumber: "", email: "",
-  occupation: "", employer: "", position: "", companyAddress: "",
   passportNumber: "", passportPlace: "", passportIssueDate: "", passportExpiryDate: "",
   passportType: "Ordinary Passport",
   addressStreet: "", addressUnit: "", addressCity: "", addressProvince: "", addressPostalCode: "",
+  addressCanadaCountry: "Canada", addressCanadaFax: "", addressCanadaCell: "",
+  phoneNumber: "", email: "",
+  occupationEmployer: "", occupationPosition: "", occupationCompanyAddress: "",
+  occupationCity: "", occupationProvincePostal: "", occupationCountry: "",
+  occupationPhone: "", occupationFax: "",
   intendedAddressIndonesia: "", intendedCityIndonesia: "", intendedPhone: "",
   portOfEntry: "", dateOfEntry: "", flightIn: "",
   portOfExit: "", dateOfExit: "", flightOut: "",
-  sponsorName: "", sponsorPosition: "", sponsorCompany: "", sponsorAddress: "", sponsorPhone: "",
+  hasInvitationLetter: false,
+  sponsorName: "", sponsorPosition: "", sponsorCompany: "", sponsorAddress: "",
+  sponsorCityProvincePostal: "", sponsorPhone: "", sponsorFax: "",
   beenToIndonesiaBefore: "No", indonesiaVisitDetails: "",
   hasOtherCountryVisa: "No", otherVisaDetails: "",
   visaDenied: "No", orderedToLeave: "No", everArrested: "No",
+  signatureName: "", signatureDate: "",
   termsAccepted: false,
 };
 
@@ -106,6 +119,15 @@ function fieldCls(invalid: boolean, extra = "") {
     invalid ? "border-red-400 focus:ring-red-400" : "border-gray-300 focus:ring-red-500"
   } ${extra}`;
 }
+
+// Fields whose local Form key differs from the CanadaAddressStep's own prop names.
+const ADDRESS_KEY_MAP: Record<string, keyof Form> = {
+  addressCanadaStreet: "addressStreet",
+  addressCanadaCity: "addressCity",
+  addressCanadaProvince: "addressProvince",
+  addressCanadaUnit: "addressUnit",
+  addressCanadaPostalCode: "addressPostalCode",
+};
 
 // ─── Component ───────────────────────────────────────────────────────────────
 export default function VisaWizard() {
@@ -125,10 +147,10 @@ export default function VisaWizard() {
   const progress = Math.round(((stepIndex + 1) / STEPS.length) * 100);
   const todayStr = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
-  const sponsorRequired = categoryNeedsSponsor(form.categoryCode);
+  const sponsorRequired = form.hasInvitationLetter;
   const uploadItems = useMemo(
-    () => getVisaUploads(form.applicantType, form.categoryCode),
-    [form.applicantType, form.categoryCode]
+    () => getVisaUploads(form.applicantType, form.hasInvitationLetter),
+    [form.applicantType, form.hasInvitationLetter]
   );
 
   const inv = (cond: boolean) => attempted && cond;
@@ -174,10 +196,9 @@ export default function VisaWizard() {
         return !!form.applicantType;
       case "purpose":
         return (
-          !!form.categoryCode &&
+          !!form.typeOfVisaRequested &&
           !!form.purposeOfVisit &&
-          (form.purposeOfVisit !== "Others" || !!form.purposeOther.trim()) &&
-          !!form.visaType
+          (form.purposeOfVisit !== "Others" || !!form.purposeOther.trim())
         );
       case "personal":
         return (
@@ -186,10 +207,7 @@ export default function VisaWizard() {
           !!form.sex &&
           !!form.placeOfBirth.trim() &&
           !!form.dateOfBirth &&
-          !!form.nationality.trim() &&
-          form.phoneNumber.replace(/\D/g, "").length === 10 &&
-          !!form.email.trim() &&
-          emailRe.test(form.email)
+          !!form.nationality.trim()
         );
       case "otp":
         return otpVerified;
@@ -205,8 +223,13 @@ export default function VisaWizard() {
           !!form.addressStreet.trim() &&
           !!form.addressCity.trim() &&
           !!form.addressProvince.trim() &&
-          !!form.addressPostalCode.trim()
+          !!form.addressPostalCode.trim() &&
+          form.phoneNumber.replace(/\D/g, "").length === 10 &&
+          !!form.email.trim() &&
+          emailRe.test(form.email)
         );
+      case "occupation":
+        return true;
       case "indonesia":
         return true;
       case "sponsor":
@@ -222,7 +245,7 @@ export default function VisaWizard() {
       case "uploads":
         return uploadItems.filter((x) => x.required).every((x) => !!files[x.key]);
       case "review":
-        return true;
+        return !!form.signatureName.trim() && !!form.signatureDate;
       default:
         return true;
     }
@@ -276,11 +299,17 @@ export default function VisaWizard() {
 
   // ── Submit ───────────────────────────────────────────────────────────────────
   async function handleSubmit() {
+    if (!stepIsValid) {
+      setAttempted(true);
+      setError("Please sign and date the declaration before submitting.");
+      return;
+    }
     setError(null); setLoading(true);
     try {
       const phoneDigits = form.phoneNumber.replace(/\D/g, "").slice(0, 10);
       const fullName = [form.firstName, form.middleName, form.familyName].filter(Boolean).join(" ");
       const canadaStreet = [form.addressUnit.trim(), form.addressStreet.trim()].filter(Boolean).join(", ");
+      const purposeLabel = form.purposeOfVisit === "Others" ? form.purposeOther : form.purposeOfVisit;
 
       const fd = new FormData();
       // identity
@@ -294,6 +323,9 @@ export default function VisaWizard() {
       fd.append("religion", "");
       fd.append("birthCertIssuedIn", "");
       fd.append("registrationId", ""); // no LD for visa applicants
+      fd.append("firstName", form.firstName);
+      fd.append("middleName", form.middleName);
+      fd.append("familyName", form.familyName);
       // passport
       fd.append("passportId", form.passportNumber);
       fd.append("passportIssueDate", form.passportIssueDate);
@@ -303,35 +335,49 @@ export default function VisaWizard() {
       fd.append("oldPassportExpiryDate", "");
       fd.append("oldPassportIssuer", form.passportPlace);
       fd.append("previousPassportStatus", "still_valid");
+      fd.append("passportPlaceOfIssuance", form.passportPlace);
+      fd.append("passportType", form.passportType);
       // civil docs (n/a)
       fd.append("ktpNumber", "");
       fd.append("ktpIssueDate", "");
       fd.append("birthCertNumber", "");
-      // addresses
+      // addresses — Canada (section 13)
       fd.append("addressCanadaStreet", canadaStreet);
       fd.append("addressCanadaCity", form.addressCity);
       fd.append("addressCanadaProvince", form.addressProvince);
       fd.append("addressCanadaPostalCode", form.addressPostalCode);
+      fd.append("addressCanadaCountry", form.addressCanadaCountry);
+      fd.append("addressCanadaFax", form.addressCanadaFax);
+      fd.append("addressCanadaCell", form.addressCanadaCell);
+      // addresses — Indonesia (section 16)
       fd.append("addressIndonesiaStreet", form.intendedAddressIndonesia);
       fd.append("addressIndonesiaCity", form.intendedCityIndonesia);
       fd.append("addressIndonesiaProvince", "");
       fd.append("addressIndonesiaDistrict", "");
       fd.append("addressIndonesiaPostalCode", "");
+      fd.append("addressIndonesiaPhone", form.intendedPhone);
       // contact
       fd.append("phoneNumber", phoneDigits);
       fd.append("email", form.email);
-      // status / employment
+      // status / employment (section 14)
       fd.append("maritalStatus", form.maritalStatus);
-      fd.append("occupation", form.occupation);
-      fd.append("workplace", form.employer);
-      fd.append("workplaceAddress", form.companyAddress);
+      fd.append("occupation", form.occupationPosition);
+      fd.append("workplace", form.occupationEmployer);
+      fd.append("workplaceAddress", form.occupationCompanyAddress);
+      fd.append("occupationPosition", form.occupationPosition);
+      fd.append("occupationCompanyAddress", form.occupationCompanyAddress);
+      fd.append("occupationCity", form.occupationCity);
+      fd.append("occupationProvincePostal", form.occupationProvincePostal);
+      fd.append("occupationCountry", form.occupationCountry);
+      fd.append("occupationPhone", form.occupationPhone);
+      fd.append("occupationFax", form.occupationFax);
       fd.append("stayStatus", form.applicantType === APPLICANT_WN_KANADA ? "WN Kanada" : "Non-Kanada");
       // parents / spouse (n/a for visa)
       ["fatherName","fatherBirthPlace","fatherBirthDate","fatherNationality","fatherAddress",
        "motherName","motherBirthPlace","motherBirthDate","motherNationality","motherAddress",
        "spouseName","spouseBirthPlace","spouseBirthDate","spouseNationality","spouseAddress"]
         .forEach((k) => fd.append(k, ""));
-      // emergency / sponsor → stored as the Indonesia contact
+      // emergency / sponsor → section 19
       fd.append("emergencyCanadaName", "");
       fd.append("emergencyCanadaAddress", "");
       fd.append("emergencyCanadaPhone", "");
@@ -340,25 +386,37 @@ export default function VisaWizard() {
       fd.append("emergencyIndonesiaAddress", form.sponsorAddress);
       fd.append("emergencyIndonesiaPhone", form.sponsorPhone);
       fd.append("emergencyIndonesiaRelation", form.sponsorPosition || (form.sponsorName ? "Sponsor" : ""));
+      fd.append("sponsorCompany", form.sponsorCompany);
+      fd.append("sponsorCityProvincePostal", form.sponsorCityProvincePostal);
+      fd.append("sponsorFax", form.sponsorFax);
+      // flight / vessel (section 17) + invitation letter (section 18)
+      fd.append("flightPortOfEntry", form.portOfEntry);
+      fd.append("flightDateOfEntry", form.dateOfEntry);
+      fd.append("flightNoEntry", form.flightIn);
+      fd.append("flightPortOfExit", form.portOfExit);
+      fd.append("flightDateOfExit", form.dateOfExit);
+      fd.append("flightNoExit", form.flightOut);
+      fd.append("hasInvitationLetter", form.hasInvitationLetter ? "true" : "false");
+      // background (section 20)
+      fd.append("everBeenToIndonesia", form.beenToIndonesiaBefore === "Yes" ? "true" : "false");
+      fd.append("indonesiaVisitDetails", form.indonesiaVisitDetails);
+      fd.append("hasOtherValidVisa", form.hasOtherCountryVisa === "Yes" ? "true" : "false");
+      fd.append("otherVisaCountry", form.otherVisaDetails);
+      fd.append("visaEverDenied", form.visaDenied === "Yes" ? "true" : "false");
+      fd.append("everOrderedToLeave", form.orderedToLeave === "Yes" ? "true" : "false");
+      fd.append("everArrestedConvicted", form.everArrested === "Yes" ? "true" : "false");
+      // visa type / purpose (top of form + section 15)
+      fd.append("typeOfVisaRequested", form.typeOfVisaRequested);
+      fd.append("purposeOfVisit", form.purposeOfVisit);
+      fd.append("purposeOfVisitOther", form.purposeOther);
+      // declaration / signature
+      fd.append("signatureName", form.signatureName);
+      fd.append("signatureDate", form.signatureDate);
       // service
       fd.append("isChildPassportRequest", "false");
-      fd.append("reason", buildReason(form.categoryCode, form.purposeOfVisit, form.visaType, form.purposeOther));
+      fd.append("reason", buildReason(form.typeOfVisaRequested, form.purposeOfVisit, form.purposeOther));
       fd.append("disclaimerAccepted", form.termsAccepted ? "true" : "false");
       fd.append("portalType", "visa");
-
-      // Visa-specific extras (ignored by the current backend, forward-compatible if columns are added)
-      fd.append("visaCategory", form.categoryCode);
-      fd.append("visaType", form.visaType);
-      fd.append("purposeOfVisit", form.purposeOfVisit === "Others" ? form.purposeOther : form.purposeOfVisit);
-      fd.append("passportType", form.passportType);
-      fd.append("portOfEntry", form.portOfEntry);
-      fd.append("dateOfEntry", form.dateOfEntry);
-      fd.append("dateOfExit", form.dateOfExit);
-      fd.append("beenToIndonesiaBefore", form.beenToIndonesiaBefore);
-      fd.append("hasOtherCountryVisa", form.hasOtherCountryVisa);
-      fd.append("visaDenied", form.visaDenied);
-      fd.append("orderedToLeave", form.orderedToLeave);
-      fd.append("everArrested", form.everArrested);
 
       // files
       Object.entries(files).forEach(([key, file]) => {
@@ -384,6 +442,14 @@ export default function VisaWizard() {
     }
   }
 
+  // Extended handleChange for the Address step: routes CanadaAddressStep's own
+  // prop names onto the wizard's Form keys (some map 1:1, some are renamed).
+  function handleAddressChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    const { name, value } = e.target;
+    const mapped = ADDRESS_KEY_MAP[name] ?? (name as keyof Form);
+    setForm((p) => ({ ...p, [mapped]: value }));
+  }
+
   // ── Render ───────────────────────────────────────────────────────────────────
   return (
     <div className="py-10 pb-28">
@@ -398,8 +464,8 @@ export default function VisaWizard() {
                 Indonesian Visa Application
               </h1>
               <p className="mt-1 text-sm text-gray-500">
-                All visa applications share the same steps — the required documents depend on your
-                applicant type and visa category.
+                This form collects exactly what the official Visa Application Form requires, so it
+                can be auto-filled and downloaded once your application is submitted.
               </p>
             </div>
 
@@ -469,11 +535,8 @@ export default function VisaWizard() {
                   form={form}
                   inv={inv}
                   fieldCls={fieldCls}
-                  onSelectCategory={(code) =>
-                    setForm((p) => ({ ...p, categoryCode: code, purposeOfVisit: "", purposeOther: "" }))
-                  }
-                  onSelectPurpose={(purpose) => setForm((p) => ({ ...p, purposeOfVisit: purpose }))}
-                  onSelectVisaType={(t) => setForm((p) => ({ ...p, visaType: t }))}
+                  onSelectVisaType={(t) => setForm((p) => ({ ...p, typeOfVisaRequested: t }))}
+                  onSelectPurpose={(purpose) => setForm((p) => ({ ...p, purposeOfVisit: purpose, purposeOther: "" }))}
                   onChangePurposeOther={(v) => setForm((p) => ({ ...p, purposeOther: v }))}
                 />
               )}
@@ -485,7 +548,6 @@ export default function VisaWizard() {
                   inv={inv}
                   fieldCls={fieldCls}
                   handleChange={handleChange}
-                  setForm={setForm}
                 />
               )}
 
@@ -527,20 +589,15 @@ export default function VisaWizard() {
                     addressCanadaProvince: form.addressProvince,
                     addressCanadaUnit: form.addressUnit,
                     addressCanadaPostalCode: form.addressPostalCode,
+                    addressCanadaCountry: form.addressCanadaCountry,
+                    addressCanadaFax: form.addressCanadaFax,
+                    addressCanadaCell: form.addressCanadaCell,
+                    phoneNumber: form.phoneNumber,
+                    email: form.email,
                   }}
                   inv={inv}
                   fieldCls={fieldCls}
-                  handleChange={(e) => {
-                    const map: Record<string, keyof Form> = {
-                      addressCanadaStreet: "addressStreet",
-                      addressCanadaCity: "addressCity",
-                      addressCanadaProvince: "addressProvince",
-                      addressCanadaUnit: "addressUnit",
-                      addressCanadaPostalCode: "addressPostalCode",
-                    };
-                    const key = map[e.target.name];
-                    if (key) setForm((p) => ({ ...p, [key]: e.target.value }));
-                  }}
+                  handleChange={handleAddressChange}
                   setForm={(updater: any) =>
                     setForm((prev) => {
                       const mapped =
@@ -566,12 +623,18 @@ export default function VisaWizard() {
                 />
               )}
 
+              {step.id === "occupation" && (
+                <OccupationStep form={form} fieldCls={fieldCls} handleChange={handleChange} />
+              )}
+
               {step.id === "indonesia" && (
                 <IndonesiaStayStep
                   form={form}
                   fieldCls={fieldCls}
                   handleChange={handleChange}
                   todayStr={todayStr}
+                  hasInvitationLetter={form.hasInvitationLetter}
+                  onToggleInvitationLetter={(v) => setForm((p) => ({ ...p, hasInvitationLetter: v }))}
                 />
               )}
 
@@ -605,6 +668,10 @@ export default function VisaWizard() {
                   uploadItems={uploadItems}
                   show={show}
                   onEdit={handleEditStep}
+                  inv={inv}
+                  fieldCls={fieldCls}
+                  handleChange={handleChange}
+                  todayStr={todayStr}
                 />
               )}
 

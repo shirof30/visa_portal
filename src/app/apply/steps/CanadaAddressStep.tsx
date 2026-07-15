@@ -33,6 +33,11 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
     addressCanadaProvince: string;
     addressCanadaUnit: string;
     addressCanadaPostalCode: string;
+    addressCanadaCountry: string;
+    addressCanadaFax: string;
+    addressCanadaCell: string;
+    phoneNumber: string;
+    email: string;
   };
   inv: (cond: boolean) => boolean;
   fieldCls: (invalid: boolean, extra?: string) => string;
@@ -174,10 +179,10 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
   }, []);
 
   return (
-    <SectionCard title="Alamat di Kanada" subtitle="Alamat tempat tinggal saat ini di Kanada.">
+    <SectionCard title="13. Address (Mandatory)" subtitle="Your current residential address in Canada.">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
-          <label className="block mb-1 font-medium">Alamat (Street Address)</label>
+          <label className="block mb-1 font-medium">Street Address</label>
           <div ref={wrapRef} className="relative w-full">
             <input
               className={fieldCls(inv(!form.addressCanadaStreet.trim()))}
@@ -187,7 +192,7 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
               onChange={onStreetChange}
               onKeyDown={onKeyDown}
               onFocus={() => { if (suggestions.length) setOpen(true); }}
-              placeholder="Mulai ketik alamat..."
+              placeholder="Start typing your address..."
               autoComplete="off"
               required
             />
@@ -208,26 +213,26 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
               </ul>
             )}
           </div>
-          <p className="mt-1 text-[11px] text-gray-400">Ketik untuk mencari alamat secara otomatis (Kanada)</p>
-          <FieldError show={inv(!form.addressCanadaStreet.trim())} message="Alamat wajib diisi." />
+          <p className="mt-1 text-[11px] text-gray-400">Start typing to auto-fill your address (Canada)</p>
+          <FieldError show={inv(!form.addressCanadaStreet.trim())} message="Street address is required." />
         </div>
 
         <div className="md:col-span-2">
           <label className="block mb-1 font-medium">
-            Unit / Apt / Suite <span className="text-gray-400 font-normal">(opsional)</span>
+            Unit / Apt / Suite <span className="text-gray-400 font-normal">(optional)</span>
           </label>
           <input
             className={fieldCls(false)}
             name="addressCanadaUnit"
             value={form.addressCanadaUnit}
             onChange={handleChange}
-            placeholder="Contoh: Unit 302, Apt 4B"
+            placeholder="e.g. Unit 302, Apt 4B"
             maxLength={20}
           />
         </div>
 
         <div>
-          <label className="block mb-1 font-medium">Kota (City)</label>
+          <label className="block mb-1 font-medium">City</label>
           <input
             className={fieldCls(inv(!form.addressCanadaCity.trim()))}
             name="addressCanadaCity"
@@ -236,11 +241,11 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
             onChange={handleChange}
             required
           />
-          <FieldError show={inv(!form.addressCanadaCity.trim())} message="Kota wajib diisi." />
+          <FieldError show={inv(!form.addressCanadaCity.trim())} message="City is required." />
         </div>
 
         <div>
-          <label className="block mb-1 font-medium">Provinsi (Province)</label>
+          <label className="block mb-1 font-medium">Province</label>
           <input
             className={fieldCls(inv(!form.addressCanadaProvince.trim()))}
             name="addressCanadaProvince"
@@ -266,11 +271,11 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
             onChange={handleChange}
             required
           />
-          <FieldError show={inv(!form.addressCanadaProvince.trim())} message="Provinsi wajib diisi." />
+          <FieldError show={inv(!form.addressCanadaProvince.trim())} message="Province is required." />
         </div>
 
         <div>
-          <label className="block mb-1 font-medium">Kode Pos (Postal Code)</label>
+          <label className="block mb-1 font-medium">Postal Code</label>
           <input
             className={fieldCls(inv(!form.addressCanadaPostalCode.trim()))}
             name="addressCanadaPostalCode"
@@ -279,7 +284,57 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
             onChange={handleChange}
             required
           />
-          <FieldError show={inv(!form.addressCanadaPostalCode.trim())} message="Kode pos wajib diisi." />
+          <FieldError show={inv(!form.addressCanadaPostalCode.trim())} message="Postal code is required." />
+        </div>
+
+        <div>
+          <label className="block mb-1 font-medium">Country</label>
+          <input
+            className={fieldCls(false)}
+            name="addressCanadaCountry"
+            value={form.addressCanadaCountry}
+            maxLength={60}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+
+      <div className="border-t border-gray-100 pt-4">
+        <p className="text-xs font-semibold text-gray-600 mb-3">Contact at this address</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block mb-1 font-medium">Phone</label>
+            <input
+              type="text"
+              inputMode="numeric"
+              className={fieldCls(inv(form.phoneNumber.replace(/\D/g, "").length !== 10))}
+              name="phoneNumber"
+              value={form.phoneNumber}
+              onChange={(e) =>
+                handleChange({
+                  target: { name: "phoneNumber", value: e.target.value.replace(/\D/g, "").slice(0, 10) },
+                } as unknown as React.ChangeEvent<HTMLInputElement>)
+              }
+              placeholder="6041234567"
+              required
+            />
+            <FieldError show={inv(form.phoneNumber.replace(/\D/g, "").length !== 10)} message="Phone number must be exactly 10 digits." />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Fax <span className="text-gray-400 font-normal">(optional)</span></label>
+            <input className={fieldCls(false)} name="addressCanadaFax" value={form.addressCanadaFax} onChange={handleChange} maxLength={20} />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">
+              Cellular / Mobile <span className="text-gray-400 font-normal">(optional)</span>
+            </label>
+            <input className={fieldCls(false)} name="addressCanadaCell" value={form.addressCanadaCell} onChange={handleChange} maxLength={20} placeholder="(604) 123-4567" />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Email</label>
+            <input type="email" className={fieldCls(inv(!form.email.trim()))} name="email" value={form.email} onChange={handleChange} maxLength={254} placeholder="your@email.com" required />
+            <FieldError show={inv(!form.email.trim())} message="Email is required." />
+          </div>
         </div>
       </div>
     </SectionCard>

@@ -1,7 +1,10 @@
 import type { UploadItem } from "../ui/UploadRow";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Applicant type — the top-level branch from the flow diagram (WN Kanada / Non-Kanada)
+// Applicant type — WN Kanada / Non-Kanada. Not a field on the official Visa
+// Application Form itself, but kept as an internal branch (per the AURORA flow
+// diagram) because it drives one conditional document: proof of legal stay in
+// Canada for non-Canadians.
 // ─────────────────────────────────────────────────────────────────────────────
 export const APPLICANT_WN_KANADA = "WN_KANADA";
 export const APPLICANT_NON_KANADA = "NON_KANADA";
@@ -22,63 +25,54 @@ export const APPLICANT_TYPES = [
 ] as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Visa categories by purpose of visit (Jenis Visa berdasarkan Tujuan Kunjungan)
-// Taken directly from the AURORA visa flow diagram.
+// Fields below mirror the official KJRI "VISA APPLICATION FORM" exactly —
+// same option lists, same order, same wording — so submissions map 1:1 onto
+// the printable/fillable PDF (see /api/submissions/[id]/export-pdf).
 // ─────────────────────────────────────────────────────────────────────────────
-export type VisaCategory = {
-  code: "C1" | "C2" | "C3" | "C4" | "C5";
-  title: string;
-  purposes: string[];
-};
 
-export const VISA_CATEGORIES: VisaCategory[] = [
-  { code: "C1", title: "Tourism, Medical & Family", purposes: ["Tourism", "Medical Treatment", "Family Visit"] },
-  { code: "C2", title: "Business", purposes: ["Business", "Meeting", "Goods Purchase"] },
-  { code: "C3", title: "Medical Care", purposes: ["Medical Care"] },
-  { code: "C4", title: "Official Government Duty", purposes: ["Official Government Duty"] },
-  { code: "C5", title: "Journalistic", purposes: ["Journalistic"] },
-];
+// "Type of Visa Requested (choose one)" — top of page 1
+export const TYPE_OF_VISA_REQUESTED = ["Transit", "Single", "Limited/Temporary Stay", "Multiple"] as const;
 
-export const VISA_TYPES = [
-  "Single Entry",
-  "Multiple Entry",
-  "Transit",
-  "Limited Stay (Temporary)",
-] as const;
+// "11. Type of Passport (choose one)"
+export const PASSPORT_TYPES = ["Ordinary Passport", "Diplomatic Passport", "Service Passport"] as const;
 
+// "12. Marital Status"
 export const MARITAL_STATUSES = ["Single", "Married", "Divorced", "Widowed"] as const;
-export const PASSPORT_TYPES = [
-  "Ordinary Passport",
-  "Official Passport",
-  "Diplomatic Passport",
-  "Special Passport",
+
+// "15. Purpose of visit to Indonesia (choose one, per the nature of your visit)"
+export const PURPOSE_OF_VISIT = [
+  "Tourism",
+  "Study",
+  "Conference/Seminar/Workshop",
+  "Arts",
+  "Family Visit",
+  "Commercial/Business",
+  "Industrial/Mining",
+  "Sports",
+  "Press and Media",
+  "Others",
 ] as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** All categories except C1 require a sponsor/guarantor from Indonesia (per diagram: C2–C5). */
-export function categoryNeedsSponsor(code: string): boolean {
-  return code === "C2" || code === "C3" || code === "C4" || code === "C5";
-}
-
-/** Resolve the full "reason" string stored on the submission. */
-export function buildReason(categoryCode: string, purpose: string, visaType: string, purposeOther: string) {
+/** Resolve the free-text "reason" string stored on the submission (used by admin/email). */
+export function buildReason(typeOfVisa: string, purpose: string, purposeOther: string) {
   const purposeLabel = purpose === "Others" && purposeOther ? purposeOther : purpose;
-  return `${categoryCode} — ${purposeLabel}${visaType ? ` (${visaType})` : ""}`;
+  return `${purposeLabel}${typeOfVisa ? ` — ${typeOfVisa} Visa` : ""}`;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Conditional document requirements (Upload Dokumen Persyaratan)
-// Base for everyone, plus:
-//   • Non-Kanada  → Canada residence permit (permitScan)          [diagram note]
-//   • C2–C5       → Sponsor/Guarantor letter from Indonesia (formScan) [diagram note]
-// Keys map onto the existing shared `submissions` backend fields — no schema change.
+// Document requirements. Base set matches what the form implies (passport,
+// photo, and — per section 18 — a copy of any Invitation/Reference letter),
+// plus one diagram-driven addition:
+//   • Non-Kanada → proof of legal stay in Canada (permitScan)
+// Keys map onto the shared `submissions` backend fields.
 // ─────────────────────────────────────────────────────────────────────────────
 const ACCEPT = "application/pdf,image/jpeg,image/jpg";
 
-export function getVisaUploads(applicantType: string, categoryCode: string): UploadItem[] {
+export function getVisaUploads(applicantType: string, hasInvitationLetter: boolean): UploadItem[] {
   const items: UploadItem[] = [
     {
       key: "passportScan",
@@ -86,6 +80,14 @@ export function getVisaUploads(applicantType: string, categoryCode: string): Upl
       hint: "Bio-data page with your photo. Passport must be valid at least 6 months.",
       accept: ACCEPT,
       pdfOnly: true,
+      required: true,
+    },
+    {
+      key: "photoScan",
+      label: "Passport-style photo",
+      hint: "Recent photo, 40mm × 60mm, plain background (matches the photo box on the printed form).",
+      accept: "image/jpeg",
+      pdfOnly: false,
       required: true,
     },
   ];
@@ -102,12 +104,12 @@ export function getVisaUploads(applicantType: string, categoryCode: string): Upl
     });
   }
 
-  // C2–C5 require a sponsor / guarantor letter from Indonesia.
-  if (categoryNeedsSponsor(categoryCode)) {
+  // Form section 18: "if yes, please submit a copy with the application."
+  if (hasInvitationLetter) {
     items.push({
-      key: "formScan",
-      label: "Sponsor / Guarantor letter from Indonesia",
-      hint: "Required for Business, Medical Care, Official Duty, and Journalistic categories (C2–C5).",
+      key: "invitationLetterScan",
+      label: "Invitation / Reference letter",
+      hint: "Copy of the invitation or reference letter you indicated you have.",
       accept: ACCEPT,
       pdfOnly: true,
       required: true,
@@ -118,7 +120,7 @@ export function getVisaUploads(applicantType: string, categoryCode: string): Upl
   items.push({
     key: "otherIdScan",
     label: "Supporting document (optional)",
-    hint: "Return flight ticket, hotel booking, bank statement, invitation letter, etc.",
+    hint: "Return flight ticket, hotel booking, bank statement, sponsor letter, etc.",
     accept: ACCEPT,
     pdfOnly: true,
     required: false,

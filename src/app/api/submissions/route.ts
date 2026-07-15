@@ -52,6 +52,9 @@ const FIELD_LABEL: Record<string, string> = {
 
   formScan: "formulir",
   statementScan: "surat-pernyataan",
+
+  photoScan: "pas-foto",
+  invitationLetterScan: "surat-undangan-referensi",
 };
 const ALLOWED_TYPES = new Set(['application/pdf', 'image/jpeg']);
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -266,6 +269,55 @@ export async function POST(req: NextRequest) {
   const emergencyIndonesiaRelation = String(formData.get("emergencyIndonesiaRelation") || "");
 
 
+  // ===== VISA APPLICATION FORM (official KJRI form fields) =====
+  const firstName = String(formData.get("firstName") || "");
+  const middleName = String(formData.get("middleName") || "");
+  const familyName = String(formData.get("familyName") || "");
+  const passportPlaceOfIssuance = String(formData.get("passportPlaceOfIssuance") || "");
+  const passportType = String(formData.get("passportType") || "");
+
+  const addressCanadaCountry = String(formData.get("addressCanadaCountry") || "");
+  const addressCanadaFax = String(formData.get("addressCanadaFax") || "");
+  const addressCanadaCell = String(formData.get("addressCanadaCell") || "");
+
+  const occupationPosition = String(formData.get("occupationPosition") || "");
+  const occupationCompanyAddress = String(formData.get("occupationCompanyAddress") || "");
+  const occupationCity = String(formData.get("occupationCity") || "");
+  const occupationProvincePostal = String(formData.get("occupationProvincePostal") || "");
+  const occupationCountry = String(formData.get("occupationCountry") || "");
+  const occupationPhone = String(formData.get("occupationPhone") || "");
+  const occupationFax = String(formData.get("occupationFax") || "");
+
+  const typeOfVisaRequested = String(formData.get("typeOfVisaRequested") || "");
+  const purposeOfVisit = String(formData.get("purposeOfVisit") || "");
+  const purposeOfVisitOther = String(formData.get("purposeOfVisitOther") || "");
+
+  const addressIndonesiaPhone = String(formData.get("addressIndonesiaPhone") || "");
+
+  const flightPortOfEntry = String(formData.get("flightPortOfEntry") || "");
+  const flightDateOfEntry = String(formData.get("flightDateOfEntry") || "");
+  const flightNoEntry = String(formData.get("flightNoEntry") || "");
+  const flightPortOfExit = String(formData.get("flightPortOfExit") || "");
+  const flightDateOfExit = String(formData.get("flightDateOfExit") || "");
+  const flightNoExit = String(formData.get("flightNoExit") || "");
+
+  const hasInvitationLetter = String(formData.get("hasInvitationLetter") || "").toLowerCase() === "true";
+
+  const sponsorCompany = String(formData.get("sponsorCompany") || "");
+  const sponsorCityProvincePostal = String(formData.get("sponsorCityProvincePostal") || "");
+  const sponsorFax = String(formData.get("sponsorFax") || "");
+
+  const everBeenToIndonesia = String(formData.get("everBeenToIndonesia") || "").toLowerCase() === "true";
+  const indonesiaVisitDetails = String(formData.get("indonesiaVisitDetails") || "");
+  const hasOtherValidVisa = String(formData.get("hasOtherValidVisa") || "").toLowerCase() === "true";
+  const otherVisaCountry = String(formData.get("otherVisaCountry") || "");
+  const visaEverDenied = String(formData.get("visaEverDenied") || "").toLowerCase() === "true";
+  const everOrderedToLeave = String(formData.get("everOrderedToLeave") || "").toLowerCase() === "true";
+  const everArrestedConvicted = String(formData.get("everArrestedConvicted") || "").toLowerCase() === "true";
+
+  const signatureName = String(formData.get("signatureName") || "");
+  const signatureDate = String(formData.get("signatureDate") || "");
+
   // ===== SERVICE =====
   const reason = String(formData.get("reason") || "");
   const isChildPassportRequest =
@@ -286,7 +338,7 @@ export async function POST(req: NextRequest) {
     otherIdScan, addressProofScan, policeReportLetter, damageChronologyLetter,
     completionLetter, loa, jobOffer, workContract, fatherPassport, fatherPermit,
     motherPassport, motherPermit, parentsMarriageDoc, otherForeignPassport,
-    formScan, statementScan;
+    formScan, statementScan, photoScan, invitationLetterScan;
 
   try {
     passportScanName = await saveUpload(formData, "passportScan", uploadFolder);
@@ -310,6 +362,8 @@ export async function POST(req: NextRequest) {
     otherForeignPassport = await saveUpload(formData, "otherForeignPassport", uploadFolder);
     formScan = await saveUpload(formData, "formScan", uploadFolder);
     statementScan = await saveUpload(formData, "statementScan", uploadFolder);
+    photoScan = await saveUpload(formData, "photoScan", uploadFolder);
+    invitationLetterScan = await saveUpload(formData, "invitationLetterScan", uploadFolder);
   } catch (err: any) {
     console.error("Upload error:", err);
     const isValidationError =
@@ -403,6 +457,54 @@ export async function POST(req: NextRequest) {
     disclaimerAccepted,
     portalType: "visa" as const,
 
+    firstName,
+    middleName,
+    familyName,
+    passportPlaceOfIssuance,
+    passportType,
+
+    addressCanadaCountry,
+    addressCanadaFax,
+    addressCanadaCell,
+
+    occupationPosition,
+    occupationCompanyAddress,
+    occupationCity,
+    occupationProvincePostal,
+    occupationCountry,
+    occupationPhone,
+    occupationFax,
+
+    typeOfVisaRequested,
+    purposeOfVisit,
+    purposeOfVisitOther,
+
+    addressIndonesiaPhone,
+
+    flightPortOfEntry,
+    flightDateOfEntry,
+    flightNoEntry,
+    flightPortOfExit,
+    flightDateOfExit,
+    flightNoExit,
+
+    hasInvitationLetter,
+
+    sponsorCompany,
+    sponsorCityProvincePostal,
+    sponsorFax,
+
+    everBeenToIndonesia,
+    indonesiaVisitDetails,
+    hasOtherValidVisa,
+    otherVisaCountry,
+    visaEverDenied,
+    everOrderedToLeave,
+    everArrestedConvicted,
+
+    signatureName,
+    signatureDate,
+
     passportScanName,
     oldPassportScan,
     birthCertScan,
@@ -412,6 +514,8 @@ export async function POST(req: NextRequest) {
     formScan,
     statementScan,
     addressProofScan,
+    photoScan,
+    invitationLetterScan,
 
 
 

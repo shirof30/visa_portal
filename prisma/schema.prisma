@@ -135,6 +135,48 @@ model Submission {
   parentsMarriageDoc   String?
   otherForeignPassport String?
 
+  // ── Visa Application Form (KJRI official form) ─
+  firstName              String?
+  middleName             String?
+  familyName             String?
+  passportPlaceOfIssuance String?
+  passportType           String?
+  addressCanadaCountry   String?
+  addressCanadaFax       String?
+  addressCanadaCell      String?
+  occupationPosition     String?
+  occupationCompanyAddress String?
+  occupationCity         String?
+  occupationProvincePostal String?
+  occupationCountry      String?
+  occupationPhone        String?
+  occupationFax          String?
+  typeOfVisaRequested    String?
+  purposeOfVisit         String?
+  purposeOfVisitOther    String?
+  addressIndonesiaPhone  String?
+  flightPortOfEntry      String?
+  flightDateOfEntry      String?
+  flightNoEntry          String?
+  flightPortOfExit       String?
+  flightDateOfExit       String?
+  flightNoExit           String?
+  hasInvitationLetter    Boolean? @default(false)
+  sponsorCompany         String?
+  sponsorCityProvincePostal String?
+  sponsorFax             String?
+  everBeenToIndonesia    Boolean? @default(false)
+  indonesiaVisitDetails  String?
+  hasOtherValidVisa      Boolean? @default(false)
+  otherVisaCountry       String?
+  visaEverDenied         Boolean? @default(false)
+  everOrderedToLeave     Boolean? @default(false)
+  everArrestedConvicted  Boolean? @default(false)
+  signatureName          String?
+  signatureDate          String?
+  photoScan              String?
+  invitationLetterScan   String?
+
   @@map("submissions")
 }
 

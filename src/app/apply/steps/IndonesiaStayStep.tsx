@@ -6,6 +6,8 @@ export default function IndonesiaStayStep({
   fieldCls,
   handleChange,
   todayStr,
+  hasInvitationLetter,
+  onToggleInvitationLetter,
 }: {
   form: {
     intendedAddressIndonesia: string;
@@ -21,6 +23,8 @@ export default function IndonesiaStayStep({
   fieldCls: (invalid: boolean, extra?: string) => string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   todayStr: string;
+  hasInvitationLetter: boolean;
+  onToggleInvitationLetter: (v: boolean) => void;
 }) {
   return (
     <SectionCard
@@ -113,6 +117,32 @@ export default function IndonesiaStayStep({
             <input className={fieldCls(false)} name="flightOut" maxLength={20} value={form.flightOut} onChange={handleChange} />
           </div>
         </div>
+      </div>
+
+      <div className="border-t border-gray-100 pt-4">
+        <p className="text-xs font-semibold text-gray-600 mb-2">18. Do You Have an Invitation/Reference Letter?</p>
+        <div className="flex gap-6">
+          {[
+            { label: "Yes", val: true },
+            { label: "No", val: false },
+          ].map((opt) => (
+            <label key={opt.label} className="flex items-center gap-2 cursor-pointer text-sm">
+              <input
+                type="radio"
+                name="hasInvitationLetter"
+                checked={hasInvitationLetter === opt.val}
+                onChange={() => onToggleInvitationLetter(opt.val)}
+                className="accent-red-600"
+              />
+              {opt.label}
+            </label>
+          ))}
+        </div>
+        {hasInvitationLetter && (
+          <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] text-amber-800">
+            Please submit a copy with the application — you'll upload it in the Documents step.
+          </p>
+        )}
       </div>
     </SectionCard>
   );

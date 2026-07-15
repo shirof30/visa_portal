@@ -14,26 +14,27 @@ export default function SponsorStep({
     sponsorPosition: string;
     sponsorCompany: string;
     sponsorAddress: string;
+    sponsorCityProvincePostal: string;
     sponsorPhone: string;
+    sponsorFax: string;
   };
-  required: boolean; // true for C2–C5
+  required: boolean; // true when the applicant indicated they have an Invitation/Reference Letter
   inv: (cond: boolean) => boolean;
   fieldCls: (invalid: boolean, extra?: string) => string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
 }) {
   return (
     <SectionCard
-      title="Sponsor / Contact Person in Indonesia"
+      title="19. Contact Person/Sponsor in Indonesia"
       subtitle={
         required
-          ? "Required for your visa category (C2–C5). You must also upload the sponsor letter in the Documents step."
+          ? "Required — you indicated you have an Invitation/Reference Letter. Complete the fields marked with *."
           : "Optional — fill in if you have a contact person or sponsor in Indonesia."
       }
     >
       {required && (
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800">
-          Your selected category requires a sponsor / guarantor in Indonesia. Please complete the
-          fields marked with <span className="text-red-600 font-semibold">*</span>.
+          Please complete the fields marked with <span className="text-red-600 font-semibold">*</span>.
         </div>
       )}
 
@@ -57,7 +58,7 @@ export default function SponsorStep({
         </div>
         <div>
           <label className="block mb-1 font-medium">
-            Company / Institution{required && <span className="text-red-500 ml-0.5">*</span>}
+            Company{required && <span className="text-red-500 ml-0.5">*</span>}
           </label>
           <input
             className={fieldCls(inv(required && !form.sponsorCompany.trim()))}
@@ -66,7 +67,7 @@ export default function SponsorStep({
             value={form.sponsorCompany}
             onChange={handleChange}
           />
-          <FieldError show={inv(required && !form.sponsorCompany.trim())} message="Company / institution is required." />
+          <FieldError show={inv(required && !form.sponsorCompany.trim())} message="Company is required." />
         </div>
         <div>
           <label className="block mb-1 font-medium">
@@ -90,6 +91,14 @@ export default function SponsorStep({
           />
           <FieldError show={inv(required && !form.sponsorPhone.trim())} message="Sponsor phone is required." />
         </div>
+        <div>
+          <label className="block mb-1 font-medium">Fax <span className="text-gray-400 font-normal">(optional)</span></label>
+          <input className={fieldCls(false)} name="sponsorFax" maxLength={20} value={form.sponsorFax} onChange={handleChange} />
+        </div>
+        <div>
+          <label className="block mb-1 font-medium">City, Province &amp; Post Code</label>
+          <input className={fieldCls(false)} name="sponsorCityProvincePostal" maxLength={100} value={form.sponsorCityProvincePostal} onChange={handleChange} />
+        </div>
       </div>
 
       <div>
@@ -102,7 +111,7 @@ export default function SponsorStep({
           maxLength={200}
           value={form.sponsorAddress}
           onChange={handleChange}
-          placeholder="Street, city, province & postal code"
+          placeholder="Street address"
         />
         <FieldError show={inv(required && !form.sponsorAddress.trim())} message="Sponsor address is required." />
       </div>

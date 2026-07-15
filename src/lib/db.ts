@@ -115,6 +115,48 @@ export type Submission = {
   motherPermit?: string | null;
   parentsMarriageDoc?: string | null;
   otherForeignPassport?: string | null;
+
+  // ── Visa Application Form (KJRI official form) ─
+  firstName?: string | null;
+  middleName?: string | null;
+  familyName?: string | null;
+  passportPlaceOfIssuance?: string | null;
+  passportType?: string | null;
+  addressCanadaCountry?: string | null;
+  addressCanadaFax?: string | null;
+  addressCanadaCell?: string | null;
+  occupationPosition?: string | null;
+  occupationCompanyAddress?: string | null;
+  occupationCity?: string | null;
+  occupationProvincePostal?: string | null;
+  occupationCountry?: string | null;
+  occupationPhone?: string | null;
+  occupationFax?: string | null;
+  typeOfVisaRequested?: string | null;
+  purposeOfVisit?: string | null;
+  purposeOfVisitOther?: string | null;
+  addressIndonesiaPhone?: string | null;
+  flightPortOfEntry?: string | null;
+  flightDateOfEntry?: string | null;
+  flightNoEntry?: string | null;
+  flightPortOfExit?: string | null;
+  flightDateOfExit?: string | null;
+  flightNoExit?: string | null;
+  hasInvitationLetter?: boolean | null;
+  sponsorCompany?: string | null;
+  sponsorCityProvincePostal?: string | null;
+  sponsorFax?: string | null;
+  everBeenToIndonesia?: boolean | null;
+  indonesiaVisitDetails?: string | null;
+  hasOtherValidVisa?: boolean | null;
+  otherVisaCountry?: string | null;
+  visaEverDenied?: boolean | null;
+  everOrderedToLeave?: boolean | null;
+  everArrestedConvicted?: boolean | null;
+  signatureName?: string | null;
+  signatureDate?: string | null;
+  photoScan?: string | null;
+  invitationLetterScan?: string | null;
 };
 
 // ── Helper: map Prisma row → Submission type ───────────────────────────────
