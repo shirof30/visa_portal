@@ -218,3 +218,20 @@ model ChatbotPrompt {
 
   @@map("chatbot_prompt")
 }
+model PortalDocument {
+  id         String   @id @default(uuid())
+  titleEn    String   @default("") @map("title_en")
+  titleId    String   @default("") @map("title_id")
+  descEn     String   @default("") @map("desc_en")
+  descId     String   @default("") @map("desc_id")
+  category   String   @default("guide")
+  filePath   String   @default("") @map("file_path")
+  fileName   String   @default("") @map("file_name")
+  fileSize   String   @default("—") @map("file_size")
+  updatedAt  String   @default("") @map("updated_at")
+  featured   Boolean  @default(false)
+  sortOrder  Int      @default(0) @map("sort_order")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("portal_documents")
+}
