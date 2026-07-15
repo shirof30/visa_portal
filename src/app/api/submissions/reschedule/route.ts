@@ -3,6 +3,8 @@ import { sendConfirmationEmail } from "@/lib/sendConfirmationEmail";
 import {
   rescheduleSlotByRegistrationId,
   getSubmissionByRegistrationIdAndDob,
+  getSubmissionByRef,
+  bookSlot,
 } from "@/lib/db";
 
 
@@ -29,13 +31,24 @@ function getSlotCapacity(_slotIso: string): number {
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
 
-  if (!body?.registrationId || !body?.slotIso || !body?.dateOfBirth) {
+  const hasRegistrationId = typeof body?.registrationId === "string" && body.registrationId.trim();
+  const hasApplicationRef = typeof body?.applicationRef === "string" && body.applicationRef.trim();
+
+  if ((!hasRegistrationId && !hasApplicationRef) || !body?.slotIso || !body?.dateOfBirth) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 
+  const existing = hasApplicationRef
+    ? await getSubmissionByRef(body.applicationRef.trim())
+    : await getSubmissionByRegistrationIdAndDob(body.registrationId, body.dateOfBirth);
 
-  const existing = await getSubmissionByRegistrationIdAndDob(body.registrationId, body.dateOfBirth);
-  if (!existing) {
+  const verified = existing && (
+    hasApplicationRef
+      ? existing.dateOfBirth.trim() === String(body.dateOfBirth).trim()
+      : true
+  );
+
+  if (!verified || !existing) {
     return NextResponse.json({ error: "Verifikasi Tanggal Lahir Gagal, Silahkan Ulang Kembali" }, { status: 403 });
   }
 
@@ -55,20 +68,30 @@ export async function POST(req: NextRequest) {
   }
 
   const capacity = getSlotCapacity(body.slotIso);
-  const result = await rescheduleSlotByRegistrationId(body.registrationId, body.slotIso, capacity);
 
-  if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 400 });
+  let updated;
+  if (hasApplicationRef) {
+    updated = await bookSlot(existing.id, body.slotIso, capacity);
+    if (!updated) {
+      return NextResponse.json({ error: "Slot sudah penuh" }, { status: 400 });
+    }
+  } else {
+    const result = await rescheduleSlotByRegistrationId(body.registrationId, body.slotIso, capacity);
+    if (!result.ok) {
+      return NextResponse.json({ error: result.error }, { status: 400 });
+    }
+    updated = result.submission;
   }
+
   await sendConfirmationEmail({
     toEmail: existing.email,
     fullName: existing.fullName,
-    applicationRef: result.submission.applicationRef,
+    applicationRef: updated.applicationRef,
     reason: existing.reason,
-    appointmentSlot: result.submission.appointmentSlot!,
+    appointmentSlot: updated.appointmentSlot!,
   });
   return NextResponse.json({
-    applicationRef: result.submission.applicationRef,
-    appointmentSlot: result.submission.appointmentSlot,
+    applicationRef: updated.applicationRef,
+    appointmentSlot: updated.appointmentSlot,
   });
 }

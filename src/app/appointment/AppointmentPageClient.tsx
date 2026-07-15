@@ -280,13 +280,21 @@ export default function AppointmentPageClient() {
   const registrationId = searchParams.get("registrationId") ?? "";
   const applicationRef = searchParams.get("ref") ?? "";
   const service = searchParams.get("service") ?? "";
+  const mode = searchParams.get("mode") ?? "";
 
   const isSameDayService = service === "Layanan Paspor Satu Hari Jadi";
-  const isReschedule = !!registrationId && !submissionId;
+  const isRegistrationReschedule = !!registrationId && !submissionId;
+  const isReferenceReschedule = mode === "reschedule" && !!applicationRef && !!submissionId;
+  const isReschedule = isRegistrationReschedule || isReferenceReschedule;
   const isRefFlow = !!applicationRef && !submissionId && !registrationId;
 
-  const dob = typeof window !== "undefined" && registrationId
-    ? sessionStorage.getItem(`resched_dob_${registrationId}`) : null;
+  const dob = typeof window !== "undefined"
+    ? isReferenceReschedule
+      ? sessionStorage.getItem(`resched_dob_ref_${applicationRef}`)
+      : registrationId
+        ? sessionStorage.getItem(`resched_dob_${registrationId}`)
+        : null
+    : null;
 
   // DOB gate state (for ?ref= flow)
   const [dobInput, setDobInput] = useState("");
@@ -353,6 +361,34 @@ export default function AppointmentPageClient() {
   const [submissionName, setSubmissionName] = useState<string>("");
 
   const missingId = !submissionId && !registrationId && !applicationRef;
+
+  // Restore the verified visa reschedule context created by the Cek Status page.
+  // Visa applications use applicationRef because their registrationId is intentionally blank.
+  useEffect(() => {
+    if (!isReferenceReschedule || !applicationRef) return;
+    const raw = sessionStorage.getItem(`resched_context_ref_${applicationRef}`);
+    if (!raw) return;
+
+    try {
+      const context = JSON.parse(raw) as {
+        id?: string;
+        fullName?: string;
+        appointmentSlot?: string | null;
+      };
+      if (context.id && context.id !== submissionId) return;
+      if (context.fullName) setSubmissionName(context.fullName);
+      if (context.appointmentSlot && !initialBookedSlot.current) {
+        initialBookedSlot.current = context.appointmentSlot;
+        const bookedDate = vancouverDateStr(new Date(context.appointmentSlot));
+        const [y, m] = bookedDate.split("-").map(Number);
+        setSelectedDate(bookedDate);
+        setMonthViewDate(new Date(y, m - 1, 1));
+        setSelectedSlot(null);
+      }
+    } catch {
+      sessionStorage.removeItem(`resched_context_ref_${applicationRef}`);
+    }
+  }, [isReferenceReschedule, applicationRef, submissionId]);
 
   // Fetch config
   useEffect(() => {
@@ -511,9 +547,13 @@ export default function AppointmentPageClient() {
     const res = await fetch(isReschedule ? "/api/submissions/reschedule" : "/api/submissions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(isReschedule
-        ? { registrationId, slotIso: selectedSlot, dateOfBirth: dob }
-        : { id: resolvedId, slotIso: selectedSlot }),
+      body: JSON.stringify(
+        isReferenceReschedule
+          ? { applicationRef, slotIso: selectedSlot, dateOfBirth: dob }
+          : isRegistrationReschedule
+            ? { registrationId, slotIso: selectedSlot, dateOfBirth: dob }
+            : { id: resolvedId, slotIso: selectedSlot }
+      ),
     });
 
     if (!res.ok) {
@@ -525,7 +565,12 @@ export default function AppointmentPageClient() {
 
     const data = await res.json().catch(() => null);
     if (isReschedule) {
-      sessionStorage.removeItem(`resched_dob_${registrationId}`);
+      if (isReferenceReschedule) {
+        sessionStorage.removeItem(`resched_dob_ref_${applicationRef}`);
+        sessionStorage.removeItem(`resched_context_ref_${applicationRef}`);
+      } else {
+        sessionStorage.removeItem(`resched_dob_${registrationId}`);
+      }
       const ref = (data as any)?.applicationRef;
       router.push(ref
         ? `/submit/complete?ref=${encodeURIComponent(ref)}`
@@ -536,7 +581,7 @@ export default function AppointmentPageClient() {
         ? `/submit/complete?ref=${encodeURIComponent(ref)}`
         : `/submit/complete?id=${encodeURIComponent(resolvedId)}`);
     }
-  }, [selectedSlot, isReschedule, dob, isSameDayService, selectedDate, minBookingDateStr, registrationId, resolvedId, router]);
+  }, [selectedSlot, isReschedule, isReferenceReschedule, isRegistrationReschedule, applicationRef, dob, isSameDayService, selectedDate, minBookingDateStr, registrationId, resolvedId, router]);
 
   const monthMatrix = useMemo(() => buildMonthMatrix(monthViewDate), [monthViewDate]);
   const monthLabel = monthViewDate.toLocaleString("en-CA", { month: "long", year: "numeric" });

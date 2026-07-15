@@ -53,22 +53,35 @@ export default function IndonesiaStayStep({
         </div>
         <div>
           <label className="block mb-1 font-medium">Phone Number in Indonesia</label>
-          <input
-            type="tel"
-            className={fieldCls(false)}
-            name="intendedPhone"
-            maxLength={15}
-            value={form.intendedPhone}
-            onChange={(e) =>
-              handleChange({
-                target: {
-                  name: "intendedPhone",
-                  value: e.target.value.replace(/[^0-9+\-() ]/g, "").slice(0, 15),
-                },
-              } as unknown as React.ChangeEvent<HTMLInputElement>)
-            }
-            placeholder="+62..."
-          />
+          <div className="relative">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-600"
+            >
+              +62
+            </span>
+            <input
+              type="tel"
+              inputMode="numeric"
+              autoComplete="tel-national"
+              className={fieldCls(false, "pl-12")}
+              name="intendedPhone"
+              maxLength={13}
+              value={form.intendedPhone.replace(/^\+62/, "")}
+              onChange={(e) => {
+                let digits = e.target.value.replace(/\D/g, "");
+                // Accept +62..., 62..., or 08... without duplicating the country code.
+                digits = digits.replace(/^62/, "").replace(/^0+/, "").slice(0, 13);
+                handleChange({
+                  target: {
+                    name: "intendedPhone",
+                    value: digits ? `+62${digits}` : "",
+                  },
+                } as unknown as React.ChangeEvent<HTMLInputElement>);
+              }}
+              placeholder="81234567890"
+            />
+          </div>
         </div>
       </div>
 

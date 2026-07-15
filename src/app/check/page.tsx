@@ -111,7 +111,7 @@ export default function CheckPage() {
   const [showDobModal, setShowDobModal] = useState(false);
   const [dobInput, setDobInput] = useState("");
   const [dobError, setDobError] = useState<string | null>(null);
-  const [pendingReg, setPendingReg] = useState("");
+  const [pendingRef, setPendingRef] = useState("");
   const [pendingService, setPendingService] = useState("");
 
   async function handleCheck() {
@@ -133,15 +133,23 @@ export default function CheckPage() {
     if (!dobInput) return;
     setVerifyingDob(true); setDobError(null);
     try {
-      const verifyRes = await fetch("/api/verify-dob", {
+      const verifyRes = await fetch("/api/submissions/verify-ref", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ registrationId: pendingReg, dateOfBirth: dobInput }),
+        body: JSON.stringify({ applicationRef: pendingRef, dateOfBirth: dobInput }),
       });
       const verifyJson = await verifyRes.json().catch(() => ({}));
       if (!verifyRes.ok) { setDobError(verifyJson.error || "Verifikasi gagal."); return; }
-      sessionStorage.setItem(`resched_dob_${pendingReg}`, dobInput);
+      sessionStorage.setItem(`resched_dob_ref_${pendingRef}`, dobInput);
+      sessionStorage.setItem(
+        `resched_context_ref_${pendingRef}`,
+        JSON.stringify({
+          id: verifyJson.id,
+          fullName: verifyJson.fullName ?? "",
+          appointmentSlot: verifyJson.appointmentSlot ?? null,
+        })
+      );
       setShowDobModal(false);
-      router.push(`/appointment?registrationId=${encodeURIComponent(pendingReg)}&service=${encodeURIComponent(pendingService)}`);
+      router.push(`/appointment?id=${encodeURIComponent(verifyJson.id)}&ref=${encodeURIComponent(pendingRef)}&mode=reschedule&service=${encodeURIComponent(pendingService)}`);
     } catch {
       setDobError("Gagal verifikasi. Silakan coba lagi.");
     } finally {
@@ -348,9 +356,9 @@ export default function CheckPage() {
                         disabled={locked}
                         onClick={() => {
                           if (locked) return;
-                          const reg = data.registrationId || "";
-                          if (!reg) { setError("Nomor registrasi tidak tersedia."); return; }
-                          setPendingReg(reg);
+                          const applicationRef = data.applicationRef || "";
+                          if (!applicationRef) { setError("Nomor referensi tidak tersedia."); return; }
+                          setPendingRef(applicationRef);
                           setPendingService(data.reason);
                           setDobInput("");
                           setDobError(null);
