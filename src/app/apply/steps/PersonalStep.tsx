@@ -34,21 +34,21 @@ export default function PersonalStep({
       {/* Name */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label className="block mb-1 font-medium">1. First Name (as in passport)</label>
+          <label className="block mb-1 font-medium min-h-[20px]">1. First Name</label>
           <input
             className={fieldCls(inv(!form.firstName.trim()))}
             name="firstName"
             maxLength={50}
             value={form.firstName}
             onChange={handleChange}
-            placeholder="First name"
+            placeholder="As in passport"
             required
           />
           <FieldError show={inv(!form.firstName.trim())} message="First name is required." />
         </div>
         <div>
-          <label className="block mb-1 font-medium">
-            2. Middle Name (as in passport) <span className="text-gray-400 font-normal">(optional)</span>
+          <label className="block mb-1 font-medium min-h-[20px]">
+            2. Middle Name <span className="text-gray-400 font-normal">(optional)</span>
           </label>
           <input
             className={fieldCls(false)}
@@ -56,18 +56,18 @@ export default function PersonalStep({
             maxLength={50}
             value={form.middleName}
             onChange={handleChange}
-            placeholder="Optional"
+            placeholder="As in passport"
           />
         </div>
         <div>
-          <label className="block mb-1 font-medium">3. Family Name (as in passport)</label>
+          <label className="block mb-1 font-medium min-h-[20px]">3. Family Name</label>
           <input
             className={fieldCls(inv(!form.familyName.trim()))}
             name="familyName"
             maxLength={50}
             value={form.familyName}
             onChange={handleChange}
-            placeholder="Last name"
+            placeholder="As in passport"
             required
           />
           <FieldError show={inv(!form.familyName.trim())} message="Family name is required." />
