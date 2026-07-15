@@ -141,7 +141,7 @@ export default function CheckPage() {
       if (!verifyRes.ok) { setDobError(verifyJson.error || "Verifikasi gagal."); return; }
       sessionStorage.setItem(`resched_dob_${pendingReg}`, dobInput);
       setShowDobModal(false);
-      router.push(`/submit/appointment?registrationId=${encodeURIComponent(pendingReg)}&service=${encodeURIComponent(pendingService)}`);
+      router.push(`/appointment?registrationId=${encodeURIComponent(pendingReg)}&service=${encodeURIComponent(pendingService)}`);
     } catch {
       setDobError("Gagal verifikasi. Silakan coba lagi.");
     } finally {

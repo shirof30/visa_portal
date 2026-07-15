@@ -21,11 +21,10 @@ function isLockedSameDayOrPast(slotIso: string | null) {
   const today = vancouverDateStr(new Date());
   return apptDate <= today; // today OR past
 }
-function getSlotCapacity(slotIso: string): number {
-  const dateStr = slotIso.split("T")[0];
-  const [y, m, d] = dateStr.split("-").map(Number);
-  const dow = new Date(y, m - 1, d).getDay();
-  return (dow === 0 || dow === 6) ? 5 : 3;
+function getSlotCapacity(_slotIso: string): number {
+  // Visa appointments allow a maximum of 2 applications per time slot.
+  // Keep this aligned with AppointmentPageClient.tsx.
+  return 2;
 }
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);

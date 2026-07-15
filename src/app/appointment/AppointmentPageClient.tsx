@@ -640,7 +640,7 @@ export default function AppointmentPageClient() {
           </div>
           <button
             type="button"
-            onClick={() => window.history.length > 1 ? router.back() : router.push("/submit")}
+            onClick={() => window.history.length > 1 ? router.back() : router.push(isReschedule ? "/check" : "/apply")}
             className="shrink-0 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-gray-600 hover:border-gray-300 hover:text-gray-900 hover:-translate-y-0.5 transition-all cursor-pointer"
           >
             ← Back
