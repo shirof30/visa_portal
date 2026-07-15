@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import SectionCard from "../ui/SectionCard";
+import FieldError from "../ui/FieldError";
 
 const CA_PROVINCE_BY_CODE: Record<string, string> = {
   AB: "Alberta",
@@ -172,24 +174,20 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
   }, []);
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-sm">
-      <div className="mb-4">
-        <h3 className="text-sm font-semibold text-gray-900">3. Address in Canada</h3>
-        <p className="mt-1 text-xs text-gray-500">Your current residential address. Start typing for autocomplete.</p>
-      </div>
-      <div className="space-y-4">
-        <div >
-          <label className="block mb-1 text-sm font-medium text-gray-700">Street Address <span className="text-red-500">*</span></label>
+    <SectionCard title="Alamat di Kanada" subtitle="Alamat tempat tinggal saat ini di Kanada.">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="md:col-span-2">
+          <label className="block mb-1 font-medium">Alamat (Street Address)</label>
           <div ref={wrapRef} className="relative w-full">
             <input
-              className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 ${inv(!form.addressCanadaStreet.trim()) ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}`}
+              className={fieldCls(inv(!form.addressCanadaStreet.trim()))}
               name="addressCanadaStreet"
               maxLength={150}
               value={form.addressCanadaStreet}
               onChange={onStreetChange}
               onKeyDown={onKeyDown}
               onFocus={() => { if (suggestions.length) setOpen(true); }}
-              placeholder="Start typing your address…"
+              placeholder="Mulai ketik alamat..."
               autoComplete="off"
               required
             />
@@ -202,7 +200,7 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
                     aria-selected={idx === activeIdx}
                     onMouseDown={(ev) => { ev.preventDefault(); selectSuggestion(s); }}
                     onMouseEnter={() => setActiveIdx(idx)}
-                    className={`cursor-pointer px-3 py-2 text-sm ${idx === activeIdx ? "bg-emerald-50 text-emerald-700" : "text-gray-700 hover:bg-gray-50"}`}
+                    className={`cursor-pointer px-3 py-2 text-sm ${idx === activeIdx ? "bg-red-50 text-red-700" : "text-gray-700 hover:bg-gray-50"}`}
                   >
                     {s.text}
                   </li>
@@ -210,39 +208,41 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
               </ul>
             )}
           </div>
-          <p className="mt-1 text-[11px] text-gray-400">Type to search for your Canadian address automatically</p>
-          <p className="mt-1 text-xs font-medium text-red-600">Street address is required.</p>
+          <p className="mt-1 text-[11px] text-gray-400">Ketik untuk mencari alamat secara otomatis (Kanada)</p>
+          <FieldError show={inv(!form.addressCanadaStreet.trim())} message="Alamat wajib diisi." />
         </div>
 
-        <div >
-          <label className="block mb-1 text-sm font-medium text-gray-700">Unit / Apt / Suite <span className="text-gray-400 font-normal">(optional)</span></label>
+        <div className="md:col-span-2">
+          <label className="block mb-1 font-medium">
+            Unit / Apt / Suite <span className="text-gray-400 font-normal">(opsional)</span>
+          </label>
           <input
-            className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            className={fieldCls(false)}
             name="addressCanadaUnit"
             value={form.addressCanadaUnit}
             onChange={handleChange}
-            placeholder="e.g. Unit 302, Apt 4B"
+            placeholder="Contoh: Unit 302, Apt 4B"
             maxLength={20}
           />
         </div>
 
         <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700">City <span className="text-red-500">*</span></label>
+          <label className="block mb-1 font-medium">Kota (City)</label>
           <input
-            className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 ${inv(!form.addressCanadaCity.trim()) ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}`}
+            className={fieldCls(inv(!form.addressCanadaCity.trim()))}
             name="addressCanadaCity"
             value={form.addressCanadaCity}
             maxLength={70}
             onChange={handleChange}
             required
           />
-          <p className="mt-1 text-xs font-medium text-red-600">City is required.</p>
+          <FieldError show={inv(!form.addressCanadaCity.trim())} message="Kota wajib diisi." />
         </div>
 
         <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700">Province <span className="text-red-500">*</span></label>
+          <label className="block mb-1 font-medium">Provinsi (Province)</label>
           <input
-            className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 ${inv(!form.addressCanadaProvince.trim()) ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}`}
+            className={fieldCls(inv(!form.addressCanadaProvince.trim()))}
             name="addressCanadaProvince"
             value={form.addressCanadaProvince}
             maxLength={30}
@@ -266,22 +266,22 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
             onChange={handleChange}
             required
           />
-          <p className="mt-1 text-xs font-medium text-red-600">Province is required.</p>
+          <FieldError show={inv(!form.addressCanadaProvince.trim())} message="Provinsi wajib diisi." />
         </div>
 
         <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700">Postal Code <span className="text-red-500">*</span></label>
+          <label className="block mb-1 font-medium">Kode Pos (Postal Code)</label>
           <input
-            className={`w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 ${inv(!form.addressCanadaPostalCode.trim()) ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"}`}
+            className={fieldCls(inv(!form.addressCanadaPostalCode.trim()))}
             name="addressCanadaPostalCode"
             value={form.addressCanadaPostalCode}
             maxLength={7}
             onChange={handleChange}
             required
           />
-          <p className="mt-1 text-xs font-medium text-red-600">Postal code is required.</p>
+          <FieldError show={inv(!form.addressCanadaPostalCode.trim())} message="Kode pos wajib diisi." />
         </div>
       </div>
-    </div>
+    </SectionCard>
   );
 }
