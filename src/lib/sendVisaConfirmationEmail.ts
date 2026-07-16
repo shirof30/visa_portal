@@ -138,9 +138,9 @@ export async function sendVisaConfirmationEmail({
 </body>
 </html>`;
 
-  const fromAddress = process.env.EMAIL_FROM ?? "noreply@indonesiavancouver.org";
+  const fromAddress = process.env.MAIL_FROM ?? "no-reply@indonesiavancouver.org";
 
-  await fetch(`https://graph.microsoft.com/v1.0/users/${fromAddress}/sendMail`, {
+  const res = await fetch(`https://graph.microsoft.com/v1.0/users/${fromAddress}/sendMail`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -151,7 +151,14 @@ export async function sendVisaConfirmationEmail({
         subject: `Visa Application Received — Reference: ${applicationRef}`,
         body: { contentType: "HTML", content: emailBody },
         toRecipients: [{ emailAddress: { address: toEmail } }],
+        from: { emailAddress: { address: fromAddress, name: "KJRI Vancouver" } },
       },
+      saveToSentItems: true,
     }),
   });
+
+  if (!res.ok) {
+    const errBody = await res.text().catch(() => "");
+    throw new Error(`Graph sendMail failed (${res.status}): ${errBody}`);
+  }
 }
