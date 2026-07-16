@@ -493,14 +493,14 @@ export default function CheckPage() {
 
   const variant = data
     ? (STATUS_MAP[data.status] ?? {
-        label: "Application Update",
-        eyebrow: "Current status",
-        icon: "info" as IconName,
-        accent: "#8ca0bb",
-        accentSoft: "rgba(140, 160, 187, 0.14)",
-        accentGlow: "rgba(140, 160, 187, 0.25)",
-        nextStep: "Please review the latest update provided for your application.",
-      })
+      label: "Application Update",
+      eyebrow: "Current status",
+      icon: "info" as IconName,
+      accent: "#8ca0bb",
+      accentSoft: "rgba(140, 160, 187, 0.14)",
+      accentGlow: "rgba(140, 160, 187, 0.25)",
+      nextStep: "Please review the latest update provided for your application.",
+    })
     : null;
 
   const slotDate = data ? formatSlotDate(data.appointmentSlot) : null;
@@ -510,9 +510,9 @@ export default function CheckPage() {
   const hasNote = Boolean(data?.statusNote?.trim());
   const showReminder = Boolean(
     data?.appointmentSlot &&
-      daysUntil !== null &&
-      daysUntil >= 0 &&
-      daysUntil <= 7,
+    daysUntil !== null &&
+    daysUntil >= 0 &&
+    daysUntil <= 7,
   );
 
   return (
@@ -588,14 +588,21 @@ export default function CheckPage() {
           --mouse-x: 50%;
           --mouse-y: 22%;
           position: relative;
-          min-height: 100svh;
-          overflow: hidden;
+          min-height: auto;
+          overflow-x: hidden;
+          overflow-y: visible;
           padding: clamp(28px, 5vw, 72px) 16px 96px;
           color: #eef4ff;
           background:
-            radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(61, 124, 255, .14), transparent 24rem),
+            radial-gradient(
+              circle at var(--mouse-x) var(--mouse-y),
+              rgba(61, 124, 255, 0.14),
+              transparent 24rem
+            ),
             linear-gradient(145deg, #03050a 0%, #07101f 42%, #050812 100%);
-          font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          font-family:
+            Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+            "Segoe UI", sans-serif;
           isolation: isolate;
         }
 
@@ -2079,7 +2086,7 @@ export default function CheckPage() {
                       <Icon
                         name={
                           data.status === "Permohonan ditunda" ||
-                          data.status === "Permohonan ditolak"
+                            data.status === "Permohonan ditolak"
                             ? "warning"
                             : "document"
                         }
@@ -2098,15 +2105,15 @@ export default function CheckPage() {
 
                       {(data.status === "Permohonan ditunda" ||
                         data.status === "Permohonan ditolak") && (
-                        <a
-                          className="contact-link"
-                          href="mailto:consular@indonesiavancouver.org"
-                        >
-                          <Icon name="mail" size={14} />
-                          Contact the consular team
-                          <Icon name="arrow" size={13} />
-                        </a>
-                      )}
+                          <a
+                            className="contact-link"
+                            href="mailto:consular@indonesiavancouver.org"
+                          >
+                            <Icon name="mail" size={14} />
+                            Contact the consular team
+                            <Icon name="arrow" size={13} />
+                          </a>
+                        )}
                     </div>
                   </div>
                 </article>
