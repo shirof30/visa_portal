@@ -523,7 +523,12 @@ export default function VisaWizard() {
                     setForm((p) => ({
                       ...p,
                       applicantType: v,
-                      nationality: v === APPLICANT_WN_KANADA ? "Canada" : p.nationality,
+                      nationality:
+                        v === APPLICANT_WN_KANADA
+                          ? "Canada"
+                          : p.nationality === "Canada"
+                          ? ""
+                          : p.nationality,
                     }))
                   }
                   showError={inv(!form.applicantType)}
