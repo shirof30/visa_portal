@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import ProcessingOverlay from "@/components/ProcessingOverlay";
@@ -141,6 +141,21 @@ export default function VisaWizard() {
   const [otpVerified, setOtpVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [excludedNationalities, setExcludedNationalities] = useState<string[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/config", { cache: "no-store" });
+        if (res.ok) {
+          const cfg = await res.json();
+          if (Array.isArray(cfg.excludedNationalities)) setExcludedNationalities(cfg.excludedNationalities);
+        }
+      } catch {
+        // Non-fatal — the dropdown just falls back to the full country list.
+      }
+    })();
+  }, []);
 
   const step = STEPS[stepIndex];
   const REVIEW_INDEX = STEPS.findIndex((s) => s.id === "review");
@@ -553,6 +568,7 @@ export default function VisaWizard() {
                   inv={inv}
                   fieldCls={fieldCls}
                   handleChange={handleChange}
+                  excludedNationalities={excludedNationalities}
                 />
               )}
 

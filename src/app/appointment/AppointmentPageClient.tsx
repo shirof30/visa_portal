@@ -396,7 +396,17 @@ export default function AppointmentPageClient() {
     (async () => {
       const res = await fetch("/api/config", { cache: "no-store" });
       if (!alive || !res.ok) { setConfigLoading(false); return; }
-      setSiteConfig(await res.json() as SiteConfig);
+      const cfg = await res.json() as SiteConfig;
+      // Slot interval & weekend hours are admin-configurable for the Passport
+      // portal only (see admin "Passport Settings"). Visa always uses a fixed
+      // 30-minute interval and stays weekday-only, regardless of what's set
+      // there. Holidays still apply to both portals — left untouched below.
+      setSiteConfig({
+        ...cfg,
+        weekdaySlotInterval: DEFAULT_STEP_MIN,
+        weekendSlotInterval: DEFAULT_STEP_MIN,
+        weekendHours: { saturday: "CLOSED", sunday: "CLOSED" },
+      });
       setConfigLoading(false);
     })();
     return () => { alive = false; };

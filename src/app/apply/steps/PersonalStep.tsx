@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import SectionCard from "../ui/SectionCard";
 import FieldError from "../ui/FieldError";
 import DateSelect from "@/components/DateSelect";
 import { MARITAL_STATUSES } from "../config/visaConfig";
+import { COUNTRIES } from "@/lib/countries";
 
 export default function PersonalStep({
   form,
@@ -10,6 +11,7 @@ export default function PersonalStep({
   inv,
   fieldCls,
   handleChange,
+  excludedNationalities = [],
 }: {
   form: {
     firstName: string;
@@ -25,7 +27,16 @@ export default function PersonalStep({
   inv: (cond: boolean) => boolean;
   fieldCls: (invalid: boolean, extra?: string) => string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  excludedNationalities?: string[];
 }) {
+  const nationalityOptions = useMemo(() => {
+    const excluded = new Set(excludedNationalities);
+    // Always keep the currently-selected value selectable, even if it was
+    // excluded after this application was started, so we don't silently
+    // blank out something the applicant already chose.
+    const list = COUNTRIES.filter((c) => !excluded.has(c) || c === form.nationality);
+    return list;
+  }, [excludedNationalities, form.nationality]);
   return (
     <SectionCard
       title="Personal Information"
@@ -128,14 +139,20 @@ export default function PersonalStep({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block mb-1 font-medium">6. Nationality</label>
-          <input
+          <select
             className={fieldCls(inv(!form.nationality.trim()))}
             name="nationality"
-            maxLength={60}
             value={form.nationality}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">-- Select --</option>
+            {nationalityOptions.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
           <FieldError show={inv(!form.nationality.trim())} message="Nationality is required." />
         </div>
         <div>

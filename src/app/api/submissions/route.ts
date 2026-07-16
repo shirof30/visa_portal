@@ -13,6 +13,7 @@ import { writeFile } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 import fs from "fs/promises";
+import { getSiteConfig } from "@/lib/siteConfig";
 import { randomUUID } from "crypto";
 import { sendVisaConfirmationEmail } from "@/lib/sendVisaConfirmationEmail";
 
@@ -329,6 +330,16 @@ export async function POST(req: NextRequest) {
   if (!disclaimerAccepted) {
     return NextResponse.json(
       { error: "Disclaimer must be accepted" },
+      { status: 400 }
+    );
+  }
+
+  // Nationality exclusions are enforced here too (not just hidden in the UI),
+  // since the dropdown fetch happens client-side and can be bypassed.
+  const { excludedNationalities } = await getSiteConfig();
+  if (nationality && excludedNationalities.includes(nationality)) {
+    return NextResponse.json(
+      { error: "Applications from this nationality are not currently being accepted." },
       { status: 400 }
     );
   }

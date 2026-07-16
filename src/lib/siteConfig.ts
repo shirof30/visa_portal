@@ -18,6 +18,7 @@ export type SiteConfig = {
   weekdaySlotInterval: number;
   weekendSlotInterval: number;
   weekendHours: WeekendHours;
+  excludedNationalities: string[];
 };
 
 const DEFAULT_CONFIG: SiteConfig = {
@@ -27,6 +28,7 @@ const DEFAULT_CONFIG: SiteConfig = {
   weekdaySlotInterval: 30,
   weekendSlotInterval: 15,
   weekendHours: { saturday: "CLOSED", sunday: "CLOSED" },
+  excludedNationalities: [],
 };
 
 export async function getSiteConfig(): Promise<SiteConfig> {
@@ -43,6 +45,7 @@ export async function getSiteConfig(): Promise<SiteConfig> {
     weekdaySlotInterval: (row as any).weekdaySlotInterval ?? 30,
     weekendSlotInterval: (row as any).weekendSlotInterval ?? 15,
     weekendHours: (row as any).weekendHours ?? { saturday: "CLOSED", sunday: "CLOSED" },
+    excludedNationalities: ((row as any).excludedNationalities as string[]) ?? [],
   };
 }
 

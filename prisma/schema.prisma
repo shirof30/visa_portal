@@ -189,6 +189,7 @@ model SiteConfig {
   weekdaySlotInterval  Int      @default(30)
   weekendSlotInterval  Int      @default(15)
   weekendHours         Json     @default("{\"saturday\":\"CLOSED\",\"sunday\":\"CLOSED\"}")
+  excludedNationalities Json    @default("[]")
   updatedAt            DateTime @updatedAt
 
   @@map("site_config")
