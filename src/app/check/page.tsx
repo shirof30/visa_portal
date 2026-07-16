@@ -1,5 +1,6 @@
 "use client";
-iimport React, { useMemo, useState } from "react";
+
+import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { ApplicationStatus } from "@/lib/db";
 
@@ -552,6 +553,22 @@ export default function CheckPage() {
             >
               {verifyingDob
                 ? <><span style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "white", borderRadius: "50%", display: "inline-block", animation: "spin 0.6s linear infinite" }} /> Memverifikasi…</>
+                : "Lanjutkan →"}
+            </button>
+
+            <button
+              onClick={() => setShowDobModal(false)}
+              style={{ marginTop: 12, background: "none", border: "none", fontSize: 13, color: "#94a3b8", cursor: "pointer", padding: "4px 8px" }}
+            >
+              Batal
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+olid rgba(255,255,255,0.3)", borderTopColor: "white", borderRadius: "50%", display: "inline-block", animation: "spin 0.6s linear infinite" }} /> Memverifikasi…</>
                 : "Lanjutkan →"}
             </button>
 
