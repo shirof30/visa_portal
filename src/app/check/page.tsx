@@ -274,7 +274,7 @@ export default function CheckPage() {
         }
       `}</style>
 
-      <div className="bg-security" style={{ padding: "36px 16px 96px", background: "#f4f6f5", minHeight: "100vh" }}>
+      <div className="bg-security" style={{ padding: "36px 16px 96px", background: "#f4f6f5" }}>
         <div style={{ maxWidth: 440, margin: "0 auto" }}>
 
           {/* Title */}
