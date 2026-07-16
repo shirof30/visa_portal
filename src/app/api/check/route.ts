@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 
   if (isRateLimited(ip)) {
     return NextResponse.json(
-      { error: "Terlalu banyak percobaan. Silakan coba lagi dalam 15 menit." },
+      { error: "Too many attempts. Please try again in 15 minutes." },
       { status: 429 }
     );
   }
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
 
   if (!ref || !REF_REGEX.test(ref)) {
     return NextResponse.json(
-      { error: "Format nomor referensi tidak valid." },
+      { error: "Invalid reference number format." },
       { status: 400 }
     );
   }
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 
   if (!sub) {
     return NextResponse.json(
-      { error: "Permohonan tidak ditemukan." },
+      { error: "Application not found." },
       { status: 404 }
     );
   }

@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   // Always return 403 on any mismatch — don't reveal whether the ref exists
   if (!sub || sub.dateOfBirth.trim() !== body.dateOfBirth.trim()) {
     return NextResponse.json(
-      { error: "Verifikasi Tanggal Lahir Gagal. Silahkan coba kembali." },
+      { error: "Date of birth verification failed. Please try again." },
       { status: 403 }
     );
   }
