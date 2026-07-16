@@ -152,6 +152,9 @@ model Submission {
   occupationPhone        String?
   occupationFax          String?
   typeOfVisaRequested    String?
+  visaCategory           String?
+  visaProductCode        String?
+  visaProductLabel       String?
   purposeOfVisit         String?
   purposeOfVisitOther    String?
   addressIndonesiaPhone  String?

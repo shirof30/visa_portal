@@ -133,6 +133,9 @@ export type Submission = {
   occupationPhone?: string | null;
   occupationFax?: string | null;
   typeOfVisaRequested?: string | null;
+  visaCategory?: string | null;
+  visaProductCode?: string | null;
+  visaProductLabel?: string | null;
   purposeOfVisit?: string | null;
   purposeOfVisitOther?: string | null;
   addressIndonesiaPhone?: string | null;

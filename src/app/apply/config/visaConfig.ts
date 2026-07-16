@@ -54,13 +54,109 @@ export const PURPOSE_OF_VISIT = [
 ] as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
+// STEP 1 of "Visa Type & Purpose": Visa Category — "Jenis Visa berdasarkan
+// Tujuan Kunjungan" (visa category by purpose of visit). This is the
+// consulate's own classification, shown to the applicant with an explanation
+// before they pick a specific visa product below. Each sub-item maps onto a
+// value from PURPOSE_OF_VISIT so the official PDF export keeps working.
+// ─────────────────────────────────────────────────────────────────────────────
+export type VisaCategoryOption = {
+  purpose: (typeof PURPOSE_OF_VISIT)[number];
+  otherLabel?: string; // used when purpose === "Others" to prefill the specify text
+};
+
+export type VisaCategory = {
+  code: string; // "C1".."C5" or "TRANSIT"
+  title: string;
+  titleId: string; // original Indonesian title, shown as a subtitle for reference
+  options: { label: string; value: VisaCategoryOption }[];
+};
+
+export const VISA_CATEGORIES: VisaCategory[] = [
+  {
+    code: "C1",
+    title: "Personal Visit",
+    titleId: "Wisata / Berobat / Kunjungan Keluarga",
+    options: [
+      { label: "Tourism", value: { purpose: "Tourism" } },
+      { label: "Medical Treatment", value: { purpose: "Others", otherLabel: "Medical Treatment" } },
+      { label: "Family Visit", value: { purpose: "Family Visit" } },
+    ],
+  },
+  {
+    code: "C2",
+    title: "Business Visit",
+    titleId: "Bisnis / Rapat / Pembelian Barang",
+    options: [
+      { label: "Business", value: { purpose: "Commercial/Business" } },
+      { label: "Meeting", value: { purpose: "Conference/Seminar/Workshop" } },
+      { label: "Goods Purchase", value: { purpose: "Others", otherLabel: "Goods Purchase" } },
+    ],
+  },
+  {
+    code: "C3",
+    title: "Medical Care",
+    titleId: "Pengobatan",
+    options: [
+      { label: "Medical Care", value: { purpose: "Others", otherLabel: "Medical Care" } },
+    ],
+  },
+  {
+    code: "C4",
+    title: "Official Government Duty",
+    titleId: "Tugas Pemerintah Resmi",
+    options: [
+      { label: "Official Government Duty", value: { purpose: "Others", otherLabel: "Official Government Duty" } },
+    ],
+  },
+  {
+    code: "C5",
+    title: "Journalism",
+    titleId: "Jurnalistik",
+    options: [
+      { label: "Journalism", value: { purpose: "Press and Media" } },
+    ],
+  },
+  {
+    code: "TRANSIT",
+    title: "Transit",
+    titleId: "Transit melalui Indonesia",
+    options: [
+      { label: "Transit through Indonesia", value: { purpose: "Others", otherLabel: "Transit" } },
+    ],
+  },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STEP 2 of "Visa Type & Purpose": the actual visa product offered through
+// this portal (mirrors the "Visa Types Available" panel on the main site).
+// `entryType` maps onto the official PDF form's "Type of Visa Requested"
+// checkbox (Transit / Single / Limited/Temporary Stay / Multiple) — B211A/B/C
+// are all single-entry visit visas in practice, so they resolve to "Single".
+// ─────────────────────────────────────────────────────────────────────────────
+export type VisaProduct = {
+  code: "B211A" | "B211B" | "B211C" | "C316";
+  label: string;
+  subtitle: string;
+  entryType: (typeof TYPE_OF_VISA_REQUESTED)[number];
+  suggestedFor: string[]; // VisaCategory codes this product is typically suggested for
+};
+
+export const VISA_PRODUCTS: VisaProduct[] = [
+  { code: "B211A", label: "Tourist Visa", subtitle: "Tourism / Family Visit", entryType: "Single", suggestedFor: ["C1", "C3"] },
+  { code: "B211B", label: "Business Visa", subtitle: "Commercial / Conference", entryType: "Single", suggestedFor: ["C2", "C4"] },
+  { code: "B211C", label: "Social Visa", subtitle: "Arts / Sports / Study", entryType: "Single", suggestedFor: ["C5"] },
+  { code: "C316", label: "Transit Visa", subtitle: "Transit through Indonesia", entryType: "Transit", suggestedFor: ["TRANSIT"] },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Resolve the free-text "reason" string stored on the submission (used by admin/email). */
-export function buildReason(typeOfVisa: string, purpose: string, purposeOther: string) {
+export function buildReason(visaProductLabel: string, purpose: string, purposeOther: string) {
   const purposeLabel = purpose === "Others" && purposeOther ? purposeOther : purpose;
-  return `${purposeLabel}${typeOfVisa ? ` — ${typeOfVisa} Visa` : ""}`;
+  return `${purposeLabel}${visaProductLabel ? ` — ${visaProductLabel}` : ""}`;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -290,6 +290,9 @@ export async function POST(req: NextRequest) {
   const occupationFax = String(formData.get("occupationFax") || "");
 
   const typeOfVisaRequested = String(formData.get("typeOfVisaRequested") || "");
+  const visaCategory = String(formData.get("visaCategory") || "");
+  const visaProductCode = String(formData.get("visaProductCode") || "");
+  const visaProductLabel = String(formData.get("visaProductLabel") || "");
   const purposeOfVisit = String(formData.get("purposeOfVisit") || "");
   const purposeOfVisitOther = String(formData.get("purposeOfVisitOther") || "");
 
@@ -487,6 +490,9 @@ export async function POST(req: NextRequest) {
     occupationFax,
 
     typeOfVisaRequested,
+    visaCategory,
+    visaProductCode,
+    visaProductLabel,
     purposeOfVisit,
     purposeOfVisitOther,
 

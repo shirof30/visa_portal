@@ -22,6 +22,9 @@ import ReviewStep from "./steps/ReviewStep";
 import {
   APPLICANT_WN_KANADA,
   APPLICANT_NON_KANADA,
+  VISA_CATEGORIES,
+  VISA_PRODUCTS,
+  type VisaCategoryOption,
   buildReason,
   getVisaUploads,
 } from "./config/visaConfig";
@@ -52,6 +55,8 @@ type Form = {
   // applicant + purpose
   applicantType: string;
   typeOfVisaRequested: string;
+  visaCategory: string;
+  visaProductCode: string;
   purposeOfVisit: string;
   purposeOther: string;
   // personal
@@ -88,7 +93,7 @@ type Form = {
 };
 
 const INITIAL: Form = {
-  applicantType: "", typeOfVisaRequested: "", purposeOfVisit: "", purposeOther: "",
+  applicantType: "", typeOfVisaRequested: "", visaCategory: "", visaProductCode: "", purposeOfVisit: "", purposeOther: "",
   firstName: "", middleName: "", familyName: "", sex: "",
   placeOfBirth: "", dateOfBirth: "", nationality: "Canada", maritalStatus: "",
   passportNumber: "", passportPlace: "", passportIssueDate: "", passportExpiryDate: "",
@@ -211,7 +216,8 @@ export default function VisaWizard() {
         return !!form.applicantType;
       case "purpose":
         return (
-          !!form.typeOfVisaRequested &&
+          !!form.visaCategory &&
+          !!form.visaProductCode &&
           !!form.purposeOfVisit &&
           (form.purposeOfVisit !== "Others" || !!form.purposeOther.trim())
         );
@@ -324,7 +330,9 @@ export default function VisaWizard() {
       const phoneDigits = form.phoneNumber.replace(/\D/g, "").slice(0, 10);
       const fullName = [form.firstName, form.middleName, form.familyName].filter(Boolean).join(" ");
       const canadaStreet = [form.addressUnit.trim(), form.addressStreet.trim()].filter(Boolean).join(", ");
-      const purposeLabel = form.purposeOfVisit === "Others" ? form.purposeOther : form.purposeOfVisit;
+      const selectedProduct = VISA_PRODUCTS.find((p) => p.code === form.visaProductCode);
+      const visaProductLabel = selectedProduct ? `${selectedProduct.label} (${selectedProduct.code})` : "";
+      const derivedEntryType = selectedProduct?.entryType ?? form.typeOfVisaRequested;
 
       const fd = new FormData();
       // identity
@@ -421,7 +429,10 @@ export default function VisaWizard() {
       fd.append("everOrderedToLeave", form.orderedToLeave === "Yes" ? "true" : "false");
       fd.append("everArrestedConvicted", form.everArrested === "Yes" ? "true" : "false");
       // visa type / purpose (top of form + section 15)
-      fd.append("typeOfVisaRequested", form.typeOfVisaRequested);
+      fd.append("typeOfVisaRequested", derivedEntryType);
+      fd.append("visaCategory", form.visaCategory);
+      fd.append("visaProductCode", form.visaProductCode);
+      fd.append("visaProductLabel", visaProductLabel);
       fd.append("purposeOfVisit", form.purposeOfVisit);
       fd.append("purposeOfVisitOther", form.purposeOther);
       // declaration / signature
@@ -429,7 +440,7 @@ export default function VisaWizard() {
       fd.append("signatureDate", form.signatureDate);
       // service
       fd.append("isChildPassportRequest", "false");
-      fd.append("reason", buildReason(form.typeOfVisaRequested, form.purposeOfVisit, form.purposeOther));
+      fd.append("reason", buildReason(visaProductLabel, form.purposeOfVisit, form.purposeOther));
       fd.append("disclaimerAccepted", form.termsAccepted ? "true" : "false");
       fd.append("portalType", "visa");
 
@@ -555,8 +566,31 @@ export default function VisaWizard() {
                   form={form}
                   inv={inv}
                   fieldCls={fieldCls}
-                  onSelectVisaType={(t) => setForm((p) => ({ ...p, typeOfVisaRequested: t }))}
-                  onSelectPurpose={(purpose) => setForm((p) => ({ ...p, purposeOfVisit: purpose, purposeOther: "" }))}
+                  onSelectCategory={(categoryCode) =>
+                    setForm((p) => {
+                      const cat = VISA_CATEGORIES.find((c) => c.code === categoryCode);
+                      const next: typeof p = { ...p, visaCategory: categoryCode };
+                      // Single-option categories (C3, C4, C5, Transit) resolve immediately.
+                      if (cat && cat.options.length === 1) {
+                        next.purposeOfVisit = cat.options[0].value.purpose;
+                        next.purposeOther = cat.options[0].value.otherLabel ?? "";
+                      } else {
+                        next.purposeOfVisit = "";
+                        next.purposeOther = "";
+                      }
+                      // Transit has one obvious matching product — pre-select it.
+                      if (categoryCode === "TRANSIT") {
+                        next.visaProductCode = "C316";
+                      } else if (p.visaProductCode === "C316") {
+                        next.visaProductCode = "";
+                      }
+                      return next;
+                    })
+                  }
+                  onSelectCategoryOption={(opt: VisaCategoryOption) =>
+                    setForm((p) => ({ ...p, purposeOfVisit: opt.purpose, purposeOther: opt.otherLabel ?? "" }))
+                  }
+                  onSelectVisaProduct={(productCode) => setForm((p) => ({ ...p, visaProductCode: productCode }))}
                   onChangePurposeOther={(v) => setForm((p) => ({ ...p, purposeOther: v }))}
                 />
               )}

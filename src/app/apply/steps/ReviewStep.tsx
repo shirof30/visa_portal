@@ -3,7 +3,7 @@ import SectionCard from "../ui/SectionCard";
 import FieldError from "../ui/FieldError";
 import DateSelect from "@/components/DateSelect";
 import type { UploadItem } from "../ui/UploadRow";
-import { APPLICANT_TYPES } from "../config/visaConfig";
+import { APPLICANT_TYPES, VISA_CATEGORIES, VISA_PRODUCTS } from "../config/visaConfig";
 
 function Row({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -51,7 +51,11 @@ export default function ReviewStep({
           </div>
           <div className="mt-2 space-y-1">
             <Row label="Applicant type" value={applicantLabel} />
-            <Row label="Type of visa requested" value={show(form.typeOfVisaRequested)} />
+            <Row label="Visa category" value={show(VISA_CATEGORIES.find((c) => c.code === form.visaCategory)?.title)} />
+            <Row label="Visa type" value={show((() => {
+              const p = VISA_PRODUCTS.find((x) => x.code === form.visaProductCode);
+              return p ? `${p.label} (${p.code})` : "";
+            })())} />
             <Row label="Purpose of visit" value={show(form.purposeOfVisit === "Others" ? form.purposeOther : form.purposeOfVisit)} />
           </div>
         </div>
