@@ -3,7 +3,7 @@ import SectionCard from "../ui/SectionCard";
 import FieldError from "../ui/FieldError";
 import DateSelect from "@/components/DateSelect";
 import type { UploadItem } from "../ui/UploadRow";
-import { APPLICANT_TYPES, VISA_CATEGORIES, VISA_PRODUCTS } from "../config/visaConfig";
+import { APPLICANT_TYPES, VISA_CATEGORIES } from "../config/visaConfig";
 
 function Row({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -43,19 +43,26 @@ export default function ReviewStep({
   return (
     <SectionCard title="Review & Submit" subtitle="Please review all your information before submitting.">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-gray-700">
-        {/* Visa type + purpose */}
+        {/* Visa category */}
         <div className={card}>
           <div className="flex items-center justify-between gap-3">
-            <p className="text-sm font-semibold text-gray-900">Visa & Purpose</p>
-            <button type="button" onClick={() => onEdit("purpose")} className={editBtn}>Edit</button>
+            <p className="text-sm font-semibold text-gray-900">Applicant & Category</p>
+            <button type="button" onClick={() => onEdit("category")} className={editBtn}>Edit</button>
           </div>
           <div className="mt-2 space-y-1">
             <Row label="Applicant type" value={applicantLabel} />
             <Row label="Visa category" value={show(VISA_CATEGORIES.find((c) => c.code === form.visaCategory)?.title)} />
-            <Row label="Visa type" value={show((() => {
-              const p = VISA_PRODUCTS.find((x) => x.code === form.visaProductCode);
-              return p ? `${p.label} (${p.code})` : "";
-            })())} />
+          </div>
+        </div>
+
+        {/* Visa type + purpose */}
+        <div className={card}>
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm font-semibold text-gray-900">Visa Type & Purpose</p>
+            <button type="button" onClick={() => onEdit("purpose")} className={editBtn}>Edit</button>
+          </div>
+          <div className="mt-2 space-y-1">
+            <Row label="Type of visa requested" value={show(form.typeOfVisaRequested)} />
             <Row label="Purpose of visit" value={show(form.purposeOfVisit === "Others" ? form.purposeOther : form.purposeOfVisit)} />
           </div>
         </div>

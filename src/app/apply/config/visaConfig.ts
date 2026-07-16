@@ -25,6 +25,58 @@ export const APPLICANT_TYPES = [
 ] as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
+// STEP: Visa Category — "Jenis Visa berdasarkan Tujuan Kunjungan" (C1–C5).
+// This is the consulate's own classification of visa purpose, asked first,
+// before the official form's own "Type of Visa Requested" / "Purpose of
+// visit" multiple choice. It also drives one document requirement: C2–C5
+// need a sponsor/guarantor letter from Indonesia (see getVisaUploads below).
+// ─────────────────────────────────────────────────────────────────────────────
+export type VisaCategory = {
+  code: "C1" | "C2" | "C3" | "C4" | "C5";
+  title: string;
+  items: string[]; // English
+  itemsId: string; // Indonesian, shown as reference
+};
+
+export const VISA_CATEGORIES: VisaCategory[] = [
+  {
+    code: "C1",
+    title: "Personal Visit",
+    items: ["Tourism", "Medical Treatment", "Family Visit"],
+    itemsId: "Wisata / Berobat / Kunjungan Keluarga",
+  },
+  {
+    code: "C2",
+    title: "Business Visit",
+    items: ["Business", "Meeting", "Goods Purchase"],
+    itemsId: "Bisnis / Rapat / Pembelian Barang",
+  },
+  {
+    code: "C3",
+    title: "Medical Care",
+    items: ["Medical Care"],
+    itemsId: "Pengobatan",
+  },
+  {
+    code: "C4",
+    title: "Official Government Duty",
+    items: ["Official Government Duty"],
+    itemsId: "Tugas Pemerintah Resmi",
+  },
+  {
+    code: "C5",
+    title: "Journalism",
+    items: ["Journalism"],
+    itemsId: "Jurnalistik",
+  },
+];
+
+/** C2–C5 require a sponsor/guarantor letter from Indonesia; C1 does not. */
+export function categoryNeedsSponsorLetter(categoryCode: string): boolean {
+  return categoryCode === "C2" || categoryCode === "C3" || categoryCode === "C4" || categoryCode === "C5";
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Fields below mirror the official KJRI "VISA APPLICATION FORM" exactly —
 // same option lists, same order, same wording — so submissions map 1:1 onto
 // the printable/fillable PDF (see /api/submissions/[id]/export-pdf).
@@ -54,121 +106,25 @@ export const PURPOSE_OF_VISIT = [
 ] as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// STEP 1 of "Visa Type & Purpose": Visa Category — "Jenis Visa berdasarkan
-// Tujuan Kunjungan" (visa category by purpose of visit). This is the
-// consulate's own classification, shown to the applicant with an explanation
-// before they pick a specific visa product below. Each sub-item maps onto a
-// value from PURPOSE_OF_VISIT so the official PDF export keeps working.
-// ─────────────────────────────────────────────────────────────────────────────
-export type VisaCategoryOption = {
-  purpose: (typeof PURPOSE_OF_VISIT)[number];
-  otherLabel?: string; // used when purpose === "Others" to prefill the specify text
-};
-
-export type VisaCategory = {
-  code: string; // "C1".."C5" or "TRANSIT"
-  title: string;
-  titleId: string; // original Indonesian title, shown as a subtitle for reference
-  options: { label: string; value: VisaCategoryOption }[];
-};
-
-export const VISA_CATEGORIES: VisaCategory[] = [
-  {
-    code: "C1",
-    title: "Personal Visit",
-    titleId: "Wisata / Berobat / Kunjungan Keluarga",
-    options: [
-      { label: "Tourism", value: { purpose: "Tourism" } },
-      { label: "Medical Treatment", value: { purpose: "Others", otherLabel: "Medical Treatment" } },
-      { label: "Family Visit", value: { purpose: "Family Visit" } },
-    ],
-  },
-  {
-    code: "C2",
-    title: "Business Visit",
-    titleId: "Bisnis / Rapat / Pembelian Barang",
-    options: [
-      { label: "Business", value: { purpose: "Commercial/Business" } },
-      { label: "Meeting", value: { purpose: "Conference/Seminar/Workshop" } },
-      { label: "Goods Purchase", value: { purpose: "Others", otherLabel: "Goods Purchase" } },
-    ],
-  },
-  {
-    code: "C3",
-    title: "Medical Care",
-    titleId: "Pengobatan",
-    options: [
-      { label: "Medical Care", value: { purpose: "Others", otherLabel: "Medical Care" } },
-    ],
-  },
-  {
-    code: "C4",
-    title: "Official Government Duty",
-    titleId: "Tugas Pemerintah Resmi",
-    options: [
-      { label: "Official Government Duty", value: { purpose: "Others", otherLabel: "Official Government Duty" } },
-    ],
-  },
-  {
-    code: "C5",
-    title: "Journalism",
-    titleId: "Jurnalistik",
-    options: [
-      { label: "Journalism", value: { purpose: "Press and Media" } },
-    ],
-  },
-  {
-    code: "TRANSIT",
-    title: "Transit",
-    titleId: "Transit melalui Indonesia",
-    options: [
-      { label: "Transit through Indonesia", value: { purpose: "Others", otherLabel: "Transit" } },
-    ],
-  },
-];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STEP 2 of "Visa Type & Purpose": the actual visa product offered through
-// this portal (mirrors the "Visa Types Available" panel on the main site).
-// `entryType` maps onto the official PDF form's "Type of Visa Requested"
-// checkbox (Transit / Single / Limited/Temporary Stay / Multiple) — B211A/B/C
-// are all single-entry visit visas in practice, so they resolve to "Single".
-// ─────────────────────────────────────────────────────────────────────────────
-export type VisaProduct = {
-  code: "B211A" | "B211B" | "B211C" | "C316";
-  label: string;
-  subtitle: string;
-  entryType: (typeof TYPE_OF_VISA_REQUESTED)[number];
-  suggestedFor: string[]; // VisaCategory codes this product is typically suggested for
-};
-
-export const VISA_PRODUCTS: VisaProduct[] = [
-  { code: "B211A", label: "Tourist Visa", subtitle: "Tourism / Family Visit", entryType: "Single", suggestedFor: ["C1", "C3"] },
-  { code: "B211B", label: "Business Visa", subtitle: "Commercial / Conference", entryType: "Single", suggestedFor: ["C2", "C4"] },
-  { code: "B211C", label: "Social Visa", subtitle: "Arts / Sports / Study", entryType: "Single", suggestedFor: ["C5"] },
-  { code: "C316", label: "Transit Visa", subtitle: "Transit through Indonesia", entryType: "Transit", suggestedFor: ["TRANSIT"] },
-];
-
-// ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Resolve the free-text "reason" string stored on the submission (used by admin/email). */
-export function buildReason(visaProductLabel: string, purpose: string, purposeOther: string) {
+export function buildReason(typeOfVisa: string, purpose: string, purposeOther: string) {
   const purposeLabel = purpose === "Others" && purposeOther ? purposeOther : purpose;
-  return `${purposeLabel}${visaProductLabel ? ` — ${visaProductLabel}` : ""}`;
+  return `${purposeLabel}${typeOfVisa ? ` — ${typeOfVisa} Visa` : ""}`;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Document requirements. Base set matches what the form implies (passport,
-// photo, and — per section 18 — a copy of any Invitation/Reference letter),
-// plus one diagram-driven addition:
+// Document requirements.
 //   • Non-Kanada → proof of legal stay in Canada (permitScan)
+//   • C2–C5      → sponsor/guarantor letter from Indonesia (formScan)
+//   • Invitation/Reference letter (form section 18) → copy of that letter
 // Keys map onto the shared `submissions` backend fields.
 // ─────────────────────────────────────────────────────────────────────────────
 const ACCEPT = "application/pdf,image/jpeg,image/jpg";
 
-export function getVisaUploads(applicantType: string, hasInvitationLetter: boolean): UploadItem[] {
+export function getVisaUploads(applicantType: string, hasInvitationLetter: boolean, visaCategory: string): UploadItem[] {
   const items: UploadItem[] = [
     {
       key: "passportScan",
@@ -194,6 +150,18 @@ export function getVisaUploads(applicantType: string, hasInvitationLetter: boole
       key: "permitScan",
       label: "Canada residence permit / status document",
       hint: "Study Permit / Work Permit / PR card / Visitor Record proving your legal stay in Canada.",
+      accept: ACCEPT,
+      pdfOnly: true,
+      required: true,
+    });
+  }
+
+  // Visa category C2–C5 requires a sponsor/guarantor letter from Indonesia.
+  if (categoryNeedsSponsorLetter(visaCategory)) {
+    items.push({
+      key: "formScan",
+      label: "Sponsor / Guarantor Letter",
+      hint: "Required for your selected visa category — a sponsor or guarantor letter from Indonesia.",
       accept: ACCEPT,
       pdfOnly: true,
       required: true,
