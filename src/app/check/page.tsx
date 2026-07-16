@@ -18,7 +18,7 @@ function formatSlotDate(slot: string | null) {
   if (!slot) return null;
   const cleaned = slot.replace("Z", "");
   const date = new Date(cleaned.split("T")[0] + "T12:00:00");
-  return date.toLocaleDateString("id-ID", {
+  return date.toLocaleDateString("en-CA", {
     weekday: "long", day: "numeric", month: "long", year: "numeric",
   });
 }
@@ -57,34 +57,34 @@ type StatusVariant = {
 
 const STATUS_MAP: Partial<Record<ApplicationStatus, StatusVariant>> = {
   "Permohonan diterima": {
-    label: "Diterima", icon: "✓",
+    label: "Received", icon: "✓",
     accent: "#2563eb", accentLight: "#eff6ff", accentText: "#1d4ed8",
-    nextStep: "Permohonan Anda sedang ditinjau petugas. Tetap datang sesuai jadwal.",
+    nextStep: "Your application is being reviewed by our staff. Please still attend on your scheduled date.",
   },
   "Permohonan disetujui": {
-    label: "Disetujui", icon: "✓",
+    label: "Approved", icon: "✓",
     accent: "#16a34a", accentLight: "#f0fdf4", accentText: "#15803d",
-    nextStep: "Permohonan disetujui. Silakan datang sesuai jadwal janji temu.",
+    nextStep: "Your application has been approved. Please attend your scheduled appointment.",
   },
   "Permohonan ditunda": {
-    label: "Ditunda", icon: "⏸",
+    label: "On Hold", icon: "⏸",
     accent: "#d97706", accentLight: "#fffbeb", accentText: "#b45309",
-    nextStep: "Tindakan diperlukan. Baca catatan di bawah dan hubungi kami.",
+    nextStep: "Action is needed. Please read the note below and get in touch with us.",
   },
   "Permohonan ditolak": {
-    label: "Ditolak", icon: "✕",
+    label: "Rejected", icon: "✕",
     accent: "#dc2626", accentLight: "#fef2f2", accentText: "#b91c1c",
-    nextStep: "Permohonan tidak dapat diproses. Hubungi kami untuk informasi lebih lanjut.",
+    nextStep: "Your application could not be processed. Contact us for more information.",
   },
   "Permohonan sedang proses cetak": {
-    label: "Proses Cetak", icon: "⬡",
+    label: "Processing", icon: "⬡",
     accent: "#7c3aed", accentLight: "#f5f3ff", accentText: "#6d28d9",
-    nextStep: "Paspor sedang dicetak. Kami akan menghubungi Anda segera.",
+    nextStep: "Your visa is being processed. We'll be in touch shortly.",
   },
   "Paspor selesai diproses": {
-    label: "Selesai", icon: "★",
+    label: "Ready", icon: "★",
     accent: "#0891b2", accentLight: "#ecfeff", accentText: "#0e7490",
-    nextStep: "Paspor siap diambil di kantor konsulat.",
+    nextStep: "Your visa is ready for collection at our consular office.",
   },
 };
 
@@ -119,11 +119,11 @@ export default function CheckPage() {
     try {
       const res = await fetch(`/api/check?ref=${encodeURIComponent(ref.trim())}`);
       const json = await res.json();
-      if (!res.ok) { setError(json.error || "Gagal mengecek permohonan."); return; }
+      if (!res.ok) { setError(json.error || "Couldn't check your application."); return; }
       setResultKey(k => k + 1);
       setData(json as CheckResponse);
     } catch {
-      setError("Gagal mengecek permohonan. Silakan coba lagi.");
+      setError("Couldn't check your application. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -138,7 +138,7 @@ export default function CheckPage() {
         body: JSON.stringify({ applicationRef: pendingRef, dateOfBirth: dobInput }),
       });
       const verifyJson = await verifyRes.json().catch(() => ({}));
-      if (!verifyRes.ok) { setDobError(verifyJson.error || "Verifikasi gagal."); return; }
+      if (!verifyRes.ok) { setDobError(verifyJson.error || "Verification failed."); return; }
       sessionStorage.setItem(`resched_dob_ref_${pendingRef}`, dobInput);
       sessionStorage.setItem(
         `resched_context_ref_${pendingRef}`,
@@ -151,7 +151,7 @@ export default function CheckPage() {
       setShowDobModal(false);
       router.push(`/appointment?id=${encodeURIComponent(verifyJson.id)}&ref=${encodeURIComponent(pendingRef)}&mode=reschedule&service=${encodeURIComponent(pendingService)}`);
     } catch {
-      setDobError("Gagal verifikasi. Silakan coba lagi.");
+      setDobError("Verification failed. Please try again.");
     } finally {
       setVerifyingDob(false);
     }
@@ -217,19 +217,19 @@ export default function CheckPage() {
           {/* Title */}
           <div style={{ ...card, padding: "20px 24px", marginBottom: 12, textAlign: "center" }}>
             <p style={{ margin: "0 0 6px", fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: "#dc2626" }}>
-              Layanan Online · KJRI Vancouver
+              Online Service · KJRI Vancouver
             </p>
             <h1 style={{ margin: 0, fontSize: 28, fontWeight: 800, color: "#0f172a", fontFamily: "Georgia,serif", letterSpacing: "-0.02em" }}>
-              Cek Status
+              Check Status
             </h1>
             <p style={{ margin: "6px 0 0", fontSize: 13, color: "#94a3b8" }}>
-              Masukkan nomor referensi permohonan Anda
+              Enter your application reference number
             </p>
           </div>
 
           {/* Search */}
           <div style={{ ...card, padding: 20, marginBottom: 12 }}>
-            <p style={sectionLabel}>Nomor Referensi</p>
+            <p style={sectionLabel}>Reference Number</p>
             <div style={{ display: "flex", gap: 8 }}>
               <input
                 style={{
@@ -259,8 +259,8 @@ export default function CheckPage() {
                 }}
               >
                 {loading
-                  ? <><span style={{ width: 12, height: 12, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "white", borderRadius: "50%", display: "inline-block", animation: "spin 0.6s linear infinite" }} /> Cek</>
-                  : "Cek →"}
+                  ? <><span style={{ width: 12, height: 12, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "white", borderRadius: "50%", display: "inline-block", animation: "spin 0.6s linear infinite" }} /> Checking</>
+                  : "Check →"}
               </button>
             </div>
 
@@ -274,11 +274,11 @@ export default function CheckPage() {
             <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid #f1f5f9", display: "flex", gap: 7 }}>
               <span style={{ color: "#cbd5e1", fontSize: 13, flexShrink: 0, marginTop: 1 }}>ℹ</span>
               <p style={{ margin: 0, fontSize: 12, color: "#94a3b8", lineHeight: 1.6 }}>
-                Lupa nomor referensi?{" "}
-                <a href={`mailto:consular@indonesiavancouver.org?subject=${encodeURIComponent("Permintaan Nomor Referensi Permohonan")}&body=${encodeURIComponent("Halo,\n\nSaya lupa nomor referensi permohonan. Mohon bantu cek.\n\nNama lengkap: [Nama Anda]\n\nTerima kasih.")}`}
+                Forgot your reference number?{" "}
+                <a href={`mailto:consular@indonesiavancouver.org?subject=${encodeURIComponent("Visa Application Reference Number Request")}&body=${encodeURIComponent("Hello,\n\nI've forgotten my visa application's reference number. Could you please help me look it up?\n\nFull name: [Your name]\n\nThank you.")}`}
                   style={{ color: "#dc2626", fontWeight: 600, textDecoration: "none" }}>
-                  Email kami
-                </a>{" "}dengan nama lengkap Anda.
+                  Email us
+                </a>{" "}with your full name.
               </p>
             </div>
           </div>
@@ -291,7 +291,7 @@ export default function CheckPage() {
               <div className="fu" style={{ animationDelay: "0ms", ...card, borderColor: variant.accent + "33" }}>
                 <div style={{ height: 4, background: variant.accent }} />
                 <div style={{ padding: "18px 20px", background: variant.accentLight }}>
-                  <p style={sectionLabel}>Status Permohonan</p>
+                  <p style={sectionLabel}>Application Status</p>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                       <div style={{
@@ -325,7 +325,7 @@ export default function CheckPage() {
 
                 <div style={{ background: "#0d2b5e", padding: "13px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <p style={{ margin: 0, fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>
-                    Janji Temu
+                    Appointment
                   </p>
                   {data.appointmentSlot && daysUntil !== null && (
                     <span style={{
@@ -333,7 +333,7 @@ export default function CheckPage() {
                       background: daysUntil < 0 ? "rgba(255,255,255,0.1)" : daysUntil === 0 ? "#dc2626" : daysUntil <= 3 ? "#f59e0b" : "rgba(255,255,255,0.15)",
                       color: (daysUntil > 0 && daysUntil <= 3) ? "#1a1200" : "white",
                     }}>
-                      {daysUntil < 0 ? "Sudah lewat" : daysUntil === 0 ? "Hari ini" : daysUntil === 1 ? "Besok" : `${daysUntil} hari lagi`}
+                      {daysUntil < 0 ? "Past" : daysUntil === 0 ? "Today" : daysUntil === 1 ? "Tomorrow" : `in ${daysUntil} days`}
                     </span>
                   )}
                 </div>
@@ -345,7 +345,7 @@ export default function CheckPage() {
                       <span style={{ fontSize: 42, fontWeight: 900, color: "#0d2b5e", lineHeight: 1, letterSpacing: "-2px", fontFamily: "Georgia,serif" }}>
                         {slotTime}
                       </span>
-                      <span style={{ fontSize: 12, color: "#94a3b8" }}>Waktu lokal</span>
+                      <span style={{ fontSize: 12, color: "#94a3b8" }}>Local time</span>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "#94a3b8" }}>
@@ -357,7 +357,7 @@ export default function CheckPage() {
                         onClick={() => {
                           if (locked) return;
                           const applicationRef = data.applicationRef || "";
-                          if (!applicationRef) { setError("Nomor referensi tidak tersedia."); return; }
+                          if (!applicationRef) { setError("Reference number is not available."); return; }
                           setPendingRef(applicationRef);
                           setPendingService(data.reason);
                           setDobInput("");
@@ -373,21 +373,21 @@ export default function CheckPage() {
                           flexShrink: 0,
                         }}
                       >
-                        {locked ? "Tidak dapat diubah" : "Ubah Jadwal →"}
+                        {locked ? "Locked" : "Reschedule →"}
                       </button>
                     </div>
                   </div>
                 ) : (
                   <div style={{ padding: "22px 20px", textAlign: "center", borderBottom: "1px solid #f1f5f9" }}>
-                    <p style={{ margin: 0, fontSize: 13, color: "#94a3b8", fontWeight: 600 }}>Belum ada jadwal janji temu</p>
-                    <p style={{ margin: "4px 0 0", fontSize: 12, color: "#cbd5e1" }}>Jadwal tersedia setelah permohonan diproses</p>
+                    <p style={{ margin: 0, fontSize: 13, color: "#94a3b8", fontWeight: 600 }}>No appointment scheduled yet</p>
+                    <p style={{ margin: "4px 0 0", fontSize: 12, color: "#cbd5e1" }}>A schedule will be available once your application is processed</p>
                   </div>
                 )}
 
                 {([
-                  { label: "Nama Pemohon", value: data.fullName, bold: true, mono: false },
-                  { label: "Jenis Layanan", value: data.reason, bold: false, mono: false },
-                  { label: "No. Referensi", value: data.applicationRef, bold: false, mono: true },
+                  { label: "Applicant Name", value: data.fullName, bold: true, mono: false },
+                  { label: "Visa Type / Purpose", value: data.reason, bold: false, mono: false },
+                  { label: "Reference No.", value: data.applicationRef, bold: false, mono: true },
                 ] as const).map(({ label, value, bold, mono }, i, arr) => (
                   <div key={label} style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -419,9 +419,9 @@ export default function CheckPage() {
                   <div style={{ height: 3, background: variant.accent }} />
                   <div style={{ padding: "16px 20px", background: variant.accentLight }}>
                     <p style={{ ...sectionLabel, color: variant.accentText }}>
-                      {data.status === "Permohonan ditunda" ? "⚠ Tindakan Diperlukan"
-                        : data.status === "Permohonan ditolak" ? "✕ Alasan Penolakan"
-                          : "📝 Catatan Petugas"}
+                      {data.status === "Permohonan ditunda" ? "⚠ Action Required"
+                        : data.status === "Permohonan ditolak" ? "✕ Reason for Rejection"
+                          : "📝 Note from Staff"}
                     </p>
                     <p style={{ margin: 0, fontSize: 13, color: "#374151", lineHeight: 1.7 }}>
                       {linkify(data.statusNote!)}
@@ -429,7 +429,7 @@ export default function CheckPage() {
                     {(data.status === "Permohonan ditunda" || data.status === "Permohonan ditolak") && (
                       <a href="mailto:consular@indonesiavancouver.org"
                         style={{ display: "inline-flex", alignItems: "center", gap: 4, marginTop: 12, fontSize: 12, fontWeight: 700, color: "#dc2626", textDecoration: "none" }}>
-                        Hubungi kami →
+                        Contact us →
                       </a>
                     )}
                   </div>
@@ -442,14 +442,14 @@ export default function CheckPage() {
                   <div style={{ height: 3, background: "#0d2b5e" }} />
                   <div style={{ padding: "16px 20px" }}>
                     <p style={{ ...sectionLabel, color: "#1e3a5f", marginBottom: 14 }}>
-                      📋 Pengingat Kedatangan
+                      📋 Arrival Reminder
                     </p>
                     <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
                       {([
-                        { icon: "🕐", text: <span>Harap tiba <strong>10–15 menit</strong> sebelum jadwal Anda</span> },
-                        { icon: "📄", text: <span>Bawa Paspor asli (jika ada) &amp; izin tinggal asli <span style={{ color: "#64748b" }}>(PR Card, Study Permit, Work Permit, Visitor Records)</span></span> },
+                        { icon: "🕐", text: <span>Please arrive <strong>10–15 minutes</strong> before your scheduled time</span> },
+                        { icon: "📄", text: <span>Bring your original passport and any supporting documents you submitted</span> },
                         { icon: "📍", text: <span>1630 Alberni St, Vancouver, BC V6G 1A6</span> },
-                        { icon: "👔", text: <span>Pakaian sopan &amp; rapih, berkerah — warna apapun <strong>selain putih</strong></span> },
+                        { icon: "👔", text: <span>Dress neatly — collared shirt, any colour <strong>other than white</strong></span> },
                       ] as const).map(({ icon, text }, i) => (
                         <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                           <span style={{ fontSize: 15, lineHeight: 1.2, flexShrink: 0, marginTop: 1 }}>{icon}</span>
@@ -495,16 +495,16 @@ export default function CheckPage() {
               KJRI Vancouver
             </p>
             <h2 style={{ margin: "0 0 8px", fontSize: 22, fontWeight: 800, color: "#0f172a", fontFamily: "Georgia,serif" }}>
-              Verifikasi Identitas
+              Identity Verification
             </h2>
             <p style={{ margin: "0 0 24px", fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>
-              Masukkan tanggal lahir Anda untuk mengakses halaman pemilihan jadwal.
+              Enter your date of birth to access the reschedule page.
             </p>
 
             {/* Ref number (read-only) */}
             <div style={{ textAlign: "left", marginBottom: 14 }}>
               <p style={{ margin: "0 0 6px", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#9ca3af" }}>
-                Nomor Referensi
+                Reference Number
               </p>
               <div style={{
                 background: "#f9fafb", border: "1.5px solid #e5e7eb", borderRadius: 10,
@@ -517,7 +517,7 @@ export default function CheckPage() {
             {/* DOB input */}
             <div style={{ textAlign: "left", marginBottom: 20 }}>
               <p style={{ margin: "0 0 6px", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#9ca3af" }}>
-                Tanggal Lahir
+                Date of Birth
               </p>
               <input
                 type="date"
@@ -552,41 +552,15 @@ export default function CheckPage() {
               }}
             >
               {verifyingDob
-                ? <><span style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "white", borderRadius: "50%", display: "inline-block", animation: "spin 0.6s linear infinite" }} /> Memverifikasi…</>
-                : "Lanjutkan →"}
+                ? <><span style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "white", borderRadius: "50%", display: "inline-block", animation: "spin 0.6s linear infinite" }} /> Verifying…</>
+                : "Continue →"}
             </button>
 
             <button
               onClick={() => setShowDobModal(false)}
               style={{ marginTop: 12, background: "none", border: "none", fontSize: 13, color: "#94a3b8", cursor: "pointer", padding: "4px 8px" }}
             >
-              Batal
-            </button>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-olid rgba(255,255,255,0.3)", borderTopColor: "white", borderRadius: "50%", display: "inline-block", animation: "spin 0.6s linear infinite" }} /> Memverifikasi…</>
-                : "Lanjutkan →"}
-            </button>
-
-            <button
-              onClick={() => setShowDobModal(false)}
-              style={{ marginTop: 12, background: "none", border: "none", fontSize: 13, color: "#94a3b8", cursor: "pointer", padding: "4px 8px" }}
-            >
-              Batal
-ingDob
-                ? <><span style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "white", borderRadius: "50%", display: "inline-block", animation: "spin 0.6s linear infinite" }} /> Memverifikasi…</>
-                : "Lanjutkan →"}
-            </button>
-
-            <button
-              onClick={() => setShowDobModal(false)}
-              style={{ marginTop: 12, background: "none", border: "none", fontSize: 13, color: "#94a3b8", cursor: "pointer", padding: "4px 8px" }}
-            >
-              Batal
+              Cancel
             </button>
           </div>
         </div>
