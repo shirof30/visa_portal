@@ -33,7 +33,12 @@ export async function sendVisaConfirmationEmail({
   const emailBody = `
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+</head>
 <body style="margin:0;padding:0;background:#dde3ec;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#dde3ec;padding:36px 0;">
   <tr><td align="center">
@@ -117,6 +122,17 @@ export async function sendVisaConfirmationEmail({
           Mon–Thu: 09:30–11:30 &amp; 13:00–16:30<br>
           Friday: 09:30–11:30 &amp; 14:30–17:00<br>
           📞 604-682-8855 &nbsp;|&nbsp; ✉️ consular@indonesiavancouver.org
+        </div>
+      </div>
+    </td></tr>
+
+    <!-- No-reply notice -->
+    <tr><td style="padding:16px 36px 0;">
+      <div style="background:#fef9c3;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;">
+        <div style="font-size:12px;color:#713f12;line-height:1.6;">
+          <strong>⚠️ This email was sent from an address that does not accept replies.</strong><br>
+          Please do not reply to this email. For questions, please contact us directly at the
+          phone number or email address above.
         </div>
       </div>
     </td></tr>
