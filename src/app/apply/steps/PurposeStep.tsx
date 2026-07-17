@@ -30,7 +30,7 @@ export default function PurposeStep({
       {/* Type of Visa Requested */}
       <div>
         <label className="block mb-2 font-medium">Type of Visa Requested (choose one)</label>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {TYPE_OF_VISA_REQUESTED.map((t) => {
             const active = form.typeOfVisaRequested === t;
             return (
