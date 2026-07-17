@@ -194,6 +194,25 @@ export default function ReviewStep({
             })}
           </div>
         </div>
+        {/* Submission method */}
+        <div className={card}>
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm font-semibold text-gray-900">How You'll Submit</p>
+            <button type="button" onClick={() => onEdit("delivery")} className={editBtn}>Edit</button>
+          </div>
+          <div className="mt-2 space-y-1">
+            <Row
+              label="Method"
+              value={
+                form.submissionMethod === "mail"
+                  ? "By mail"
+                  : form.submissionMethod === "in_person"
+                  ? "In person (appointment required)"
+                  : "-"
+              }
+            />
+          </div>
+        </div>
       </div>
 
       {/* Declaration & signature — mirrors the bottom of page 2 of the official form */}

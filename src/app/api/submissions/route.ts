@@ -306,6 +306,7 @@ export async function POST(req: NextRequest) {
   const flightNoExit = String(formData.get("flightNoExit") || "");
 
   const hasInvitationLetter = String(formData.get("hasInvitationLetter") || "").toLowerCase() === "true";
+  const submissionMethod = String(formData.get("submissionMethod") || "");
 
   const sponsorCompany = String(formData.get("sponsorCompany") || "");
   const sponsorCityProvincePostal = String(formData.get("sponsorCityProvincePostal") || "");
@@ -506,6 +507,7 @@ export async function POST(req: NextRequest) {
     flightNoExit,
 
     hasInvitationLetter,
+    submissionMethod,
 
     sponsorCompany,
     sponsorCityProvincePostal,

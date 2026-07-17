@@ -18,6 +18,7 @@ import IndonesiaStayStep from "./steps/IndonesiaStayStep";
 import SponsorStep from "./steps/SponsorStep";
 import BackgroundStep from "./steps/BackgroundStep";
 import UploadsStep from "./steps/UploadsStep";
+import DeliveryMethodStep from "./steps/DeliveryMethodStep";
 import ReviewStep from "./steps/ReviewStep";
 
 import {
@@ -31,7 +32,7 @@ import {
 // ─── Steps ───────────────────────────────────────────────────────────────────
 type StepId =
   | "terms" | "applicant" | "category" | "purpose" | "personal" | "otp" | "passport"
-  | "address" | "occupation" | "indonesia" | "sponsor" | "background" | "uploads" | "review";
+  | "address" | "occupation" | "indonesia" | "sponsor" | "background" | "uploads" | "delivery" | "review";
 
 const STEPS: { id: StepId; title: string }[] = [
   { id: "terms", title: "Terms & Conditions" },
@@ -47,6 +48,7 @@ const STEPS: { id: StepId; title: string }[] = [
   { id: "sponsor", title: "Sponsor" },
   { id: "background", title: "Background" },
   { id: "uploads", title: "Documents" },
+  { id: "delivery", title: "How You'll Submit" },
   { id: "review", title: "Review & Submit" },
 ];
 
@@ -87,6 +89,8 @@ type Form = {
   visaDenied: string; orderedToLeave: string; everArrested: string;
   // declaration / signature
   signatureName: string; signatureDate: string;
+  // submission method
+  submissionMethod: string; // "in_person" | "mail"
   // legal
   termsAccepted: boolean;
 };
@@ -113,6 +117,7 @@ const INITIAL: Form = {
   hasOtherCountryVisa: "No", otherVisaDetails: "",
   visaDenied: "No", orderedToLeave: "No", everArrested: "No",
   signatureName: "", signatureDate: "",
+  submissionMethod: "",
   termsAccepted: false,
 };
 
@@ -145,6 +150,7 @@ export default function VisaWizard() {
   const [otpVerified, setOtpVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mailConfirmation, setMailConfirmation] = useState<{ ref: string } | null>(null);
   const [excludedNationalities, setExcludedNationalities] = useState<string[]>([]);
 
   useEffect(() => {
@@ -265,6 +271,8 @@ export default function VisaWizard() {
         return true;
       case "uploads":
         return uploadItems.filter((x) => x.required).every((x) => !!files[x.key]);
+      case "delivery":
+        return !!form.submissionMethod;
       case "review":
         return !!form.signatureName.trim() && !!form.signatureDate;
       default:
@@ -433,6 +441,8 @@ export default function VisaWizard() {
       // declaration / signature
       fd.append("signatureName", form.signatureName);
       fd.append("signatureDate", form.signatureDate);
+      // submission method
+      fd.append("submissionMethod", form.submissionMethod);
       // service
       fd.append("isChildPassportRequest", "false");
       fd.append("reason", buildReason(form.typeOfVisaRequested, form.purposeOfVisit, form.purposeOther));
@@ -456,7 +466,12 @@ export default function VisaWizard() {
         return;
       }
       const created = await res.json();
-      router.push(`/appointment?id=${created.id}`);
+      if (form.submissionMethod === "mail") {
+        setMailConfirmation({ ref: created.applicationRef as string });
+        setLoading(false);
+      } else {
+        router.push(`/appointment?id=${created.id}`);
+      }
     } catch (e: any) {
       setError(`Failed to submit application: ${e?.message ?? "Network error"}`);
       setLoading(false);
@@ -472,6 +487,56 @@ export default function VisaWizard() {
   }
 
   // ── Render ───────────────────────────────────────────────────────────────────
+  if (mailConfirmation) {
+    return (
+      <div className="py-10">
+        <div className="mx-auto max-w-lg px-4">
+          <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-8 text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
+              <svg className="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-red-600 mb-1">KJRI Vancouver</p>
+            <h1 className="text-xl font-extrabold tracking-tight text-gray-900 mb-2">Application Submitted</h1>
+            <p className="text-sm text-gray-600 mb-6">
+              Thank you. Your application has been received — no appointment is needed since
+              you're mailing your documents.
+            </p>
+
+            <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 mb-6 text-left">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Application Reference</p>
+              <p className="font-mono text-lg font-bold text-gray-900">{mailConfirmation.ref}</p>
+              <p className="text-xs text-gray-500 mt-1">Keep this number — you'll need it to check your status.</p>
+            </div>
+
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 mb-6 text-left">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-amber-700 mb-2">Mail your documents to</p>
+              <p className="text-sm text-amber-900 leading-relaxed">
+                Consulate General of the Republic of Indonesia<br />
+                1630 Alberni St<br />
+                Vancouver, BC V6G 1A6<br />
+                Canada
+              </p>
+              <p className="text-xs text-amber-800 mt-2">
+                Please include a copy of this reference number with your documents, and a
+                prepaid return envelope or shipping label if you'd like your passport/visa
+                mailed back to you.
+              </p>
+            </div>
+
+            <a
+              href="/check"
+              className="inline-block w-full rounded-xl bg-red-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 transition"
+            >
+              Check Application Status
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="py-10 pb-28">
       <div className="mx-auto max-w-3xl px-4">
@@ -693,6 +758,14 @@ export default function VisaWizard() {
                   files={files}
                   invMissing={(required, key) => inv(required && !files[key])}
                   onPick={(key, raw) => pickFile(key, raw)}
+                />
+              )}
+
+              {step.id === "delivery" && (
+                <DeliveryMethodStep
+                  value={form.submissionMethod}
+                  onSelect={(v) => setForm((p) => ({ ...p, submissionMethod: v }))}
+                  showError={inv(!form.submissionMethod)}
                 />
               )}
 

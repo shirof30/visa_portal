@@ -146,6 +146,7 @@ export type Submission = {
   flightDateOfExit?: string | null;
   flightNoExit?: string | null;
   hasInvitationLetter?: boolean | null;
+  submissionMethod?: string | null;
   sponsorCompany?: string | null;
   sponsorCityProvincePostal?: string | null;
   sponsorFax?: string | null;

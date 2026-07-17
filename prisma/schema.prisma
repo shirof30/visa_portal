@@ -165,6 +165,7 @@ model Submission {
   flightDateOfExit       String?
   flightNoExit           String?
   hasInvitationLetter    Boolean? @default(false)
+  submissionMethod       String?
   sponsorCompany         String?
   sponsorCityProvincePostal String?
   sponsorFax             String?
