@@ -86,8 +86,9 @@ export default function DateSelect({
         return new Date(y, mo, 0).getDate();
     }, [draft]);
 
+    // 16px (text-base), not text-sm — see note in VisaWizard's fieldCls().
     const baseInputClass =
-        "w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-red-500";
+        "w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-base focus:outline-none focus:ring-1 focus:ring-red-500";
 
     const disabledClass = disabled
         ? "bg-gray-100 text-gray-500 border-gray-200 cursor-not-allowed"

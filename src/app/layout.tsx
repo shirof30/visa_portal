@@ -1,5 +1,5 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,6 +8,20 @@ export const metadata: Metadata = {
   title: "VISA - KJRI Vancouver",
   description: "Indonesian Visa Application Portal — Consulate General of Indonesia in Vancouver",
   icons: { icon: "/og-kjri.png", shortcut: "/og-kjri.png" },
+};
+
+// Explicit viewport, rather than relying on the framework default:
+// - viewport-fit=cover lets us handle the notch/Dynamic Island safe area
+//   properly on newer iPhones instead of leaving it to chance.
+// - maximum-scale/user-scalable are intentionally left uncapped — locking
+//   pinch-zoom is an accessibility anti-pattern. The actual fix for the
+//   "zooming in and out" complaint is that every form field now renders
+//   at 16px, which stops iOS Safari from auto-zooming on focus in the
+//   first place (see fieldCls() in VisaWizard.tsx).
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

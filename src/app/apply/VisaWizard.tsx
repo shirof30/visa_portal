@@ -124,7 +124,11 @@ const INITIAL: Form = {
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function fieldCls(invalid: boolean, extra = "") {
-  return `w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-1 bg-white ${
+  // 16px (text-base) is deliberate, not cosmetic: iOS Safari auto-zooms the
+  // page on focus for any text input/select/textarea rendered under 16px,
+  // which is what caused the "zooming in and out" on mobile. Do not drop
+  // this back to text-sm.
+  return `w-full rounded-md border px-3 py-2 text-base focus:outline-none focus:ring-1 bg-white ${
     invalid ? "border-red-400 focus:ring-red-400" : "border-gray-300 focus:ring-red-500"
   } ${extra}`;
 }
@@ -282,7 +286,21 @@ export default function VisaWizard() {
 
   // ── Navigation ─────────────────────────────────────────────────────────────
   function scrollTop() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // On iOS Safari, if an input still has focus (keyboard open) when we
+    // navigate steps, the visual viewport stays shifted by the keyboard
+    // height and window.scrollTo runs against stale layout — that's what
+    // left people stranded near the bottom after tapping Continue. Blur
+    // first to close the keyboard, then wait two frames for React to
+    // finish rendering the new (usually shorter) step and the keyboard
+    // to finish closing before scrolling. Plain jump, not smooth — a
+    // smooth scroll racing the keyboard-close animation is what caused
+    // the janky zoom/settle behavior too.
+    (document.activeElement as HTMLElement | null)?.blur();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+      });
+    });
   }
   function goToReview() {
     setError(null); setAttempted(false); setEditFromReview(false);
@@ -822,7 +840,10 @@ export default function VisaWizard() {
       </div>
 
       {/* Sticky progress bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-gray-200 bg-white/80 backdrop-blur">
+      <div
+        className="fixed bottom-0 left-0 right-0 z-30 border-t border-gray-200 bg-white/80 backdrop-blur"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      >
         <div className="mx-auto max-w-3xl px-4 py-3">
           <div className="flex items-center gap-4">
             <div className="min-w-0">
