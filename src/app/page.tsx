@@ -100,8 +100,10 @@ function RequirementsModal({ category, onClose }: { category: (typeof VISA_CATEG
           </div>
 
           <p className="text-xs text-[#8C909D] leading-relaxed">
-            Submit all documents by email to <a href="mailto:consular@indonesiavancouver.org" className="text-emerald-700 font-medium">consular@indonesiavancouver.org</a> first
-            for confirmation before sending or dropping off originals. Submit no later than 14 days before departure and no more than 90 days before leaving Canada.
+            Submit your application and documents through the online form below — you'll choose
+            at the end whether to mail your original documents or book an appointment to visit
+            in person. Apply no later than 14 days before departure and no more than 90 days
+            before leaving Canada.
           </p>
         </div>
 
@@ -202,9 +204,9 @@ export default function HomePage() {
             <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#8C909D] mb-6">How to Apply</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
-                { step: "1", title: "Complete the Form", desc: "Fill in your personal details, passport information, and purpose of visit online." },
-                { step: "2", title: "Email for Confirmation", desc: "Send your documents to consular@indonesiavancouver.org and wait for confirmation before sending originals." },
-                { step: "3", title: "Submit Originals", desc: "Drop off or mail your original passport, photo, and payment to KJRI Vancouver at 1630 Alberni St." },
+                { step: "1", title: "Complete the Form", desc: "Fill in your personal details, passport information, and purpose of visit, and upload your documents online." },
+                { step: "2", title: "Choose How to Submit", desc: "At the end of the form, choose to mail your original documents or book an appointment to visit KJRI Vancouver in person." },
+                { step: "3", title: "Finalize", desc: "Mail your original passport, photo, and payment — or bring them with you to your appointment at 1630 Alberni St." },
               ].map(({ step, title, desc }) => (
                 <div key={step} className="bg-white/85 backdrop-blur-md rounded-xl border border-white px-5 py-5 shadow-sm">
                   <div className="h-8 w-8 rounded-full bg-emerald-600 flex items-center justify-center text-white text-sm font-bold mb-3">{step}</div>
