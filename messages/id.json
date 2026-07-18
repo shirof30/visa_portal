@@ -671,6 +671,10 @@
         "label": "Diterima",
         "nextStep": "Permohonan Anda sedang ditinjau oleh petugas kami. Mohon tetap hadir pada tanggal yang dijadwalkan."
       },
+      "Permohonan menunggu dokumen": {
+        "label": "Menunggu Dokumen",
+        "nextStep": "Mohon kirimkan dokumen asli Anda ke kantor kami. Lihat instruksi di bawah."
+      },
       "Permohonan disetujui": {
         "label": "Disetujui",
         "nextStep": "Permohonan Anda telah disetujui. Mohon hadir pada janji temu yang dijadwalkan."
@@ -691,7 +695,11 @@
         "label": "Siap Diambil",
         "nextStep": "Visa Anda siap diambil di kantor konsuler kami."
       }
-    }
+    },
+    "mailInstructionsTitle": "📬 Cara Mengirim Dokumen Anda",
+    "mailInstructionsAddress": "Konsulat Jenderal Republik Indonesia\n1630 Alberni St, Vancouver, BC V6G 1A6, Kanada",
+    "mailInstructionsRef": "Sertakan salinan nomor referensi Anda bersama dokumen Anda.",
+    "mailInstructionsReturn": "Sertakan amplop atau label pengiriman balik prabayar jika Anda ingin paspor/visa dikirim kembali kepada Anda."
   },
   "appointment": {
     "missingId": "ID tidak ditemukan. Silakan mulai ulang.",

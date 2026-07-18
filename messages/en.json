@@ -671,6 +671,10 @@
         "label": "Received",
         "nextStep": "Your application is being reviewed by our staff. Please still attend on your scheduled date."
       },
+      "Permohonan menunggu dokumen": {
+        "label": "Waiting for Documents",
+        "nextStep": "Please mail your original documents to our office. See the instructions below."
+      },
       "Permohonan disetujui": {
         "label": "Approved",
         "nextStep": "Your application has been approved. Please attend your scheduled appointment."
@@ -691,7 +695,11 @@
         "label": "Ready",
         "nextStep": "Your visa is ready for collection at our consular office."
       }
-    }
+    },
+    "mailInstructionsTitle": "📬 How to Mail Your Documents",
+    "mailInstructionsAddress": "Consulate General of the Republic of Indonesia\n1630 Alberni St, Vancouver, BC V6G 1A6, Canada",
+    "mailInstructionsRef": "Include a copy of your reference number with your documents.",
+    "mailInstructionsReturn": "Include a prepaid return envelope or shipping label if you'd like your passport/visa mailed back to you."
   },
   "appointment": {
     "missingId": "Application ID not found. Please start again.",

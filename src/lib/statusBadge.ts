@@ -8,6 +8,8 @@ export function statusBadgeClass(status: ApplicationStatus): string {
   switch (status) {
     case "Permohonan diterima":
       return "inline-flex rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700";
+    case "Permohonan menunggu dokumen":
+      return "inline-flex rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700";
     case "Permohonan disetujui":
       return "inline-flex rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700";
     case "Permohonan ditunda":

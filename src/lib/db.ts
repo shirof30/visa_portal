@@ -17,6 +17,7 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 // ── Types ──────────────────────────────────────────────────────────────────
 export type ApplicationStatus =
   | "Permohonan diterima"
+  | "Permohonan menunggu dokumen"
   | "Permohonan disetujui"
   | "Permohonan ditunda"
   | "Permohonan ditolak"

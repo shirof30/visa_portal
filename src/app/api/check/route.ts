@@ -57,5 +57,6 @@ export async function GET(req: NextRequest) {
     appointmentSlot: sub.appointmentSlot,
     createdAt: sub.createdAt,
     registrationId: sub.registrationId,
+    submissionMethod: sub.submissionMethod,
   });
 }

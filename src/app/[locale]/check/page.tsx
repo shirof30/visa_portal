@@ -13,6 +13,7 @@ type CheckResponse = {
   statusNote?: string;
   appointmentSlot: string | null;
   registrationId?: string;
+  submissionMethod?: string | null;
 };
 
 function localeTag(locale: string) {
@@ -62,6 +63,10 @@ const STATUS_VISUALS: Partial<Record<ApplicationStatus, StatusVisual>> = {
   "Permohonan diterima": {
     icon: "✓",
     accent: "#2563eb", accentLight: "#eff6ff", accentText: "#1d4ed8",
+  },
+  "Permohonan menunggu dokumen": {
+    icon: "✉",
+    accent: "#ea580c", accentLight: "#fff7ed", accentText: "#c2410c",
   },
   "Permohonan disetujui": {
     icon: "✓",
@@ -183,6 +188,7 @@ export default function CheckPage() {
   const locked = data ? isAppointmentLocked(data.appointmentSlot) : true;
   const hasNote = !!(data?.statusNote?.trim());
   const showReminder = !!(data?.appointmentSlot && daysUntil !== null && daysUntil >= 0 && daysUntil <= 7);
+  const showMailInstructions = data?.status === "Permohonan menunggu dokumen" && data?.submissionMethod === "mail";
 
   const card: React.CSSProperties = {
     background: "white",
@@ -445,6 +451,29 @@ export default function CheckPage() {
                         {t("contactUs")}
                       </a>
                     )}
+                  </div>
+                </div>
+              )}
+
+              {showMailInstructions && (
+                <div className="fu" style={{ animationDelay: `${hasNote ? 240 : 160}ms`, ...card, background: "#fff7ed", borderColor: "#fed7aa" }}>
+                  <div style={{ height: 3, background: "#ea580c" }} />
+                  <div style={{ padding: "16px 20px" }}>
+                    <p style={{ ...sectionLabel, color: "#9a3412", marginBottom: 14 }}>
+                      {t("mailInstructionsTitle")}
+                    </p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
+                      {([
+                        { icon: "📍", text: t("mailInstructionsAddress") },
+                        { icon: "🔖", text: t("mailInstructionsRef") },
+                        { icon: "↩️", text: t("mailInstructionsReturn") },
+                      ] as const).map(({ icon, text }, i) => (
+                        <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                          <span style={{ fontSize: 15, lineHeight: 1.2, flexShrink: 0, marginTop: 1 }}>{icon}</span>
+                          <p style={{ margin: 0, fontSize: 13, color: "#9a3412", lineHeight: 1.6, whiteSpace: "pre-line" }}>{text}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
