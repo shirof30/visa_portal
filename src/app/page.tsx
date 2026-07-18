@@ -215,37 +215,33 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Required documents */}
+          {/* Good to know */}
           <section className="pb-14">
-            <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#8C909D] mb-6">Required Documents</p>
+            <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#8C909D] mb-6">Good to Know</p>
             <div className="bg-white/85 backdrop-blur-md rounded-2xl border border-white shadow-md px-6 py-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {MANDATORY_REQUIREMENTS.map((doc) => (
-                  <div key={doc} className="flex items-start gap-2.5 text-sm text-[#4B5060]">
-                    <svg className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                {[
+                  "Fee: CA$100 (tourism) or CA$200 (non-tourism)",
+                  "Processing takes approximately 5–7 business days after approval",
+                  "Add 5 business days if applying by mail",
+                  "Print all documents single-sided",
+                  "Attach documents with a paper or binder clip — do not staple",
+                  "The Consulate does not provide printing or copy services",
+                  "The Consulate does not offer expedited processing",
+                  "Visas cannot be issued to holders of a Visitor Permit, Travel Document, Alien Passport, or Temporary Passport",
+                ].map((note) => (
+                  <div key={note} className="flex items-start gap-2.5 text-sm text-[#4B5060]">
+                    <svg className="h-4 w-4 text-[#8C909D] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <circle cx="12" cy="12" r="9" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01" />
                     </svg>
-                    {doc}
+                    {note}
                   </div>
                 ))}
               </div>
-              <div className="mt-5 pt-5 border-t border-[#E8E9ED] grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {ADDITIONAL_REQUIREMENTS.map((doc) => (
-                  <div key={doc} className="flex items-start gap-2.5 text-sm text-[#8C909D]">
-                    <svg className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-8.25 3.75h.008v.008h-.008v-.008z" />
-                    </svg>
-                    {doc}
-                  </div>
-                ))}
-              </div>
-              <p className="mt-5 text-xs text-[#8C909D] leading-relaxed">
-                Fee: CA$100 (tourism) or CA$200 (non-tourism). Processing takes approximately 5–7
-                business days after approval (add 5 business days if applying by mail). Print all
-                documents single-sided and attach with a paper or binder clip — do not staple.
-                The Consulate does not provide printing or copy services, does not offer expedited
-                processing, and cannot issue visas to holders of a Visitor Permit, Travel
-                Document, Alien Passport, or Temporary Passport.
+              <p className="mt-5 pt-5 border-t border-[#E8E9ED] text-xs text-[#8C909D] leading-relaxed">
+                Full document requirements are specific to each visa category — click any
+                category above under "Visa Categories" to see exactly what's needed.
               </p>
             </div>
           </section>
