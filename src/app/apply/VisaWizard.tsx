@@ -588,8 +588,7 @@ export default function VisaWizard() {
               Indonesian Visa Application
             </h1>
             <p className="relative mt-1.5 text-sm text-emerald-50/90 max-w-lg">
-              This form collects exactly what the official Visa Application Form requires, so it
-              can be auto-filled and downloaded once your application is submitted.
+              Please fill in all fields accurately and with most up to date information.
             </p>
           </div>
 
