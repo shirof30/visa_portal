@@ -1,61 +1,29 @@
 import React from "react";
 import SectionCard from "../ui/SectionCard";
 import FieldError from "../ui/FieldError";
-import { TYPE_OF_VISA_REQUESTED, PURPOSE_OF_VISIT } from "../config/visaConfig";
+import { PURPOSE_OF_VISIT } from "../config/visaConfig";
 
 export default function PurposeStep({
   form,
   inv,
   fieldCls,
-  onSelectVisaType,
   onSelectPurpose,
   onChangePurposeOther,
 }: {
   form: {
-    typeOfVisaRequested: string;
     purposeOfVisit: string;
     purposeOther: string;
   };
   inv: (cond: boolean) => boolean;
   fieldCls: (invalid: boolean, extra?: string) => string;
-  onSelectVisaType: (t: string) => void;
   onSelectPurpose: (purpose: string) => void;
   onChangePurposeOther: (v: string) => void;
 }) {
   return (
     <SectionCard
-      title="Visa Type & Purpose of Visit"
-      subtitle="This is exactly what appears at the top of the official Visa Application Form."
+      title="Purpose of Visit"
+      subtitle="This is exactly what appears at the top of the official Visa Application Form. Every application through this portal is a Single Entry Visa."
     >
-      {/* Type of Visa Requested */}
-      <div>
-        <label className="block mb-2 font-medium">Type of Visa Requested (choose one)</label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {TYPE_OF_VISA_REQUESTED.map((t) => {
-            const active = form.typeOfVisaRequested === t;
-            return (
-              <label
-                key={t}
-                className={`flex items-center gap-3 rounded-xl border px-4 py-3 cursor-pointer transition ${
-                  active ? "border-red-500 bg-red-50" : "border-gray-200 hover:border-red-300"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="typeOfVisaRequested"
-                  value={t}
-                  checked={active}
-                  onChange={() => onSelectVisaType(t)}
-                  className="accent-red-600"
-                />
-                <span className="text-sm font-medium">{t}</span>
-              </label>
-            );
-          })}
-        </div>
-        <FieldError show={inv(!form.typeOfVisaRequested)} message="Please select the type of visa requested." />
-      </div>
-
       {/* Purpose of visit */}
       <div>
         <label className="block mb-2 font-medium">

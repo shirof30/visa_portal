@@ -38,7 +38,7 @@ const STEPS: { id: StepId; title: string }[] = [
   { id: "terms", title: "Terms & Conditions" },
   { id: "applicant", title: "Applicant Type" },
   { id: "category", title: "Visa Category" },
-  { id: "purpose", title: "Visa Type & Purpose" },
+  { id: "purpose", title: "Purpose of Visit" },
   { id: "personal", title: "Personal Information" },
   { id: "passport", title: "Passport" },
   { id: "address", title: "Address in Canada" },
@@ -96,7 +96,7 @@ type Form = {
 };
 
 const INITIAL: Form = {
-  applicantType: "", visaCategory: "", typeOfVisaRequested: "", purposeOfVisit: "", purposeOther: "",
+  applicantType: "", visaCategory: "", typeOfVisaRequested: "Single", purposeOfVisit: "", purposeOther: "",
   firstName: "", middleName: "", familyName: "", sex: "",
   placeOfBirth: "", dateOfBirth: "", nationality: "Canada", maritalStatus: "",
   passportNumber: "", passportPlace: "", passportIssueDate: "", passportExpiryDate: "",
@@ -227,7 +227,6 @@ export default function VisaWizard() {
         return !!form.visaCategory;
       case "purpose":
         return (
-          !!form.typeOfVisaRequested &&
           !!form.purposeOfVisit &&
           (form.purposeOfVisit !== "Others" || !!form.purposeOther.trim())
         );
@@ -652,7 +651,6 @@ export default function VisaWizard() {
                   form={form}
                   inv={inv}
                   fieldCls={fieldCls}
-                  onSelectVisaType={(t) => setForm((p) => ({ ...p, typeOfVisaRequested: t }))}
                   onSelectPurpose={(purpose) => setForm((p) => ({ ...p, purposeOfVisit: purpose, purposeOther: "" }))}
                   onChangePurposeOther={(v) => setForm((p) => ({ ...p, purposeOther: v }))}
                 />
