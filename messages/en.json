@@ -192,12 +192,12 @@
     },
     "mailConfirmation": {
       "title": "Application Submitted",
-      "body": "Thank you. Your application has been received — no appointment is needed since you're mailing your documents.",
+      "body": "Thank you. Your application has been received — no appointment is needed since you're mailing your documents. Please don't send anything yet; see below.",
       "refLabel": "Application Reference",
       "refHint": "Keep this number — you'll need it to check your status.",
-      "mailToLabel": "Mail your documents to",
-      "mailAddress": "Consulate General of the Republic of Indonesia\n1630 Alberni St\nVancouver, BC V6G 1A6\nCanada",
-      "mailNote": "Please include a copy of this reference number with your documents, and a prepaid return envelope or shipping label if you'd like your passport/visa mailed back to you.",
+      "waitTitle": "Wait for Approval First",
+      "waitBody": "Do not mail your documents yet. We'll review your application and email you once it's approved — that email will tell you exactly what to send and where.",
+      "mailNote": "Keep an eye on your inbox (and spam/junk folder) for updates on your application.",
       "checkStatus": "Check Application Status"
     },
     "progress": {

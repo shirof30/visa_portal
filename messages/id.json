@@ -192,12 +192,12 @@
     },
     "mailConfirmation": {
       "title": "Permohonan Telah Diajukan",
-      "body": "Terima kasih. Permohonan Anda telah kami terima — tidak diperlukan janji temu karena Anda akan mengirim dokumen melalui pos.",
+      "body": "Terima kasih. Permohonan Anda telah kami terima — tidak diperlukan janji temu karena Anda akan mengirim dokumen melalui pos. Mohon jangan kirim dokumen apa pun dahulu; lihat catatan di bawah.",
       "refLabel": "Nomor Referensi Permohonan",
       "refHint": "Simpan nomor ini — Anda memerlukannya untuk mengecek status permohonan.",
-      "mailToLabel": "Kirim dokumen Anda ke",
-      "mailAddress": "Konsulat Jenderal Republik Indonesia\n1630 Alberni St\nVancouver, BC V6G 1A6\nKanada",
-      "mailNote": "Mohon sertakan salinan nomor referensi ini bersama dokumen Anda, serta amplop atau label pengiriman balik prabayar jika Anda ingin paspor/visa dikirim kembali kepada Anda.",
+      "waitTitle": "Tunggu Persetujuan Terlebih Dahulu",
+      "waitBody": "Mohon jangan kirim dokumen Anda dahulu. Kami akan meninjau permohonan Anda dan mengirim email begitu disetujui — email tersebut akan menjelaskan apa yang perlu dikirim dan ke mana.",
+      "mailNote": "Pantau kotak masuk email Anda (termasuk folder spam/junk) untuk info terbaru mengenai permohonan Anda.",
       "checkStatus": "Cek Status Permohonan"
     },
     "progress": {
