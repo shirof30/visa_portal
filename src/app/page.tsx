@@ -160,13 +160,26 @@ export default function HomePage() {
 
               {/* Info card */}
               <div className="bg-white/90 backdrop-blur-sm border border-white/80 rounded-xl px-6 py-5 shadow-md">
-                <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#8C909D] mb-4">Visa Drop-in Hours</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-[15px] font-medium text-[#4B5060]">Mon – Fri</span>
-                  <span className="text-[15px] font-semibold text-[#111318] tabular-nums">09:30 – 12:30</span>
+                <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#8C909D] mb-4">Consulate Service Hours</p>
+                <div className="flex flex-col gap-3">
+                  {[
+                    { day: "Mon – Thu", t1: "09:30 – 11:30", t2: "13:00 – 16:30" },
+                    { day: "Friday", t1: "09:30 – 11:30", t2: "14:30 – 17:00" },
+                  ].map(({ day, t1, t2 }, i) => (
+                    <div key={day}>
+                      {i > 0 && <div className="h-px bg-[#E8E9ED] mb-3" />}
+                      <div className="flex justify-between items-center">
+                        <span className="text-[15px] font-medium text-[#4B5060]">{day}</span>
+                        <div className="text-right">
+                          <div className="text-[15px] font-semibold text-[#111318] tabular-nums">{t1}</div>
+                          <div className="text-[13px] text-[#8C909D] tabular-nums">{t2}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <p className="text-xs text-[#8C909D] mt-3 leading-relaxed">
-                  Closed on Indonesian &amp; Canadian statutory holidays.
+                <p className="text-xs text-[#8C909D] mt-4 pt-3 border-t border-[#E8E9ED] leading-relaxed">
+                  Sat, Sun &amp; public holidays — closed<br />
                   Inquiries: 1 (604) 682-8855 ext. 244, 228, 240
                 </p>
               </div>
