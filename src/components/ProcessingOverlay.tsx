@@ -1,8 +1,11 @@
 "use client";
+
+import { useTranslations } from "next-intl";
+
 export default function ProcessingOverlay({
   open,
-  title = "Memproses…",
-  subtitle = "Mohon tunggu, jangan tutup halaman ini.",
+  title,
+  subtitle,
   steps = [],
 }: {
   open: boolean;
@@ -10,6 +13,10 @@ export default function ProcessingOverlay({
   subtitle?: string;
   steps?: string[];
 }) {
+  const t = useTranslations("processing");
+  const resolvedTitle = title ?? t("title");
+  const resolvedSubtitle = subtitle ?? t("subtitle");
+
   if (!open) return null;
 
   return (
@@ -23,22 +30,17 @@ export default function ProcessingOverlay({
             />
             <div className="min-w-0">
               <h3 className="text-base font-extrabold tracking-tight text-gray-900">
-                {title}
+                {resolvedTitle}
               </h3>
-              <p className="mt-1 text-sm text-gray-600">{subtitle}</p>
+              <p className="mt-1 text-sm text-gray-600">{resolvedSubtitle}</p>
             </div>
           </div>
 
-          {/* ⚠️ Don't-close warning */}
           <div className="mt-5 flex items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
             <span className="mt-0.5 text-base leading-none">⚠️</span>
             <div>
-              <p className="text-sm font-bold text-amber-900">Jangan tutup tab ini</p>
-              <p className="text-xs text-amber-700 mt-0.5">
-                Setelah selesai, Anda akan langsung diarahkan untuk{" "}
-                <span className="font-semibold">memilih jadwal kedatangan</span>.
-                Menutup halaman sekarang akan membatalkan proses.
-              </p>
+              <p className="text-sm font-bold text-amber-900">{t("doNotCloseTitle")}</p>
+              <p className="text-xs text-amber-700 mt-0.5">{t("doNotCloseBody")}</p>
             </div>
           </div>
 
@@ -53,9 +55,7 @@ export default function ProcessingOverlay({
             </div>
           )}
 
-          <p className="mt-4 text-[11px] text-gray-500">
-            Proses ini bisa lebih lama jika file besar atau perlu pemeriksaan virus.
-          </p>
+          <p className="mt-4 text-[11px] text-gray-500">{t("footerNote")}</p>
         </div>
       </div>
     </div>

@@ -1,6 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 export default function Footer() {
+  const t = useTranslations("footer");
+
   return (
     <footer id="office" className="bg-[#0d2b5e] text-white">
       <div className="mx-auto max-w-7xl px-6 py-8 grid gap-8 sm:grid-cols-3">
@@ -9,51 +13,51 @@ export default function Footer() {
         <div>
           <div className="flex items-center gap-3 mb-4">
             <div className="h-10 w-10 overflow-hidden rounded-full ring-2 ring-white/20 bg-white shrink-0">
-              <img src="/og-kjri.png" alt="KJRI" className="h-full w-full object-cover" />
+              <img src="/og-kjri.png" alt={t("brandName")} className="h-full w-full object-cover" />
             </div>
             <div>
-              <div className="font-bold text-sm">KJRI Vancouver</div>
+              <div className="font-bold text-sm">{t("brandName")}</div>
               <div className="text-[10px] text-blue-200">
-                Konsulat Jenderal Republik Indonesia
+                {t("brandSubtitle")}
               </div>
             </div>
           </div>
 
           <p className="text-sm text-blue-200 leading-relaxed">
-            Portal resmi Konsulat Jenderal Republik Indonesia di Vancouver, Kanada.
+            {t("description")}
           </p>
         </div>
 
         {/* Office */}
         <div>
           <div className="text-[10px] font-bold uppercase tracking-widest text-blue-300 mb-4">
-            Jam Pelayanan
+            {t("officeHoursTitle")}
           </div>
 
           <div className="text-sm text-blue-100 mb-3">
-            1630 Alberni St, Vancouver, BC V6G 1A6
+            {t("address")}
           </div>
 
           <div className="space-y-1 mb-4 text-sm text-blue-200">
-            <div>Senin–Kamis: 09.30–11.30 dan 13.00–16.30</div>
-            <div>Jumat: 09.30–11.30 dan 14.30–17.00</div>
+            <div>{t("hoursWeekday")}</div>
+            <div>{t("hoursFriday")}</div>
           </div>
 
           <div className="text-sm font-semibold text-red-400">
-            Hotline: 778-778-1992
+            {t("hotline")}
           </div>
         </div>
 
         {/* Contact + Pengaduan */}
         <div>
           <div className="text-[10px] font-bold uppercase tracking-widest text-blue-300 mb-4">
-            Kontak
+            {t("contactTitle")}
           </div>
 
           <div className="space-y-2 text-sm text-blue-200 mb-5">
-            <div>📞 604-682-8855 ext 228</div>
-            <div>✉️ consular@indonesiavancouver.org</div>
-            <div>✉️ paspor@indonesiavancouver.org</div>
+            <div>{t("phone")}</div>
+            <div>{t("emailConsular")}</div>
+            <div>{t("emailPassport")}</div>
           </div>
 
           {/* Pengaduan Layanan */}
@@ -61,7 +65,7 @@ export default function Footer() {
             <div className="flex items-center gap-2 mb-2.5">
               <span className="text-amber-400 text-sm">📣</span>
               <div className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
-                Pengaduan Layanan
+                {t("complaintsTitle")}
               </div>
             </div>
 
@@ -79,10 +83,10 @@ export default function Footer() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-xs font-semibold text-amber-300 group-hover:text-amber-200 transition leading-snug">
-                    Aplikasi SP4N LAPOR
+                    {t("sp4nTitle")}
                   </div>
                   <div className="text-[10px] text-white/30 group-hover:text-white/50 transition">
-                    www.lapor.go.id
+                    {t("sp4nUrl")}
                   </div>
                 </div>
                 <svg className="h-3 w-3 text-white/20 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-all shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -101,10 +105,10 @@ export default function Footer() {
                 </div>
                 <div className="min-w-0">
                   <div className="text-xs font-semibold text-amber-300 group-hover:text-amber-200 transition leading-snug">
-                    Whistle Blowing System
+                    {t("whistleblowingTitle")}
                   </div>
                   <div className="text-[10px] text-white/30 group-hover:text-white/50 transition truncate">
-                    whistleblowing@indonesiavancouver.org
+                    {t("whistleblowingEmail")}
                   </div>
                 </div>
               </a>
@@ -116,7 +120,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-7xl px-6 py-2 flex items-center justify-between">
           <div className="text-xs text-blue-300">
-            © 2026 Konsulat Jenderal Republik Indonesia, Vancouver
+            {t("copyright")}
           </div>
 
           <a
@@ -125,7 +129,7 @@ export default function Footer() {
             rel="noreferrer"
             className="text-xs text-blue-300 hover:text-white transition"
           >
-            kemlu.go.id/vancouver
+            {t("kemluLink")}
           </a>
         </div>
       </div>

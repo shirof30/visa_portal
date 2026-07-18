@@ -1,0 +1,820 @@
+{
+  "metadata": {
+    "title": "VISA - KJRI Vancouver",
+    "description": "Portal Permohonan Visa Indonesia — Konsulat Jenderal Republik Indonesia di Vancouver"
+  },
+  "common": {
+    "yes": "Ya",
+    "no": "Tidak",
+    "optional": "(opsional)",
+    "select": "-- Pilih --",
+    "dash": "-",
+    "loading": "Memuat…",
+    "close": "Tutup",
+    "cancel": "Batal",
+    "continue": "Lanjutkan",
+    "back": "Kembali",
+    "save": "Simpan",
+    "edit": "Ubah",
+    "copy": "Salin",
+    "copied": "✓ Tersalin!",
+    "verify": "Verifikasi",
+    "checking": "Memeriksa",
+    "verifying": "Memverifikasi…",
+    "submitting": "Mengirim…",
+    "processing": "Memproses…",
+    "chooseFile": "Pilih berkas",
+    "noFileSelected": "Tidak ada berkas dipilih",
+    "toggleMenu": "Buka/tutup menu",
+    "home": "Beranda",
+    "logoAlt": "Logo",
+    "kjriAlt": "KJRI",
+    "attentionTitle": "Mohon perhatian Anda",
+    "tryAgain": "Silakan coba lagi.",
+    "networkError": "Kesalahan jaringan",
+    "connectionFailed": "Koneksi gagal. Silakan coba lagi."
+  },
+  "nav": {
+    "menu": "Menu",
+    "consulateGeneral": "Konsulat Jenderal Republik Indonesia",
+    "kjriVisa": "KJRI Vancouver — Visa",
+    "home": "Beranda",
+    "checkStatus": "Cek Status Permohonan",
+    "kjriWebsite": "KJRI Vancouver",
+    "applyForVisa": "Ajukan Visa →"
+  },
+  "footer": {
+    "brandName": "KJRI Vancouver",
+    "brandSubtitle": "Konsulat Jenderal Republik Indonesia",
+    "description": "Portal resmi Konsulat Jenderal Republik Indonesia di Vancouver, Kanada.",
+    "officeHoursTitle": "Jam Pelayanan",
+    "address": "1630 Alberni St, Vancouver, BC V6G 1A6",
+    "hoursWeekday": "Senin–Kamis: 09.30–11.30 dan 13.00–16.30",
+    "hoursFriday": "Jumat: 09.30–11.30 dan 14.30–17.00",
+    "hotline": "Hotline: 778-778-1992",
+    "contactTitle": "Kontak",
+    "phone": "📞 604-682-8855 ext 228",
+    "emailConsular": "✉️ consular@indonesiavancouver.org",
+    "emailPassport": "✉️ paspor@indonesiavancouver.org",
+    "complaintsTitle": "Pengaduan Layanan",
+    "sp4nTitle": "Aplikasi SP4N LAPOR",
+    "sp4nUrl": "www.lapor.go.id",
+    "whistleblowingTitle": "Whistle Blowing System",
+    "whistleblowingEmail": "whistleblowing@indonesiavancouver.org",
+    "copyright": "© 2026 Konsulat Jenderal Republik Indonesia, Vancouver",
+    "kemluLink": "kemlu.go.id/vancouver"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Permohonan Visa Indonesia",
+      "title": "VISA.",
+      "subtitle": "Portal resmi permohonan visa Indonesia Konsulat Jenderal Republik Indonesia di Vancouver, Kanada.",
+      "applyNow": "Ajukan Sekarang",
+      "checkStatus": "Cek Status Permohonan"
+    },
+    "serviceHours": {
+      "title": "Jam Pelayanan Konsulat",
+      "monThu": "Senin – Kamis",
+      "friday": "Jumat",
+      "closedNote": "Sabtu, Minggu & hari libur nasional — tutup",
+      "inquiries": "Pertanyaan: 1 (604) 682-8855 ext. 244, 228, 240"
+    },
+    "categories": {
+      "title": "Kategori Visa — Jenis Visa berdasarkan Tujuan Kunjungan",
+      "requirements": "Persyaratan →",
+      "note": "Catatan:",
+      "noteText": "Warga Negara Indonesia yang memegang paspor Indonesia yang masih berlaku tidak memerlukan visa untuk memasuki Indonesia. Portal ini ditujukan bagi pemegang paspor non-Indonesia yang mengajukan visa Indonesia melalui KJRI Vancouver.",
+      "C1": {
+        "title": "Kunjungan Pribadi",
+        "items": [
+          "Wisata",
+          "Kunjungan Keluarga"
+        ],
+        "itemsId": "Wisata / Kunjungan Keluarga"
+      },
+      "C2": {
+        "title": "Kunjungan Bisnis",
+        "items": [
+          "Bisnis",
+          "Rapat",
+          "Pembelian Barang"
+        ],
+        "itemsId": "Bisnis / Rapat / Pembelian Barang"
+      },
+      "C3": {
+        "title": "Perawatan Medis",
+        "items": [
+          "Perawatan Medis"
+        ],
+        "itemsId": "Pengobatan"
+      },
+      "C4": {
+        "title": "Tugas Pemerintah Resmi",
+        "items": [
+          "Tugas Pemerintah Resmi"
+        ],
+        "itemsId": "Tugas Pemerintah Resmi"
+      },
+      "C5": {
+        "title": "Jurnalistik",
+        "items": [
+          "Jurnalistik"
+        ],
+        "itemsId": "Jurnalistik"
+      }
+    },
+    "requirementsModal": {
+      "visaDescription": "Kategori ini termasuk dalam Visa Kunjungan Satu Kali Masuk 60 Hari Indonesia. Izin tinggal berlaku selama 60 hari sejak tanggal kedatangan Anda dan dapat diperpanjang dua kali di Kantor Imigrasi di Indonesia, masing-masing selama 60 hari.",
+      "mandatoryTitle": "Persyaratan Wajib",
+      "additionalTitle": "Persyaratan Tambahan (jika berlaku)",
+      "feeLabel": "Biaya:",
+      "feeTourism": "CA$100 (wisata)",
+      "feeNonTourism": "CA$200 (non-wisata)",
+      "feePayment": " — kartu kredit/debit di loket konsuler, atau Interac e-transfer ke pk.kjrivancouver@gmail.com untuk permohonan melalui pos. Pembayaran tidak dapat dikembalikan.",
+      "processingLabel": "Waktu pemrosesan:",
+      "processingTime": "kira-kira 5–7 hari kerja setelah permohonan Anda disetujui (tambahkan 5 hari kerja jika mengirim dokumen melalui pos).",
+      "submitNote": "Ajukan permohonan dan dokumen Anda melalui formulir daring di bawah — Anda akan memilih di akhir apakah akan mengirim dokumen asli melalui pos atau membuat janji temu untuk datang langsung. Ajukan paling lambat 14 hari sebelum keberangkatan dan paling banyak 90 hari sebelum meninggalkan Kanada.",
+      "startApplication": "Mulai Permohonan Ini →",
+      "mandatory": [
+        "Paspor asli yang masih berlaku lebih dari 6 bulan setelah rencana lama tinggal Anda, dengan minimal 2 halaman kosong (halaman amendemen/endorsement tidak dihitung)",
+        "Formulir Permohonan Visa yang telah diisi lengkap",
+        "Satu foto paspor ukuran 4×6 cm, diambil dalam 6 bulan terakhir",
+        "Salinan itinerary penerbangan pulang-pergi / tiket elektronik maskapai ke dan dari Indonesia",
+        "Surat atau rekening koran bank yang menunjukkan dana minimal C$2.000,00 (dari dua minggu terakhir)",
+        "Untuk tujuan non-wisata: surat keterangan kerja atau sponsorship dari lembaga resmi yang menyatakan tujuan kunjungan Anda"
+      ],
+      "additional": [
+        "Warga non-Kanada: salinan izin tinggal Kanada yang masih berlaku (PR Card / Study Permit / Work Permit)",
+        "Warga ganda: salinan paspor kewarganegaraan lain Anda",
+        "Pelancong di bawah 18 tahun yang tidak bepergian dengan kedua orang tua: Surat Persetujuan yang ditandatangani kedua orang tua dan disahkan Notaris Provinsi",
+        "Penumpang kapal pesiar: tiket maskapai keberangkatan dari Kanada serta itinerary pelayaran lengkap dan bukti passage"
+      ]
+    },
+    "howToApply": {
+      "title": "Cara Mengajukan",
+      "step1Title": "Lengkapi Formulir",
+      "step1Desc": "Isi data pribadi, informasi paspor, dan tujuan kunjungan Anda, lalu unggah dokumen secara daring.",
+      "step2Title": "Pilih Cara Penyerahan",
+      "step2Desc": "Di akhir formulir, pilih apakah Anda akan mengirim dokumen asli melalui pos atau membuat janji temu untuk datang langsung ke KJRI Vancouver.",
+      "step3Title": "Selesaikan",
+      "step3Desc": "Kirim paspor asli, foto, dan pembayaran melalui pos — atau bawa bersama Anda saat janji temu di 1630 Alberni St."
+    },
+    "goodToKnow": {
+      "title": "Perlu Diketahui",
+      "notes": [
+        "Biaya: CA$100 (wisata) atau CA$200 (non-wisata)",
+        "Pemrosesan memerlukan kira-kira 5–7 hari kerja setelah persetujuan",
+        "Tambahkan 5 hari kerja jika mengajukan melalui pos",
+        "Cetak semua dokumen satu sisi",
+        "Lampirkan dokumen dengan penjepit kertas atau binder clip — jangan distaples",
+        "Konsulat tidak menyediakan layanan cetak atau fotokopi",
+        "Konsulat tidak menyediakan layanan percepatan pemrosesan",
+        "Visa tidak dapat diterbitkan kepada pemegang Visitor Permit, Travel Document, Alien Passport, atau Temporary Passport"
+      ],
+      "footerNote": "Persyaratan dokumen lengkap berbeda untuk setiap kategori visa — klik kategori di atas pada \"Kategori Visa\" untuk melihat persyaratan yang diperlukan."
+    }
+  },
+  "apply": {
+    "title": "Permohonan Visa Indonesia",
+    "subtitle": "Formulir ini mengumpulkan persis informasi yang diperlukan pada Formulir Permohonan Visa resmi, sehingga dapat diisi otomatis dan diunduh setelah permohonan Anda diajukan.",
+    "kjriLabel": "KJRI Vancouver",
+    "stepOf": "Langkah {current} dari {total}",
+    "stepTitle": "Langkah {current}: {title}",
+    "backToReview": "Kembali ke Tinjauan",
+    "submitApplication": "Kirim Permohonan",
+    "errors": {
+      "completeStep": "Mohon lengkapi langkah ini sebelum melanjutkan.",
+      "completeFields": "Mohon lengkapi semua kolom yang ditandai merah di bawah.",
+      "signBeforeSubmit": "Mohon tanda tangani dan cantumkan tanggal pada pernyataan sebelum mengirim.",
+      "pdfOnly": "Hanya berkas PDF atau JPG/JPEG yang diperbolehkan.",
+      "fileTooLarge": "Ukuran berkas tidak boleh melebihi 10 MB.",
+      "submitFailed": "Gagal mengirim permohonan: {detail}"
+    },
+    "mailConfirmation": {
+      "title": "Permohonan Telah Diajukan",
+      "body": "Terima kasih. Permohonan Anda telah kami terima — tidak diperlukan janji temu karena Anda akan mengirim dokumen melalui pos.",
+      "refLabel": "Nomor Referensi Permohonan",
+      "refHint": "Simpan nomor ini — Anda memerlukannya untuk mengecek status permohonan.",
+      "mailToLabel": "Kirim dokumen Anda ke",
+      "mailAddress": "Konsulat Jenderal Republik Indonesia\n1630 Alberni St\nVancouver, BC V6G 1A6\nKanada",
+      "mailNote": "Mohon sertakan salinan nomor referensi ini bersama dokumen Anda, serta amplop atau label pengiriman balik prabayar jika Anda ingin paspor/visa dikirim kembali kepada Anda.",
+      "checkStatus": "Cek Status Permohonan"
+    },
+    "progress": {
+      "title": "Kemajuan permohonan",
+      "subtitle": "{stepTitle} • Langkah {current} dari {total}",
+      "complete": "Selesai"
+    },
+    "overlay": {
+      "title": "Memproses…",
+      "subtitle": "Mohon tunggu dan jangan tutup halaman ini.",
+      "steps": [
+        "Mengunggah data permohonan Anda",
+        "Memindai berkas untuk virus",
+        "Menyimpan dokumen dan membuat nomor permohonan Anda",
+        "Menyiapkan konfirmasi Anda"
+      ]
+    },
+    "emailVerified": {
+      "title": "✓ Email terverifikasi",
+      "body": "{email} telah diverifikasi. Klik Lanjutkan untuk melanjutkan."
+    },
+    "wizardSteps": {
+      "terms": "Syarat & Ketentuan",
+      "applicant": "Jenis Pemohon",
+      "category": "Kategori Visa",
+      "purpose": "Tujuan Kunjungan",
+      "personal": "Informasi Pribadi",
+      "passport": "Paspor",
+      "address": "Alamat di Kanada",
+      "otp": "Verifikasi Email",
+      "occupation": "Pekerjaan",
+      "indonesia": "Kunjungan di Indonesia",
+      "sponsor": "Sponsor",
+      "background": "Latar Belakang",
+      "uploads": "Dokumen",
+      "delivery": "Cara Penyerahan",
+      "review": "Tinjau & Kirim"
+    }
+  },
+  "applySteps": {
+    "terms": {
+      "subtitle": "Mohon baca dan setujui sebelum mengajukan permohonan visa Anda.",
+      "sections": {
+        "accuracyTitle": "1. Keakuratan Informasi",
+        "accuracyBody": "Pemohon bertanggung jawab atas kebenaran semua informasi dan dokumen yang diajukan. Informasi palsu atau tidak akurat dapat mengakibatkan penolakan permohonan dan/atau konsekuensi hukum sesuai peraturan yang berlaku.",
+        "passportTitle": "2. Masa Berlaku Paspor",
+        "passportBody": "Paspor Anda harus masih berlaku minimal enam (6) bulan setelah rencana lama tinggal Anda di Indonesia dan memiliki halaman kosong yang memadai.",
+        "documentsTitle": "3. Dokumen Pendukung",
+        "documentsBody": "Dokumen tambahan mungkin diperlukan tergantung jenis pemohon dan kategori visa Anda. Pemohon non-Kanada wajib menyertakan bukti status tinggal legal di Kanada, dan kategori bisnis, resmi, perawatan medis, serta jurnalistik (C2–C5) memerlukan surat sponsor / penjamin dari Indonesia.",
+        "entryTitle": "4. Hak Masuk",
+        "entryBody": "Penerbitan visa tidak menjamin masuk ke Indonesia. Keputusan akhir penerimaan tetap berada di bawah kewenangan otoritas Imigrasi Indonesia di pintu masuk.",
+        "feesTitle": "5. Waktu Pemrosesan & Biaya",
+        "feesBody": "Waktu pemrosesan dan biaya yang berlaku mengikuti jadwal yang berlaku di Konsulat Jenderal Republik Indonesia di Vancouver. Biaya tidak dapat dikembalikan setelah permohonan diproses."
+      },
+      "acceptLabel": "Saya telah membaca dan menyetujui Syarat & Ketentuan di atas. Saya menyatakan bahwa informasi yang saya berikan benar dan tepat sepengetahuan saya.",
+      "acceptError": "Anda harus menyetujui Syarat & Ketentuan untuk melanjutkan."
+    },
+    "applicant": {
+      "subtitle": "Ini menentukan dokumen pendukung yang perlu Anda unggah.",
+      "selectError": "Mohon pilih jenis pemohon Anda."
+    },
+    "category": {
+      "subtitle": "Jenis Visa berdasarkan Tujuan Kunjungan — pilih kategori yang sesuai dengan alasan perjalanan Anda ke Indonesia.",
+      "sponsorRequired": "Memerlukan surat sponsor/penjamin dari Indonesia",
+      "selectError": "Mohon pilih kategori visa.",
+      "note": "Catatan: Warga Negara Indonesia yang memegang paspor Indonesia yang masih berlaku tidak memerlukan visa untuk memasuki Indonesia. Portal ini ditujukan bagi pemegang paspor non-Indonesia yang mengajukan visa Indonesia melalui KJRI Vancouver."
+    },
+    "purpose": {
+      "subtitle": "Ini persis seperti yang tercantum di bagian atas Formulir Permohonan Visa resmi.",
+      "singleEntryBadge": "Setiap permohonan melalui portal ini adalah Visa Kunjungan Satu Kali Masuk",
+      "purposeLabel": "Tujuan kunjungan ke Indonesia (pilih satu, sesuai sifat kunjungan Anda)",
+      "selectError": "Mohon pilih tujuan kunjungan.",
+      "specifyLabel": "Mohon sebutkan",
+      "specifyPlaceholder": "Jelaskan tujuan kunjungan Anda",
+      "specifyError": "Mohon jelaskan tujuan kunjungan Anda."
+    },
+    "personal": {
+      "subtitle": "Bagian 1–6 & 12 Formulir Permohonan Visa — isi data persis seperti yang tercantum di paspor Anda.",
+      "firstName": "1. Nama Depan",
+      "middleName": "2. Nama Tengah",
+      "familyName": "3. Nama Belakang",
+      "sex": "Jenis Kelamin",
+      "placeOfBirth": "4. Tempat Lahir (kota & negara)",
+      "dateOfBirth": "5. Tanggal Lahir",
+      "nationality": "6. Kewarganegaraan",
+      "maritalStatus": "12. Status Perkawinan",
+      "asInPassport": "Sesuai paspor",
+      "placeOfBirthPlaceholder": "contoh: Toronto, Kanada",
+      "errors": {
+        "firstName": "Nama depan wajib diisi.",
+        "familyName": "Nama belakang wajib diisi.",
+        "sex": "Mohon pilih jenis kelamin Anda.",
+        "placeOfBirth": "Tempat lahir wajib diisi.",
+        "dateOfBirth": "Tanggal lahir wajib diisi.",
+        "nationality": "Kewarganegaraan wajib diisi."
+      }
+    },
+    "passport": {
+      "subtitle": "Masukkan rincian paspor Anda saat ini.",
+      "passportNumber": "Nomor Paspor",
+      "placeOfIssuance": "Tempat Penerbitan (kota & negara)",
+      "dateOfIssuance": "Tanggal Penerbitan",
+      "dateOfIssuanceHint": "Tanggal paspor Anda diterbitkan",
+      "dateOfExpiry": "Tanggal Kedaluwarsa",
+      "dateOfExpiryHint": "Tanggal paspor Anda kedaluwarsa",
+      "passportType": "Jenis Paspor",
+      "passportNumberPlaceholder": "contoh: AB1234567",
+      "placePlaceholder": "contoh: Ottawa, Kanada",
+      "validityNote": "Catatan: Paspor Anda harus masih berlaku minimal 6 bulan setelah rencana lama tinggal Anda di Indonesia.",
+      "errors": {
+        "number": "Nomor paspor wajib diisi.",
+        "place": "Tempat penerbitan wajib diisi.",
+        "issueDate": "Tanggal penerbitan wajib diisi.",
+        "expiryDate": "Tanggal kedaluwarsa wajib diisi."
+      }
+    },
+    "address": {
+      "title": "13. Alamat (Wajib)",
+      "subtitle": "Alamat tempat tinggal Anda saat ini di Kanada.",
+      "streetAddress": "Alamat Jalan",
+      "streetPlaceholder": "Mulai ketik alamat Anda...",
+      "streetHint": "Mulai ketik untuk mengisi alamat otomatis (Kanada)",
+      "unit": "Unit / Apt / Suite",
+      "unitPlaceholder": "contoh: Unit 302, Apt 4B",
+      "city": "Kota",
+      "province": "Provinsi",
+      "postalCode": "Kode Pos",
+      "country": "Negara",
+      "contactTitle": "Kontak di alamat ini",
+      "phone": "Telepon",
+      "phonePlaceholder": "6041234567",
+      "fax": "Faks",
+      "cellular": "Seluler / Mobile",
+      "cellularPlaceholder": "(604) 123-4567",
+      "email": "Email",
+      "emailPlaceholder": "email@anda.com",
+      "errors": {
+        "street": "Alamat jalan wajib diisi.",
+        "city": "Kota wajib diisi.",
+        "province": "Provinsi wajib diisi.",
+        "postalCode": "Kode pos wajib diisi.",
+        "phone": "Nomor telepon harus tepat 10 digit.",
+        "email": "Email wajib diisi."
+      }
+    },
+    "occupation": {
+      "title": "14. Pekerjaan",
+      "subtitle": "Opsional — isi jika Anda saat ini bekerja atau menjalankan usaha.",
+      "employer": "Pemberi Kerja Saat Ini",
+      "position": "Jabatan Saat Ini",
+      "companyAddress": "Alamat Perusahaan / Lembaga",
+      "city": "Kota",
+      "provincePostal": "Provinsi & Kode Pos",
+      "country": "Negara",
+      "workPhone": "Telepon Kantor / Kerja",
+      "fax": "Faks",
+      "companyNamePlaceholder": "Nama perusahaan",
+      "streetPlaceholder": "Alamat jalan"
+    },
+    "indonesia": {
+      "subtitle": "Tempat Anda akan tinggal dan rincian perjalanan (opsional namun disarankan).",
+      "intendedAddress": "Alamat yang Dituju di Indonesia",
+      "intendedAddressPlaceholder": "Nama hotel atau alamat lengkap",
+      "cityProvince": "Kota & Provinsi",
+      "cityProvincePlaceholder": "contoh: Denpasar, Bali",
+      "phoneIndonesia": "Nomor Telepon di Indonesia",
+      "phonePlaceholder": "81234567890",
+      "flightTitle": "Informasi Penerbangan / Kapal",
+      "portOfEntry": "Pelabuhan Masuk",
+      "portOfEntryPlaceholder": "contoh: Ngurah Rai, Bali",
+      "dateOfEntry": "Tanggal Masuk",
+      "flightIn": "No. Penerbangan",
+      "flightInPlaceholder": "contoh: GA718",
+      "portOfExit": "Pelabuhan Keluar",
+      "dateOfExit": "Tanggal Keluar",
+      "flightOut": "No. Penerbangan",
+      "invitationTitle": "18. Apakah Anda Memiliki Surat Undangan/Referensi?",
+      "invitationYesNote": "Mohon sertakan salinan bersama permohonan — Anda akan mengunggahnya pada langkah Dokumen."
+    },
+    "sponsor": {
+      "title": "19. Kontak Person/Sponsor di Indonesia",
+      "subtitleRequired": "Wajib — Anda menyatakan memiliki Surat Undangan/Referensi. Lengkapi kolom yang ditandai *.",
+      "subtitleOptional": "Opsional — isi jika Anda memiliki kontak person atau sponsor di Indonesia.",
+      "requiredNote": "Mohon lengkapi kolom yang ditandai *.",
+      "fullName": "Nama Lengkap",
+      "position": "Jabatan / Posisi",
+      "company": "Perusahaan",
+      "phone": "Telepon",
+      "phonePlaceholder": "+62...",
+      "fax": "Faks",
+      "cityProvincePostal": "Kota, Provinsi & Kode Pos",
+      "address": "Alamat",
+      "addressPlaceholder": "Alamat jalan",
+      "errors": {
+        "name": "Nama sponsor wajib diisi.",
+        "company": "Perusahaan wajib diisi.",
+        "phone": "Telepon sponsor wajib diisi.",
+        "address": "Alamat sponsor wajib diisi."
+      }
+    },
+    "background": {
+      "subtitle": "Jawab dengan jujur. Jawaban YA tidak secara otomatis mendiskualifikasi permohonan Anda.",
+      "beenToIndonesia": "Apakah Anda pernah ke Indonesia sebelumnya?",
+      "indonesiaDetailsPlaceholder": "Kapan dan berapa lama Anda tinggal?",
+      "otherVisa": "Apakah Anda saat ini memegang visa valid negara lain?",
+      "otherVisaPlaceholder": "Negara penerbit",
+      "visaDenied": "Apakah permohonan visa Indonesia Anda pernah ditolak?",
+      "orderedToLeave": "Apakah Anda pernah diperintahkan meninggalkan Indonesia?",
+      "everArrested": "Apakah Anda pernah ditangkap atau dihukum karena tindak pidana?",
+      "disclaimer": "Meskipun jawaban YA tidak secara otomatis menandakan ketidaklayakan visa, Anda mungkin diminta hadir secara langsung di hadapan petugas konsuler."
+    },
+    "uploads": {
+      "subtitle": "Hanya berkas PDF / JPG / JPEG yang diterima (maks. 10 MB per berkas).",
+      "sectionTitle": "Unggah dokumen pendukung",
+      "sectionHint": "Daftar di bawah menyesuaikan jenis pemohon dan kategori visa Anda."
+    },
+    "delivery": {
+      "subtitle": "Pilih mana yang paling mudah bagi Anda — keduanya diterima.",
+      "inPersonLabel": "Saya akan datang langsung",
+      "inPersonHint": "Kunjungi KJRI Vancouver secara langsung. Anda akan memilih tanggal dan waktu janji temu berikutnya.",
+      "mailLabel": "Saya akan mengirim dokumen melalui pos",
+      "mailHint": "Kirim dokumen permohonan Anda ke KJRI Vancouver melalui pos. Tidak perlu janji temu — kami akan memproses permohonan setelah dokumen diterima.",
+      "selectError": "Mohon pilih cara penyerahan permohonan Anda."
+    },
+    "review": {
+      "subtitle": "Mohon tinjau semua informasi Anda sebelum mengirim.",
+      "sections": {
+        "applicantCategory": "Pemohon & Kategori",
+        "visaTypePurpose": "Jenis Visa & Tujuan",
+        "personal": "Pribadi",
+        "passport": "Paspor",
+        "address": "Alamat di Kanada",
+        "occupation": "Pekerjaan",
+        "indonesia": "Kunjungan di Indonesia",
+        "sponsor": "Sponsor",
+        "background": "Latar Belakang",
+        "documents": "Dokumen",
+        "delivery": "Cara Penyerahan"
+      },
+      "labels": {
+        "applicantType": "Jenis pemohon",
+        "visaCategory": "Kategori visa",
+        "typeOfVisa": "Jenis visa yang dimohonkan",
+        "purposeOfVisit": "Tujuan kunjungan",
+        "name": "Nama",
+        "sex": "Jenis kelamin",
+        "dateOfBirth": "Tanggal lahir",
+        "placeOfBirth": "Tempat lahir",
+        "nationality": "Kewarganegaraan",
+        "maritalStatus": "Status perkawinan",
+        "number": "Nomor",
+        "placeOfIssue": "Tempat penerbitan",
+        "issued": "Diterbitkan",
+        "expires": "Kedaluwarsa",
+        "type": "Jenis",
+        "street": "Jalan",
+        "city": "Kota",
+        "province": "Provinsi",
+        "postalCode": "Kode pos",
+        "phone": "Telepon",
+        "email": "Email",
+        "employer": "Pemberi kerja",
+        "position": "Jabatan",
+        "address": "Alamat",
+        "cityProvince": "Kota & provinsi",
+        "entry": "Masuk",
+        "exit": "Keluar",
+        "invitationLetter": "Surat undangan/referensi",
+        "company": "Perusahaan",
+        "beenToIndonesia": "Pernah ke Indonesia",
+        "otherVisa": "Memegang visa valid lain",
+        "visaDenied": "Visa pernah ditolak",
+        "orderedToLeave": "Diperintahkan meninggalkan",
+        "arrested": "Ditangkap / dihukum",
+        "method": "Metode"
+      },
+      "documentMissing": "Dokumen wajib belum diunggah",
+      "documentNotUploaded": "Belum diunggah",
+      "submissionMail": "Melalui pos",
+      "submissionInPerson": "Datang langsung (janji temu diperlukan)",
+      "declaration": "Dengan ini saya menyatakan bahwa pernyataan di atas benar dan tepat, dan saya menyadari bahwa meskipun saya memiliki Visa yang valid untuk memasuki Indonesia, izin masuk tetap berada di bawah kewenangan otoritas Imigrasi di Indonesia. Saya memahami bahwa pernyataan palsu atau menyesatkan dapat mengakibatkan penolakan visa permanen atau penolakan masuk ke Republik Indonesia. Saya juga menyadari bahwa jika tidak mematuhi persyaratan di atas, saya dapat dikenai proses hukum atau deportasi.",
+      "signatureLabel": "Tanda Tangan Pemohon (ketik nama lengkap Anda)",
+      "signaturePlaceholder": "Nama lengkap",
+      "signatureError": "Mohon ketik nama lengkap Anda sebagai tanda tangan.",
+      "dateLabel": "Tanggal"
+    },
+    "otp": {
+      "subtitle": "Kode verifikasi 6 digit telah dikirim ke alamat email Anda.",
+      "codeSentTo": "Kode dikirim ke",
+      "sendingEmail": "Mengirim email…",
+      "emailSent": "✓ Email berhasil dikirim",
+      "verifying": "Memverifikasi…",
+      "resendPrompt": "Tidak menerima email?",
+      "resendIn": "Kirim ulang dalam {seconds} dtk",
+      "resendCode": "Kirim ulang kode",
+      "spamNote": "Periksa folder spam jika Anda tidak menemukannya. Kode berlaku selama 10 menit.",
+      "failedToSend": "Gagal mengirim kode.",
+      "incorrectCode": "Kode salah."
+    }
+  },
+  "visaConfig": {
+    "applicantTypes": {
+      "WN_KANADA": {
+        "label": "Warga Negara Kanada",
+        "sub": "WN Kanada",
+        "hint": "Anda memegang paspor Kanada / kewarganegaraan Kanada."
+      },
+      "NON_KANADA": {
+        "label": "Non-Kanada",
+        "sub": "Non-Kanada",
+        "hint": "Anda bukan warga negara Kanada namun saat ini tinggal di Kanada (studi / kerja / PR / pengunjung)."
+      }
+    },
+    "categories": {
+      "C1": {
+        "title": "Kunjungan Pribadi",
+        "items": [
+          "Wisata",
+          "Pengobatan Medis",
+          "Kunjungan Keluarga"
+        ],
+        "itemsId": "Wisata / Kunjungan Keluarga"
+      },
+      "C2": {
+        "title": "Kunjungan Bisnis",
+        "items": [
+          "Bisnis",
+          "Rapat",
+          "Pembelian Barang"
+        ],
+        "itemsId": "Bisnis / Rapat / Pembelian Barang"
+      },
+      "C3": {
+        "title": "Perawatan Medis",
+        "items": [
+          "Perawatan Medis"
+        ],
+        "itemsId": "Pengobatan"
+      },
+      "C4": {
+        "title": "Tugas Pemerintah Resmi",
+        "items": [
+          "Tugas Pemerintah Resmi"
+        ],
+        "itemsId": "Tugas Pemerintah Resmi"
+      },
+      "C5": {
+        "title": "Jurnalistik",
+        "items": [
+          "Jurnalistik"
+        ],
+        "itemsId": "Jurnalistik"
+      }
+    },
+    "enums": {
+      "passportType": {
+        "Ordinary Passport": "Paspor Biasa",
+        "Diplomatic Passport": "Paspor Diplomatik",
+        "Service Passport": "Paspor Dinas"
+      },
+      "maritalStatus": {
+        "Single": "Belum Menikah",
+        "Married": "Menikah",
+        "Divorced": "Cerai",
+        "Widowed": "Janda/Duda"
+      },
+      "purposeOfVisit": {
+        "Tourism": "Wisata",
+        "Study": "Studi",
+        "Conference/Seminar/Workshop": "Konferensi/Seminar/Workshop",
+        "Arts": "Seni",
+        "Family Visit": "Kunjungan Keluarga",
+        "Commercial/Business": "Komersial/Bisnis",
+        "Industrial/Mining": "Industri/Pertambangan",
+        "Sports": "Olahraga",
+        "Press and Media": "Pers dan Media",
+        "Others": "Lainnya"
+      },
+      "typeOfVisa": {
+        "Transit": "Transit",
+        "Single": "Kunjungan Satu Kali Masuk",
+        "Limited/Temporary Stay": "Tinggal Terbatas/Sementara",
+        "Multiple": "Kunjungan Berulang"
+      },
+      "sex": {
+        "Male": "Laki-laki",
+        "Female": "Perempuan"
+      }
+    },
+    "uploads": {
+      "passportScan": {
+        "label": "Paspor (halaman identitas)",
+        "hint": "Halaman biodata dengan foto Anda. Paspor harus masih berlaku minimal 6 bulan."
+      },
+      "photoScan": {
+        "label": "Foto gaya paspor",
+        "hint": "Foto terbaru, 40mm × 60mm, latar belakang polos (sesuai kotak foto pada formulir cetak)."
+      },
+      "permitScan": {
+        "label": "Izin tinggal / dokumen status Kanada",
+        "hint": "Study Permit / Work Permit / PR card / Visitor Record sebagai bukti status tinggal legal Anda di Kanada."
+      },
+      "formScan": {
+        "label": "Surat Sponsor / Penjamin",
+        "hint": "Wajib untuk kategori visa yang Anda pilih — surat sponsor atau penjamin dari Indonesia."
+      },
+      "invitationLetterScan": {
+        "label": "Surat undangan / referensi",
+        "hint": "Salinan surat undangan atau referensi yang Anda nyatakan dimiliki."
+      },
+      "otherIdScan": {
+        "label": "Dokumen pendukung (opsional)",
+        "hint": "Tiket pulang-pergi, booking hotel, rekening koran, surat sponsor, dll."
+      }
+    }
+  },
+  "check": {
+    "eyebrow": "Layanan Daring · KJRI Vancouver",
+    "title": "Cek Status Permohonan",
+    "subtitle": "Masukkan nomor referensi permohonan Anda",
+    "refLabel": "Nomor Referensi",
+    "refPlaceholder": "APP-20260108-ABCD12",
+    "checkButton": "Cek →",
+    "forgotRef": "Lupa nomor referensi?",
+    "emailUs": "Email kami",
+    "forgotRefSuffix": "dengan nama lengkap Anda.",
+    "emailSubject": "Permintaan Nomor Referensi Permohonan Visa",
+    "emailBody": "Yth. Konsulat Jenderal,\n\nSaya lupa nomor referensi permohonan visa saya. Mohon bantuannya untuk mencari nomor tersebut.\n\nNama lengkap: [Nama Anda]\n\nTerima kasih.",
+    "errors": {
+      "checkFailed": "Tidak dapat memeriksa permohonan Anda.",
+      "checkRetry": "Tidak dapat memeriksa permohonan Anda. Silakan coba lagi.",
+      "refUnavailable": "Nomor referensi tidak tersedia.",
+      "verificationFailed": "Verifikasi gagal.",
+      "verificationRetry": "Verifikasi gagal. Silakan coba lagi."
+    },
+    "statusSection": "Status Permohonan",
+    "appointmentSection": "Janji Temu",
+    "noAppointment": "Belum ada janji temu",
+    "noAppointmentHint": "Jadwal akan tersedia setelah permohonan Anda diproses",
+    "localTime": "Waktu lokal",
+    "location": "📍 1630 Alberni St, Vancouver",
+    "locked": "Terkunci",
+    "reschedule": "Jadwal Ulang →",
+    "applicantName": "Nama Pemohon",
+    "visaTypePurpose": "Jenis Visa / Tujuan",
+    "referenceNo": "No. Referensi",
+    "daysPast": "Lewat",
+    "daysToday": "Hari ini",
+    "daysTomorrow": "Besok",
+    "daysIn": "dalam {count} hari",
+    "noteLabels": {
+      "actionRequired": "⚠ Tindakan Diperlukan",
+      "rejectionReason": "✕ Alasan Penolakan",
+      "staffNote": "📝 Catatan Petugas"
+    },
+    "contactUs": "Hubungi kami →",
+    "reminderTitle": "📋 Pengingat Kedatangan",
+    "reminderArrive": "Mohon datang 10–15 menit sebelum waktu yang dijadwalkan",
+    "reminderDocuments": "Pastikan membawa paspor asli dan foto paspor",
+    "reminderAddress": "1630 Alberni St, Vancouver, BC V6G 1A6",
+    "dobModal": {
+      "eyebrow": "KJRI Vancouver",
+      "title": "Verifikasi Identitas",
+      "subtitle": "Masukkan tanggal lahir Anda untuk mengakses halaman penjadwalan ulang.",
+      "refLabel": "Nomor Referensi",
+      "dobLabel": "Tanggal Lahir",
+      "continue": "Lanjutkan →"
+    },
+    "statuses": {
+      "Permohonan diterima": {
+        "label": "Diterima",
+        "nextStep": "Permohonan Anda sedang ditinjau oleh petugas kami. Mohon tetap hadir pada tanggal yang dijadwalkan."
+      },
+      "Permohonan disetujui": {
+        "label": "Disetujui",
+        "nextStep": "Permohonan Anda telah disetujui. Mohon hadir pada janji temu yang dijadwalkan."
+      },
+      "Permohonan ditunda": {
+        "label": "Ditunda",
+        "nextStep": "Tindakan diperlukan. Mohon baca catatan di bawah dan hubungi kami."
+      },
+      "Permohonan ditolak": {
+        "label": "Ditolak",
+        "nextStep": "Permohonan Anda tidak dapat diproses. Hubungi kami untuk informasi lebih lanjut."
+      },
+      "Permohonan sedang proses cetak": {
+        "label": "Sedang Diproses",
+        "nextStep": "Visa Anda sedang diproses. Kami akan segera menghubungi Anda."
+      },
+      "Paspor selesai diproses": {
+        "label": "Siap Diambil",
+        "nextStep": "Visa Anda siap diambil di kantor konsuler kami."
+      }
+    }
+  },
+  "appointment": {
+    "missingId": "ID tidak ditemukan. Silakan mulai ulang.",
+    "verification": {
+      "eyebrow": "KJRI Vancouver",
+      "title": "Verifikasi Identitas",
+      "subtitle": "Masukkan tanggal lahir Anda untuk mengakses halaman pemesanan janji temu.",
+      "refLabel": "Nomor Referensi",
+      "dobLabel": "Tanggal Lahir",
+      "continue": "Lanjutkan →",
+      "failed": "Verifikasi gagal."
+    },
+    "badges": {
+      "sameDay": "Layanan Satu Hari Jadi",
+      "reschedule": "Jadwal Ulang",
+      "book": "Buat Janji Temu"
+    },
+    "titleReschedule": "Jadwal Ulang Janji Temu",
+    "titleBook": "Pilih Waktu Janji Temu",
+    "forApplicant": "untuk",
+    "back": "← Kembali",
+    "currentAppointment": "Janji temu Anda saat ini:",
+    "selectNewSlot": "— pilih slot baru di bawah.",
+    "sameDayTitle": "⚡ Layanan Paspor Satu Hari Jadi",
+    "sameDayHint": "Slot tersedia 09:00–11:30. Mohon datang tepat waktu.",
+    "calendarTitle": "Kalender",
+    "calendarSubtitle": "Pilih tanggal janji temu",
+    "minBusinessDays": "Min. 3 hari kerja sebelum janji temu",
+    "weekdays": [
+      "Sen",
+      "Sel",
+      "Rab",
+      "Kam",
+      "Jum",
+      "Sab",
+      "Min"
+    ],
+    "legend": {
+      "selected": "Dipilih",
+      "holiday": "Libur",
+      "full": "Penuh",
+      "yourSlot": "Slot Anda"
+    },
+    "timeTitle": "Waktu",
+    "morning": "🌅 Pagi",
+    "afternoon": "🌤 Siang",
+    "morningHoursDefault": "09:30 – 11:30",
+    "morningHoursSameDay": "09:00 – 11:30",
+    "noSlots": "Tidak ada slot tersedia",
+    "selectAnotherDate": "Pilih tanggal lain pada kalender",
+    "confirmTitle": "Konfirmasi Janji Temu",
+    "noTimeSelected": "Belum memilih waktu",
+    "confirmButton": "Konfirmasi Janji Temu →",
+    "selectAnotherDateButton": "Pilih tanggal lain",
+    "slotLabels": {
+      "yourSlot": "Slot Anda",
+      "full": "Penuh",
+      "closed": "Tutup",
+      "selected": "✓ Dipilih",
+      "available": "Tersedia"
+    },
+    "errors": {
+      "selectSlot": "Mohon pilih slot waktu terlebih dahulu.",
+      "dobNotConfirmed": "Tanggal lahir belum dikonfirmasi. Silakan kembali ke halaman Cek Status.",
+      "minBusinessDays": "Janji temu harus dipesan minimal 3 hari kerja sebelumnya.",
+      "bookFailed": "Gagal memesan slot ini."
+    }
+  },
+  "complete": {
+    "submittedBadge": "Permohonan Telah Diajukan",
+    "title": "Permohonan Diterima",
+    "subtitle": "Permohonan visa Anda telah diajukan. Tim konsuler kami akan meninjaunya dan menghubungi Anda jika diperlukan informasi tambahan.",
+    "emailConfirmation": "Email konfirmasi telah dikirim ke alamat email terdaftar Anda.",
+    "detailsTitle": "Rincian Permohonan",
+    "applicantLabel": "Pemohon",
+    "visaTypeLabel": "Jenis Visa / Tujuan",
+    "refLabel": "Nomor Referensi",
+    "important": "Penting:",
+    "refWarning": "Simpan nomor referensi ini. Anda memerlukannya untuk mengecek status permohonan.",
+    "nextStepsTitle": "Langkah Selanjutnya",
+    "nextSteps": {
+      "reviewTitle": "Tinjauan",
+      "reviewDesc": "Petugas konsuler akan meninjau permohonan dan dokumen Anda.",
+      "contactTitle": "Kontak",
+      "contactDesc": "Kami mungkin menghubungi Anda untuk dokumen tambahan atau janji temu.",
+      "visitTitle": "Kunjungan",
+      "visitDesc": "Anda mungkin perlu mengunjungi 1630 Alberni St, Vancouver selama jam pelayanan."
+    },
+    "checkStatus": "Cek Status Permohonan",
+    "backHome": "Kembali ke Beranda"
+  },
+  "upload": {
+    "sampleTitle": "Contoh: {label}",
+    "sampleAlt": "Contoh {label}",
+    "sampleNote": "Ini adalah contoh dokumen. Unggah dokumen asli Anda.",
+    "viewSample": "Lihat contoh dokumen",
+    "requiredError": "Dokumen ini wajib diunggah",
+    "closeAria": "Tutup"
+  },
+  "processing": {
+    "title": "Memproses…",
+    "subtitle": "Mohon tunggu, jangan tutup halaman ini.",
+    "doNotCloseTitle": "Jangan tutup tab ini",
+    "doNotCloseBody": "Setelah selesai, Anda akan langsung diarahkan untuk memilih jadwal kedatangan. Menutup halaman sekarang akan membatalkan proses.",
+    "footerNote": "Proses ini bisa lebih lama jika file besar atau perlu pemeriksaan virus."
+  },
+  "dateSelect": {
+    "year": "Tahun",
+    "month": "Bulan",
+    "day": "Hari",
+    "months": {
+      "Jan": "Jan",
+      "Feb": "Feb",
+      "Mar": "Mar",
+      "Apr": "Apr",
+      "May": "Mei",
+      "Jun": "Jun",
+      "Jul": "Jul",
+      "Aug": "Agu",
+      "Sep": "Sep",
+      "Oct": "Okt",
+      "Nov": "Nov",
+      "Dec": "Des"
+    }
+  }
+}
