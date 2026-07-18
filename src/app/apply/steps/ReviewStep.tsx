@@ -245,7 +245,6 @@ export default function ReviewStep({
                 year: "numeric", month: "long", day: "numeric",
               })}
             </div>
-            <p className="mt-1 text-xs text-gray-400">Automatically set to today's date.</p>
           </div>
         </div>
       </div>

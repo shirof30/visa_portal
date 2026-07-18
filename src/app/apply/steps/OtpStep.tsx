@@ -182,7 +182,7 @@ export default function OtpStep({ phoneNumber, email, onVerified }: OtpStepProps
         </p>
 
         <p className="text-xs text-gray-400 text-center max-w-xs">
-          Check your <strong>spam folder</strong> if you don&apos;t see it. The code is valid for 10 minutes.
+          Check your <strong>spam folder</strong>  if you don&apos;t see it. The code is valid for 10 minutes.
         </p>
       </div>
     </SectionCard>

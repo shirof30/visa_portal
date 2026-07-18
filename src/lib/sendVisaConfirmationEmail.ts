@@ -22,13 +22,46 @@ export async function sendVisaConfirmationEmail({
   fullName,
   applicationRef,
   reason,
+  submissionMethod,
 }: {
   toEmail: string;
   fullName: string;
   applicationRef: string;
   reason: string;
+  submissionMethod?: string | null;
 }): Promise<void> {
   const token = await getAccessToken();
+
+  const isMailIn = submissionMethod === "mail";
+
+  const methodNoticeHtml = isMailIn
+    ? `
+    <!-- Mail-in notice -->
+    <tr><td style="padding:16px 36px 0;">
+      <div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:14px 18px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#b91c1c;margin-bottom:6px;">
+          ⚠️ Do Not Mail Your Documents Yet
+        </div>
+        <div style="font-size:13px;color:#7f1d1d;line-height:1.6;">
+          Please wait until your application is <strong>approved</strong>. Once approved, you'll
+          receive a separate email with instructions on exactly what to mail and where to send it.
+          Mailing documents before approval may result in them being misplaced or delayed.
+        </div>
+      </div>
+    </td></tr>`
+    : `
+    <!-- Appointment reminder -->
+    <tr><td style="padding:16px 36px 0;">
+      <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 18px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#15803d;margin-bottom:6px;">
+          📋 What to Bring to Your Appointment
+        </div>
+        <div style="font-size:13px;color:#166534;line-height:1.8;">
+          1. Your <strong>original passport</strong>, valid for more than 6 months beyond your intended stay<br>
+          2. One recent <strong>passport-size photo</strong> (4×6 cm, taken within the last 6 months)
+        </div>
+      </div>
+    </td></tr>`;
 
   const emailBody = `
 <!DOCTYPE html>
@@ -113,6 +146,7 @@ export async function sendVisaConfirmationEmail({
         </ol>
       </div>
     </td></tr>
+${methodNoticeHtml}
 
     <!-- Office hours -->
     <tr><td style="padding:20px 36px 0;">

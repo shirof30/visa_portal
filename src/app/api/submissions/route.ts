@@ -162,6 +162,7 @@ export async function POST(req: NextRequest) {
         fullName: existing.fullName,
         applicationRef: existing.applicationRef,
         reason: existing.reason,
+        submissionMethod: existing.submissionMethod,
       }).catch((err) => console.error("Confirmation email failed:", err));
     }
     return NextResponse.json(updated);
@@ -561,6 +562,7 @@ export async function POST(req: NextRequest) {
       fullName: sub.fullName,
       applicationRef: sub.applicationRef,
       reason: sub.reason,
+      submissionMethod: sub.submissionMethod,
     }).catch((err) => console.error("Visa confirmation email failed:", err));
   }
 

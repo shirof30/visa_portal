@@ -447,9 +447,8 @@ export default function CheckPage() {
                     <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
                       {([
                         { icon: "🕐", text: <span>Please arrive <strong>10–15 minutes</strong> before your scheduled time</span> },
-                        { icon: "📄", text: <span>Bring your original passport and any supporting documents you submitted</span> },
+                        { icon: "📄", text: <span>Make sure to bring your original passport and pass photo</span> },
                         { icon: "📍", text: <span>1630 Alberni St, Vancouver, BC V6G 1A6</span> },
-                        { icon: "👔", text: <span>Dress neatly — collared shirt, any colour <strong>other than white</strong></span> },
                       ] as const).map(({ icon, text }, i) => (
                         <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                           <span style={{ fontSize: 15, lineHeight: 1.2, flexShrink: 0, marginTop: 1 }}>{icon}</span>
