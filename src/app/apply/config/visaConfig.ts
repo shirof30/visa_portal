@@ -43,7 +43,7 @@ export const VISA_CATEGORIES: VisaCategory[] = [
     code: "C1",
     title: "Personal Visit",
     items: ["Tourism", "Medical Treatment", "Family Visit"],
-    itemsId: "Wisata / Berobat / Kunjungan Keluarga",
+    itemsId: "Wisata / Kunjungan Keluarga",
   },
   {
     code: "C2",
