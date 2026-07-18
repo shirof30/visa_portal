@@ -116,7 +116,7 @@ const INITIAL: Form = {
   beenToIndonesiaBefore: "No", indonesiaVisitDetails: "",
   hasOtherCountryVisa: "No", otherVisaDetails: "",
   visaDenied: "No", orderedToLeave: "No", everArrested: "No",
-  signatureName: "", signatureDate: "",
+  signatureName: "", signatureDate: new Date().toISOString().slice(0, 10),
   submissionMethod: "",
   termsAccepted: false,
 };
@@ -588,7 +588,8 @@ export default function VisaWizard() {
               Indonesian Visa Application
             </h1>
             <p className="relative mt-1.5 text-sm text-emerald-50/90 max-w-lg">
-              Please fill in all fields accurately and with most up to date information.
+              This form collects exactly what the official Visa Application Form requires, so it
+              can be auto-filled and downloaded once your application is submitted.
             </p>
           </div>
 

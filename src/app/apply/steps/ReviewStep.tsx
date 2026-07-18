@@ -1,7 +1,6 @@
 import React from "react";
 import SectionCard from "../ui/SectionCard";
 import FieldError from "../ui/FieldError";
-import DateSelect from "@/components/DateSelect";
 import type { UploadItem } from "../ui/UploadRow";
 import { APPLICANT_TYPES, VISA_CATEGORIES } from "../config/visaConfig";
 
@@ -240,17 +239,13 @@ export default function ReviewStep({
             <FieldError show={inv(!form.signatureName.trim())} message="Please type your full name to sign." />
           </div>
           <div>
-            <DateSelect
-              label="Date"
-              name="signatureDate"
-              value={form.signatureDate}
-              onChange={handleChange}
-              required
-              max={todayStr}
-              yearStart={2020}
-              yearEnd={new Date().getFullYear()}
-            />
-            <FieldError show={inv(!form.signatureDate)} message="Please select the date." />
+            <label className="block mb-1 font-medium">Date</label>
+            <div className="w-full rounded-md border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-base text-gray-600">
+              {new Date(form.signatureDate + "T12:00:00").toLocaleDateString("en-US", {
+                year: "numeric", month: "long", day: "numeric",
+              })}
+            </div>
+            <p className="mt-1 text-xs text-gray-400">Automatically set to today's date.</p>
           </div>
         </div>
       </div>
