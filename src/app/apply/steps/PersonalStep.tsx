@@ -39,7 +39,6 @@ export default function PersonalStep({
   }, [excludedNationalities, form.nationality]);
   return (
     <SectionCard
-      title="Personal Information"
       subtitle="Sections 1–6 &amp; 12 of the Visa Application Form — enter your details exactly as they appear in your passport."
     >
       {/* Name */}

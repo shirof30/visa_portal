@@ -21,7 +21,6 @@ export default function PurposeStep({
 }) {
   return (
     <SectionCard
-      title="Purpose of Visit"
       subtitle="This is exactly what appears at the top of the official Visa Application Form."
     >
       <div className="inline-flex items-center gap-2 rounded-full bg-red-50 border border-red-200 px-3 py-1.5">

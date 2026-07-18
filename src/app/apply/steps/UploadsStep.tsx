@@ -15,7 +15,6 @@ export default function UploadsStep({
 }) {
   return (
     <SectionCard
-      title="Required Documents"
       subtitle="Only PDF / JPG / JPEG files are accepted (max 10 MB each)."
     >
       <section className="rounded-lg border border-gray-200 bg-gray-50 p-5">

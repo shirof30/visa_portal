@@ -41,7 +41,7 @@ export default function ReviewStep({
   const editBtn = "text-xs font-semibold text-red-600 hover:text-red-700 cursor-pointer";
 
   return (
-    <SectionCard title="Review & Submit" subtitle="Please review all your information before submitting.">
+    <SectionCard subtitle="Please review all your information before submitting.">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-gray-700">
         {/* Visa category */}
         <div className={card}>

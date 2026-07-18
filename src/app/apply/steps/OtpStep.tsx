@@ -109,7 +109,6 @@ export default function OtpStep({ phoneNumber, email, onVerified }: OtpStepProps
 
   return (
     <SectionCard
-      title="Email Verification"
       subtitle="A 6-digit verification code has been sent to your email address."
     >
       <div className="flex flex-col items-center gap-6 py-4">

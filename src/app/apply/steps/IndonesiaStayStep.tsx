@@ -28,7 +28,6 @@ export default function IndonesiaStayStep({
 }) {
   return (
     <SectionCard
-      title="Intended Stay in Indonesia"
       subtitle="Where you will be staying and your travel details (optional but recommended)."
     >
       <div>

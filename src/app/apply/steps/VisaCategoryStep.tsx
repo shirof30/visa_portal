@@ -14,7 +14,6 @@ export default function VisaCategoryStep({
 }) {
   return (
     <SectionCard
-      title="Visa Category"
       subtitle="Jenis Visa berdasarkan Tujuan Kunjungan — choose the category that matches why you're travelling to Indonesia."
     >
       <div className="grid grid-cols-1 gap-3">

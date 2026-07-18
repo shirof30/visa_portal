@@ -14,7 +14,6 @@ export default function ApplicantTypeStep({
 }) {
   return (
     <SectionCard
-      title="Applicant Type"
       subtitle="This determines the supporting documents you will need to upload."
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

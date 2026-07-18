@@ -26,7 +26,7 @@ export default function PassportStep({
   const thisYear = new Date().getFullYear();
 
   return (
-    <SectionCard title="Passport Information" subtitle="Enter your current passport details.">
+    <SectionCard subtitle="Enter your current passport details.">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block mb-1 font-medium">Passport Number</label>

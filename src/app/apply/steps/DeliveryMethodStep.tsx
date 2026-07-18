@@ -43,7 +43,6 @@ export default function DeliveryMethodStep({
 }) {
   return (
     <SectionCard
-      title="How will you submit your application?"
       subtitle="Choose whichever is easier for you — both are accepted."
     >
       <div className="grid grid-cols-1 gap-3">

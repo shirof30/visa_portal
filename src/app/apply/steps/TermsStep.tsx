@@ -13,7 +13,6 @@ export default function TermsStep({
 }) {
   return (
     <SectionCard
-      title="Terms & Conditions"
       subtitle="Please read and accept before submitting your visa application."
     >
       <div className="rounded-xl border border-gray-200 bg-gray-50 max-h-72 overflow-y-auto p-4 text-xs leading-relaxed text-gray-700 space-y-3">

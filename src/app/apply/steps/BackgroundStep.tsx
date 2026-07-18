@@ -61,7 +61,6 @@ export default function BackgroundStep({
 
   return (
     <SectionCard
-      title="Background Questions"
       subtitle="Answer truthfully. A YES answer does not automatically disqualify your application."
     >
       {withDetails.map(({ k, l, dk, dp }) => (
