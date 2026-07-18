@@ -22,8 +22,15 @@ export default function PurposeStep({
   return (
     <SectionCard
       title="Purpose of Visit"
-      subtitle="This is exactly what appears at the top of the official Visa Application Form. Every application through this portal is a Single Entry Visa."
+      subtitle="This is exactly what appears at the top of the official Visa Application Form."
     >
+      <div className="inline-flex items-center gap-2 rounded-full bg-red-50 border border-red-200 px-3 py-1.5">
+        <svg className="h-4 w-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <span className="text-xs font-bold text-red-700">Every application through this portal is a Single Entry Visa</span>
+      </div>
+
       {/* Purpose of visit */}
       <div>
         <label className="block mb-2 font-medium">
