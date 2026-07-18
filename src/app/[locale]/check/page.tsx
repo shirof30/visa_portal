@@ -189,6 +189,7 @@ export default function CheckPage() {
   const hasNote = !!(data?.statusNote?.trim());
   const showReminder = !!(data?.appointmentSlot && daysUntil !== null && daysUntil >= 0 && daysUntil <= 7);
   const showMailInstructions = data?.status === "Permohonan menunggu dokumen" && data?.submissionMethod === "mail";
+  const isMailIn = data?.submissionMethod === "mail";
 
   const card: React.CSSProperties = {
     background: "white",
@@ -345,9 +346,9 @@ export default function CheckPage() {
 
                 <div style={{ background: "#0d2b5e", padding: "13px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <p style={{ margin: 0, fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>
-                    {t("appointmentSection")}
+                    {isMailIn ? t("applicationDetailsSection") : t("appointmentSection")}
                   </p>
-                  {data.appointmentSlot && daysUntil !== null && (
+                  {!isMailIn && data.appointmentSlot && daysUntil !== null && (
                     <span style={{
                       fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 999,
                       background: daysUntil < 0 ? "rgba(255,255,255,0.1)" : daysUntil === 0 ? "#dc2626" : daysUntil <= 3 ? "#f59e0b" : "rgba(255,255,255,0.15)",
@@ -358,7 +359,7 @@ export default function CheckPage() {
                   )}
                 </div>
 
-                {data.appointmentSlot ? (
+                {!isMailIn && (data.appointmentSlot ? (
                   <div style={{ padding: "18px 20px", borderBottom: "1px solid #f1f5f9" }}>
                     <p style={{ margin: "0 0 4px", fontSize: 13, color: "#64748b", textTransform: "capitalize", fontWeight: 500 }}>{slotDate}</p>
                     <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 14 }}>
@@ -402,7 +403,7 @@ export default function CheckPage() {
                     <p style={{ margin: 0, fontSize: 13, color: "#94a3b8", fontWeight: 600 }}>{t("noAppointment")}</p>
                     <p style={{ margin: "4px 0 0", fontSize: 12, color: "#cbd5e1" }}>{t("noAppointmentHint")}</p>
                   </div>
-                )}
+                ))}
 
                 {([
                   { label: t("applicantName"), value: data.fullName, bold: true, mono: false },

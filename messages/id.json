@@ -635,6 +635,7 @@
     },
     "statusSection": "Status Permohonan",
     "appointmentSection": "Janji Temu",
+    "applicationDetailsSection": "DETAIL PERMOHONAN",
     "noAppointment": "Belum ada janji temu",
     "noAppointmentHint": "Jadwal akan tersedia setelah permohonan Anda diproses",
     "localTime": "Waktu lokal",

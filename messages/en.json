@@ -635,6 +635,7 @@
     },
     "statusSection": "Application Status",
     "appointmentSection": "Appointment",
+    "applicationDetailsSection": "APPLICATION DETAILS",
     "noAppointment": "No appointment scheduled yet",
     "noAppointmentHint": "A schedule will be available once your application is processed",
     "localTime": "Local time",
