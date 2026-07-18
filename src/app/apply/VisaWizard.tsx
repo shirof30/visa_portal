@@ -128,8 +128,10 @@ function fieldCls(invalid: boolean, extra = "") {
   // page on focus for any text input/select/textarea rendered under 16px,
   // which is what caused the "zooming in and out" on mobile. Do not drop
   // this back to text-sm.
-  return `w-full rounded-md border px-3 py-2 text-base focus:outline-none focus:ring-1 bg-white ${
-    invalid ? "border-red-400 focus:ring-red-400" : "border-gray-300 focus:ring-red-500"
+  return `w-full rounded-lg border px-3.5 py-2.5 text-base bg-white transition-all duration-150 focus:outline-none focus:ring-4 ${
+    invalid
+      ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+      : "border-gray-200 focus:border-emerald-500 focus:ring-emerald-50 hover:border-gray-300"
   } ${extra}`;
 }
 
@@ -506,15 +508,19 @@ export default function VisaWizard() {
   // ── Render ───────────────────────────────────────────────────────────────────
   if (mailConfirmation) {
     return (
-      <div className="py-10">
+      <div className="py-10 bg-security" style={{ minHeight: "100%" }}>
+        <style>{`
+          .bg-security { background-image: repeating-linear-gradient(135deg, rgba(4,120,87,0.035) 0px, rgba(4,120,87,0.035) 1px, transparent 1px, transparent 14px); }
+        `}</style>
         <div className="mx-auto max-w-lg px-4">
-          <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-8 text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-              <svg className="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="rounded-2xl border border-gray-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05),0_20px_48px_-20px_rgba(4,120,87,0.18)] p-8 text-center overflow-hidden relative">
+            <div aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400" />
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 ring-8 ring-emerald-50/50">
+              <svg className="h-7 w-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-red-600 mb-1">KJRI Vancouver</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 mb-1">KJRI Vancouver</p>
             <h1 className="text-xl font-extrabold tracking-tight text-gray-900 mb-2">Application Submitted</h1>
             <p className="text-sm text-gray-600 mb-6">
               Thank you. Your application has been received — no appointment is needed since
@@ -544,7 +550,7 @@ export default function VisaWizard() {
 
             <a
               href="/check"
-              className="inline-block w-full rounded-xl bg-red-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 transition"
+              className="inline-block w-full rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-emerald-700 hover:-translate-y-px hover:shadow-lg hover:shadow-emerald-500/25"
             >
               Check Application Status
             </a>
@@ -555,22 +561,39 @@ export default function VisaWizard() {
   }
 
   return (
-    <div className="py-10 pb-28">
+    <div className="py-10 pb-32 bg-security" style={{ minHeight: "100%" }}>
+      <style>{`
+        .bg-security {
+          background-image: repeating-linear-gradient(135deg, rgba(4,120,87,0.035) 0px, rgba(4,120,87,0.035) 1px, transparent 1px, transparent 14px);
+        }
+        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .step-enter { animation: fadeSlideIn 0.28s cubic-bezier(0.16,1,0.3,1) both; }
+      `}</style>
       <div className="mx-auto max-w-3xl px-4">
-        <div className="rounded-2xl border border-gray-200 bg-white shadow-sm">
-          <div className="p-6 sm:p-8">
-            <div className="mb-6">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-red-600 mb-1">
+        <div className="rounded-2xl border border-gray-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05),0_20px_48px_-20px_rgba(4,120,87,0.18)] overflow-hidden">
+
+          {/* Hero band */}
+          <div className="relative px-6 sm:px-8 py-6 bg-gradient-to-br from-emerald-800 via-emerald-700 to-emerald-600 overflow-hidden">
+            <div aria-hidden className="absolute -right-6 -top-10 h-40 w-40 rounded-full bg-white/5" />
+            <div aria-hidden className="absolute right-16 bottom-[-2.5rem] h-24 w-24 rounded-full bg-white/5" />
+            <div className="relative flex items-center gap-2 mb-2">
+              <svg className="h-3.5 w-3.5 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L9 21l-1-4-4-1 1.5-1.5M12 15L21 6a2 2 0 00-2-2l-9 9m3 3L6 9m6 6l7 3-3-7" />
+              </svg>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-100">
                 KJRI Vancouver
               </p>
-              <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
-                Indonesian Visa Application
-              </h1>
-              <p className="mt-1 text-sm text-gray-500">
-                This form collects exactly what the official Visa Application Form requires, so it
-                can be auto-filled and downloaded once your application is submitted.
-              </p>
             </div>
+            <h1 className="relative text-2xl font-extrabold tracking-tight text-white">
+              Indonesian Visa Application
+            </h1>
+            <p className="relative mt-1.5 text-sm text-emerald-50/90 max-w-lg">
+              This form collects exactly what the official Visa Application Form requires, so it
+              can be auto-filled and downloaded once your application is submitted.
+            </p>
+          </div>
+
+          <div className="p-6 sm:p-8">
 
             {error && (
               <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -583,34 +606,47 @@ export default function VisaWizard() {
               {/* Step header */}
               <div className="mb-2 flex items-center justify-between">
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-gray-500">
+                  <p className="text-xs font-semibold text-emerald-700">
                     Step {stepIndex + 1} of {STEPS.length}
                   </p>
                   <h2 className="text-lg font-bold text-gray-900">{step.title}</h2>
                 </div>
-                <div className="hidden md:flex items-center gap-2">
+                <div className="hidden md:flex items-center">
                   {STEPS.map((s, i) => {
                     const active = i === stepIndex, done = i < stepIndex;
                     return (
-                      <button
-                        key={s.id}
-                        type="button"
-                        onClick={() => jumpToStep(i)}
-                        title={`Step ${i + 1}: ${s.title}`}
-                        className={[
-                          "h-2.5 w-2.5 rounded-full border transition cursor-pointer",
-                          active
-                            ? "bg-red-600 border-red-600 scale-110"
-                            : done
-                            ? "bg-gray-900 border-gray-900 hover:bg-gray-700"
-                            : "bg-white border-gray-300 hover:border-gray-400",
-                        ].join(" ")}
-                      />
+                      <div key={s.id} className="flex items-center">
+                        {i > 0 && (
+                          <div className={`h-px w-1.5 transition-colors ${done || active ? "bg-emerald-400" : "bg-gray-200"}`} />
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => jumpToStep(i)}
+                          title={`Step ${i + 1}: ${s.title}`}
+                          className={[
+                            "flex items-center justify-center h-4 w-4 rounded-full text-[8px] font-bold transition-all cursor-pointer shrink-0",
+                            active
+                              ? "bg-emerald-600 text-white ring-[3px] ring-emerald-100 scale-110"
+                              : done
+                              ? "bg-emerald-500 text-white hover:bg-emerald-600"
+                              : "bg-gray-100 text-gray-400 hover:bg-gray-200",
+                          ].join(" ")}
+                        >
+                          {done ? (
+                            <svg className="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                          ) : (
+                            i + 1
+                          )}
+                        </button>
+                      </div>
                     );
                   })}
                 </div>
               </div>
 
+              <div key={stepIndex} className="step-enter space-y-4">
               {step.id === "terms" && (
                 <TermsStep
                   accepted={form.termsAccepted}
@@ -799,13 +835,15 @@ export default function VisaWizard() {
                 />
               )}
 
+              </div>
+
               {/* Actions */}
               <div className="flex items-center gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => { if (editFromReview) { goToReview(); return; } goBack(); }}
                   disabled={(stepIndex === 0 && !editFromReview) || loading}
-                  className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition-all duration-150 hover:border-gray-300 hover:bg-gray-50 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {editFromReview ? "Back to Review" : "Back"}
                 </button>
@@ -816,7 +854,7 @@ export default function VisaWizard() {
                       type="button"
                       onClick={handleNextClick}
                       disabled={loading}
-                      className="w-full rounded-xl bg-red-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                      className="w-full rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-emerald-700 hover:-translate-y-px hover:shadow-lg hover:shadow-emerald-500/25 cursor-pointer disabled:opacity-60 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
                     >
                       {editFromReview ? "Save" : "Continue"}
                     </button>
@@ -826,7 +864,7 @@ export default function VisaWizard() {
                     type="submit"
                     onClick={handleSubmit}
                     disabled={loading || !stepIsValid}
-                    className="w-full rounded-xl bg-red-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-emerald-700 hover:-translate-y-px hover:shadow-lg hover:shadow-emerald-500/25 cursor-pointer disabled:opacity-60 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
                   >
                     {loading ? "Submitting…" : "Submit Application"}
                   </button>
@@ -839,24 +877,34 @@ export default function VisaWizard() {
 
       {/* Sticky progress bar */}
       <div
-        className="fixed bottom-0 left-0 right-0 z-30 border-t border-gray-200 bg-white/80 backdrop-blur"
+        className="fixed bottom-0 left-0 right-0 z-30 border-t border-gray-200 bg-white/85 backdrop-blur-md"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <div className="mx-auto max-w-3xl px-4 py-3">
           <div className="flex items-center gap-4">
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-gray-900">Application progress</p>
-              <p className="text-[11px] text-gray-500 truncate">
-                {step.title} • Step {stepIndex + 1} of {STEPS.length}
-              </p>
+            <div className="min-w-0 flex items-center gap-2.5">
+              <span className="hidden sm:flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L9 21l-1-4-4-1 1.5-1.5M12 15L21 6a2 2 0 00-2-2l-9 9m3 3L6 9m6 6l7 3-3-7" />
+                </svg>
+              </span>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-gray-900">Application progress</p>
+                <p className="text-[11px] text-gray-500 truncate">
+                  {step.title} • Step {stepIndex + 1} of {STEPS.length}
+                </p>
+              </div>
             </div>
             <div className="ml-auto w-48">
               <div className="flex items-center justify-between text-[11px] text-gray-500 mb-1">
                 <span>Complete</span>
-                <span className="font-semibold text-gray-700">{progress}%</span>
+                <span className="font-semibold text-emerald-700">{progress}%</span>
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
-                <div className="h-full rounded-full bg-red-600 transition-all duration-300" style={{ width: `${progress}%` }} />
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
             </div>
           </div>
