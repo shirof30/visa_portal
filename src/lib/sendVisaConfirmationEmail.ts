@@ -71,6 +71,26 @@ export async function sendVisaConfirmationEmail({
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light">
 <meta name="supported-color-schemes" content="light">
+<style>
+  /* Gmail mobile app dark-mode defense — see the matching comment in
+     sendStatusEmail.ts for why this exists. Keep in sync. */
+  @media (prefers-color-scheme: dark) {
+    [style*="background:white"]     { background-color: #ffffff !important; }
+    [style*="background:#f8fafc"]   { background-color: #f8fafc !important; }
+    [style*="background:#dde3ec"]   { background-color: #dde3ec !important; }
+    [style*="color:#94a3b8"]        { color: #94a3b8 !important; }
+    [style*="color:#1e293b"]        { color: #1e293b !important; }
+    [style*="color:#334155"]        { color: #334155 !important; }
+    [style*="color:#713f12"]        { color: #713f12 !important; }
+  }
+  [data-ogsc] [style*="background:white"]   { background-color: #ffffff !important; }
+  [data-ogsc] [style*="background:#f8fafc"] { background-color: #f8fafc !important; }
+  [data-ogsc] [style*="background:#dde3ec"] { background-color: #dde3ec !important; }
+  [data-ogsc] [style*="color:#94a3b8"]      { color: #94a3b8 !important; }
+  [data-ogsc] [style*="color:#1e293b"]      { color: #1e293b !important; }
+  [data-ogsc] [style*="color:#334155"]      { color: #334155 !important; }
+  [data-ogsc] [style*="color:#713f12"]      { color: #713f12 !important; }
+</style>
 </head>
 <body style="margin:0;padding:0;background:#dde3ec;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#dde3ec;padding:36px 0;">
