@@ -59,7 +59,7 @@ export default function ContactModal({
               href="tel:17787781992"
               className="text-red-800 font-semibold hover:underline"
             >
-              778-778-1992
+              778-788-1992
             </a>
           </div>
         </div>
