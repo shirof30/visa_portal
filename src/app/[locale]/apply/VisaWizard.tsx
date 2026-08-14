@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
 
 import ProcessingOverlay from "@/components/ProcessingOverlay";
-import { getTranslatedUploads } from "@/lib/visaConfigI18n";
+import { getTranslatedUploads, CATEGORY_OTHERS_DEFAULT } from "@/lib/visaConfigI18n";
 
 import TermsStep from "./steps/TermsStep";
 import ApplicantTypeStep from "./steps/ApplicantTypeStep";
@@ -669,7 +669,7 @@ export default function VisaWizard() {
               {stepId === "category" && (
                 <VisaCategoryStep
                   value={form.visaCategory}
-                  onSelect={(categoryCode) => setForm((p) => ({ ...p, visaCategory: categoryCode }))}
+                  onSelect={(categoryCode) => setForm((p) => ({ ...p, visaCategory: categoryCode, purposeOfVisit: "", purposeOther: "" }))}
                   showError={inv(!form.visaCategory)}
                 />
               )}
@@ -679,7 +679,11 @@ export default function VisaWizard() {
                   form={form}
                   inv={inv}
                   fieldCls={fieldCls}
-                  onSelectPurpose={(purpose) => setForm((p) => ({ ...p, purposeOfVisit: purpose, purposeOther: "" }))}
+                  onSelectPurpose={(purpose) => setForm((p) => ({
+                    ...p,
+                    purposeOfVisit: purpose,
+                    purposeOther: purpose === "Others" ? (CATEGORY_OTHERS_DEFAULT[p.visaCategory] ?? "") : "",
+                  }))}
                   onChangePurposeOther={(v) => setForm((p) => ({ ...p, purposeOther: v }))}
                 />
               )}

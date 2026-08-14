@@ -6,6 +6,8 @@ import {
   PASSPORT_TYPES,
   MARITAL_STATUSES,
   PURPOSE_OF_VISIT,
+  CATEGORY_PURPOSE_MAP,
+  CATEGORY_OTHERS_DEFAULT,
   categoryNeedsSponsorLetter,
   APPLICANT_NON_KANADA,
 } from "@/app/[locale]/apply/config/visaConfig";
@@ -44,6 +46,12 @@ export function getTranslatedEnumOptions(
     value,
     label: t(`enums.${enumKey}.${value}`),
   }));
+}
+
+export function getTranslatedPurposeOptionsForCategory(t: TFunc, categoryCode: string) {
+  const allowed = CATEGORY_PURPOSE_MAP[categoryCode];
+  const values = allowed && allowed.length ? allowed : PURPOSE_OF_VISIT;
+  return getTranslatedEnumOptions(t, "purposeOfVisit", values);
 }
 
 export function getTranslatedUploads(
@@ -136,4 +144,6 @@ export {
   PURPOSE_OF_VISIT,
   VISA_CATEGORIES,
   APPLICANT_TYPES,
+  CATEGORY_PURPOSE_MAP,
+  CATEGORY_OTHERS_DEFAULT,
 };

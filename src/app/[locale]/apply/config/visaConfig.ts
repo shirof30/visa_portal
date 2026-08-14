@@ -77,6 +77,40 @@ export function categoryNeedsSponsorLetter(categoryCode: string): boolean {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Which "Purpose of visit" checkboxes (from the official form's flat list,
+// see PURPOSE_OF_VISIT below) are relevant to each C1–C5 category. Derived
+// directly from each category's own `items` above — e.g. C1 covers
+// Tourism/Medical Treatment/Family Visit, and since the official form has no
+// distinct "Medical Treatment" checkbox, that maps onto "Others" (with the
+// specify field). Categories with only one sensible match (C3, C4, C5) still
+// show as a single filtered option rather than being auto-selected, so the
+// applicant always makes an explicit choice.
+// ─────────────────────────────────────────────────────────────────────────────
+export const CATEGORY_PURPOSE_MAP: Record<string, string[]> = {
+  C1: ["Tourism", "Family Visit", "Others"],
+  C2: ["Commercial/Business", "Conference/Seminar/Workshop", "Others"],
+  C3: ["Others"],
+  C4: ["Others"],
+  C5: ["Press and Media"],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// When "Others" is the (only, or one of the) purpose option(s) for a category,
+// pre-fill the specify field with what that category's "Others" actually
+// means — e.g. C1's Others stands in for "Medical Treatment" (Berobat), since
+// the official form has no dedicated checkbox for it. Kept in English
+// deliberately, regardless of UI locale: this value is submitted as-is onto
+// the English-language official government form, not just displayed in the
+// app. The applicant can still edit it before continuing.
+// ─────────────────────────────────────────────────────────────────────────────
+export const CATEGORY_OTHERS_DEFAULT: Record<string, string> = {
+  C1: "Medical Treatment",
+  C2: "Goods Purchase",
+  C3: "Medical Care",
+  C4: "Official Government Duty",
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Fields below mirror the official KJRI "VISA APPLICATION FORM" exactly —
 // same option lists, same order, same wording — so submissions map 1:1 onto
 // the printable/fillable PDF (see /api/submissions/[id]/export-pdf).
