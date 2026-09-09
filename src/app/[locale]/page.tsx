@@ -311,7 +311,7 @@ export default function HomePage() {
               initial="hidden"
               animate="show"
             >
-              <motion.p variants={fadeUp} className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#8C909D]">
+              <motion.p variants={fadeUp} className="inline-block self-start bg-white/70 backdrop-blur-sm rounded-md px-2.5 py-1 shadow-sm text-[12px] font-bold uppercase tracking-[0.1em] text-[#5B6070]">
                 {t("categories.title")}
               </motion.p>
               {VISA_CATEGORY_CODES.map((code) => {
@@ -356,7 +356,7 @@ export default function HomePage() {
             whileInView="show"
             viewport={{ once: true, amount: 0.3 }}
           >
-            <motion.p variants={fadeUp} className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#8C909D] mb-6">
+            <motion.p variants={fadeUp} className="inline-block bg-white/70 backdrop-blur-sm rounded-md px-2.5 py-1 shadow-sm text-[12px] font-bold uppercase tracking-[0.1em] text-[#5B6070] mb-6">
               {t("howToApply.title")}
             </motion.p>
             <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -399,7 +399,7 @@ export default function HomePage() {
             whileInView="show"
             viewport={{ once: true, amount: 0.3 }}
           >
-            <motion.p variants={fadeUp} className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#8C909D] mb-6">
+            <motion.p variants={fadeUp} className="inline-block bg-white/70 backdrop-blur-sm rounded-md px-2.5 py-1 shadow-sm text-[12px] font-bold uppercase tracking-[0.1em] text-[#5B6070] mb-6">
               {t("goodToKnow.title")}
             </motion.p>
             <motion.div

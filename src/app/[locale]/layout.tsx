@@ -50,8 +50,9 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className="min-h-screen text-gray-900 overflow-x-hidden flex flex-col">
         <NextIntlClientProvider messages={messages}>
-          <div className="fixed inset-0 -z-20 bg-[url('/bg.jpg')] bg-cover bg-center bg-no-repeat" />
-          <div className="fixed inset-0 -z-10 bg-gradient-to-br from-emerald-50/60 via-stone-50/80 to-white/85 backdrop-blur-[1px]" />
+          <div className="fixed inset-0 -z-20 bg-[url('/bg.jpg')] bg-cover bg-center bg-no-repeat scale-105" />
+          <div className="fixed inset-0 -z-10 bg-white/25 backdrop-blur-md" />
+          <div className="fixed inset-0 -z-10 bg-gradient-to-br from-emerald-50/30 via-white/15 to-stone-50/35" />
           <Header />
           <div className="flex-1">{children}</div>
           <Footer />
