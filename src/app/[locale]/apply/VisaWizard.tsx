@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
 
 import ProcessingOverlay from "@/components/ProcessingOverlay";
-import { getTranslatedUploads, CATEGORY_OTHERS_DEFAULT } from "@/lib/visaConfigI18n";
+import { getTranslatedUploads, CATEGORY_OTHERS_DEFAULT, CATEGORY_PURPOSE_MAP } from "@/lib/visaConfigI18n";
 
 import TermsStep from "./steps/TermsStep";
 import ApplicantTypeStep from "./steps/ApplicantTypeStep";
@@ -685,13 +685,17 @@ export default function VisaWizard() {
                 <VisaCategoryStep
                   value={form.visaCategory}
                   onSelect={(categoryCode) =>
-                    setForm((p) => ({
-                      ...p,
-                      visaCategory: categoryCode,
-                      purposeOfVisit: "",
-                      purposeOther: "",
-                      hasInvitationLetter: categoryCode === "C1" ? false : p.hasInvitationLetter,
-                    }))
+                    setForm((p) => {
+                      const allowedPurposes = CATEGORY_PURPOSE_MAP[categoryCode] ?? [];
+                      const purposeOfVisit = allowedPurposes.length === 1 ? allowedPurposes[0] : "";
+                      return {
+                        ...p,
+                        visaCategory: categoryCode,
+                        purposeOfVisit,
+                        purposeOther: purposeOfVisit === "Others" ? (CATEGORY_OTHERS_DEFAULT[categoryCode] ?? "") : "",
+                        hasInvitationLetter: categoryCode === "C1" ? false : p.hasInvitationLetter,
+                      };
+                    })
                   }
                   showError={inv(!form.visaCategory)}
                 />
@@ -705,7 +709,7 @@ export default function VisaWizard() {
                   onSelectPurpose={(purpose) => setForm((p) => ({
                     ...p,
                     purposeOfVisit: purpose,
-                    purposeOther: purpose === "Others" ? (CATEGORY_OTHERS_DEFAULT[p.visaCategory] ?? "") : "",
+                    purposeOther: "",
                   }))}
                   onChangePurposeOther={(v) => setForm((p) => ({ ...p, purposeOther: v }))}
                 />

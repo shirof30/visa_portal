@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import SectionCard from "../ui/SectionCard";
 import FieldError from "../ui/FieldError";
-import { getTranslatedPurposeOptionsForCategory } from "@/lib/visaConfigI18n";
+import { getTranslatedPurposeOptionsForCategory, CATEGORY_OTHERS_DEFAULT } from "@/lib/visaConfigI18n";
 
 export default function PurposeStep({
   form,
@@ -26,6 +26,7 @@ export default function PurposeStep({
   const t = useTranslations("applySteps.purpose");
   const tVisa = useTranslations("visaConfig");
   const purposeOptions = getTranslatedPurposeOptionsForCategory(tVisa, form.visaCategory);
+  const locked = purposeOptions.length === 1;
 
   return (
     <SectionCard subtitle={t("subtitle")}>
@@ -44,15 +45,16 @@ export default function PurposeStep({
             return (
               <label
                 key={value}
-                className={`flex items-center gap-2 rounded-lg border px-3 py-2 cursor-pointer transition text-sm ${
+                className={`flex items-center gap-2 rounded-lg border px-3 py-2 transition text-sm ${
                   active ? "border-red-500 bg-red-50" : "border-gray-200 hover:border-red-300"
-                }`}
+                } ${locked ? "cursor-default" : "cursor-pointer"}`}
               >
                 <input
                   type="radio"
                   name="purposeOfVisit"
                   value={value}
                   checked={active}
+                  disabled={locked}
                   onChange={() => onSelectPurpose(value)}
                   className="accent-red-600"
                 />
@@ -70,7 +72,7 @@ export default function PurposeStep({
               value={form.purposeOther}
               maxLength={200}
               onChange={(e) => onChangePurposeOther(e.target.value)}
-              placeholder={t("specifyPlaceholder")}
+              placeholder={locked ? t("specifyPlaceholder") : CATEGORY_OTHERS_DEFAULT[form.visaCategory] ?? t("specifyPlaceholder")}
             />
             <FieldError show={inv(!form.purposeOther.trim())} message={t("specifyError")} />
           </div>
