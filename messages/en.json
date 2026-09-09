@@ -368,7 +368,7 @@
       "streetPlaceholder": "Street address"
     },
     "indonesia": {
-      "subtitle": "Where you will be staying and your travel details (optional but recommended).",
+      "subtitle": "Where you will be staying and your travel details.",
       "intendedAddress": "Intended Address in Indonesia",
       "intendedAddressPlaceholder": "Hotel name or full address",
       "cityProvince": "City & Province",
@@ -385,7 +385,12 @@
       "dateOfExit": "Date of Exit",
       "flightOut": "Flight No.",
       "invitationTitle": "18. Do You Have an Invitation/Reference Letter?",
-      "invitationYesNote": "Please submit a copy with the application — you'll upload it in the Documents step."
+      "invitationYesNote": "Please submit a copy with the application — you'll upload it in the Documents step.",
+      "errors": {
+        "portOfEntry": "Port of entry is required.",
+        "dateOfEntry": "Date of entry is required.",
+        "flightIn": "Entry flight/vessel number is required."
+      }
     },
     "sponsor": {
       "title": "19. Contact Person/Sponsor in Indonesia",

@@ -263,7 +263,11 @@ export default function VisaWizard() {
       case "occupation":
         return true;
       case "indonesia":
-        return true;
+        return (
+          !!form.portOfEntry.trim() &&
+          !!form.dateOfEntry.trim() &&
+          !!form.flightIn.trim()
+        );
       case "sponsor":
         if (!sponsorRequired) return true;
         return (
@@ -792,6 +796,7 @@ export default function VisaWizard() {
               {stepId === "indonesia" && (
                 <IndonesiaStayStep
                   form={form}
+                  inv={inv}
                   fieldCls={fieldCls}
                   handleChange={handleChange}
                   todayStr={todayStr}

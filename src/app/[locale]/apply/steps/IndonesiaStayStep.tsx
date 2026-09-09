@@ -3,9 +3,11 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import SectionCard from "../ui/SectionCard";
+import FieldError from "../ui/FieldError";
 
 export default function IndonesiaStayStep({
   form,
+  inv,
   fieldCls,
   handleChange,
   todayStr,
@@ -24,6 +26,7 @@ export default function IndonesiaStayStep({
     dateOfExit: string;
     flightOut: string;
   };
+  inv: (cond: boolean) => boolean;
   fieldCls: (invalid: boolean, extra?: string) => string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   todayStr: string;
@@ -98,26 +101,56 @@ export default function IndonesiaStayStep({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block mb-1 font-medium">{t("portOfEntry")}</label>
-            <input className={fieldCls(false)} name="portOfEntry" maxLength={80} value={form.portOfEntry} onChange={handleChange} placeholder={t("portOfEntryPlaceholder")} />
+            <input
+              className={fieldCls(inv(!form.portOfEntry.trim()))}
+              name="portOfEntry"
+              maxLength={80}
+              value={form.portOfEntry}
+              onChange={handleChange}
+              placeholder={t("portOfEntryPlaceholder")}
+            />
+            <FieldError show={inv(!form.portOfEntry.trim())} message={t("errors.portOfEntry")} />
           </div>
           <div>
             <label className="block mb-1 font-medium">{t("dateOfEntry")}</label>
-            <input type="date" className={fieldCls(false)} name="dateOfEntry" min={todayStr} value={form.dateOfEntry} onChange={handleChange} />
+            <input
+              type="date"
+              className={fieldCls(inv(!form.dateOfEntry.trim()))}
+              name="dateOfEntry"
+              min={todayStr}
+              value={form.dateOfEntry}
+              onChange={handleChange}
+            />
+            <FieldError show={inv(!form.dateOfEntry.trim())} message={t("errors.dateOfEntry")} />
           </div>
           <div>
             <label className="block mb-1 font-medium">{t("flightIn")}</label>
-            <input className={fieldCls(false)} name="flightIn" maxLength={20} value={form.flightIn} onChange={handleChange} placeholder={t("flightInPlaceholder")} />
+            <input
+              className={fieldCls(inv(!form.flightIn.trim()))}
+              name="flightIn"
+              maxLength={20}
+              value={form.flightIn}
+              onChange={handleChange}
+              placeholder={t("flightInPlaceholder")}
+            />
+            <FieldError show={inv(!form.flightIn.trim())} message={t("errors.flightIn")} />
           </div>
           <div>
-            <label className="block mb-1 font-medium">{t("portOfExit")}</label>
+            <label className="block mb-1 font-medium">
+              {t("portOfExit")} <span className="text-gray-400 font-normal">{tCommon("optional")}</span>
+            </label>
             <input className={fieldCls(false)} name="portOfExit" maxLength={80} value={form.portOfExit} onChange={handleChange} />
           </div>
           <div>
-            <label className="block mb-1 font-medium">{t("dateOfExit")}</label>
+            <label className="block mb-1 font-medium">
+              {t("dateOfExit")} <span className="text-gray-400 font-normal">{tCommon("optional")}</span>
+            </label>
             <input type="date" className={fieldCls(false)} name="dateOfExit" min={form.dateOfEntry || todayStr} value={form.dateOfExit} onChange={handleChange} />
           </div>
           <div>
-            <label className="block mb-1 font-medium">{t("flightOut")}</label>
+            <label className="block mb-1 font-medium">
+              {t("flightOut")} <span className="text-gray-400 font-normal">{tCommon("optional")}</span>
+            </label>
             <input className={fieldCls(false)} name="flightOut" maxLength={20} value={form.flightOut} onChange={handleChange} />
           </div>
         </div>

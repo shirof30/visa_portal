@@ -368,7 +368,7 @@
       "streetPlaceholder": "Alamat jalan"
     },
     "indonesia": {
-      "subtitle": "Tempat Anda akan tinggal dan rincian perjalanan (opsional namun disarankan).",
+      "subtitle": "Tempat Anda akan tinggal dan rincian perjalanan.",
       "intendedAddress": "Alamat yang Dituju di Indonesia",
       "intendedAddressPlaceholder": "Nama hotel atau alamat lengkap",
       "cityProvince": "Kota & Provinsi",
@@ -385,7 +385,12 @@
       "dateOfExit": "Tanggal Keluar",
       "flightOut": "No. Penerbangan",
       "invitationTitle": "18. Apakah Anda Memiliki Surat Undangan/Referensi?",
-      "invitationYesNote": "Mohon sertakan salinan bersama permohonan — Anda akan mengunggahnya pada langkah Dokumen."
+      "invitationYesNote": "Mohon sertakan salinan bersama permohonan — Anda akan mengunggahnya pada langkah Dokumen.",
+      "errors": {
+        "portOfEntry": "Pelabuhan masuk wajib diisi.",
+        "dateOfEntry": "Tanggal masuk wajib diisi.",
+        "flightIn": "Nomor penerbangan/kapal masuk wajib diisi."
+      }
     },
     "sponsor": {
       "title": "19. Kontak Person/Sponsor di Indonesia",

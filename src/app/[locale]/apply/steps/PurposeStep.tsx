@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import SectionCard from "../ui/SectionCard";
 import FieldError from "../ui/FieldError";
-import { getTranslatedEnumOptions, PURPOSE_OF_VISIT } from "@/lib/visaConfigI18n";
+import { getTranslatedPurposeOptionsForCategory } from "@/lib/visaConfigI18n";
 
 export default function PurposeStep({
   form,
@@ -14,6 +14,7 @@ export default function PurposeStep({
   onChangePurposeOther,
 }: {
   form: {
+    visaCategory: string;
     purposeOfVisit: string;
     purposeOther: string;
   };
@@ -24,7 +25,7 @@ export default function PurposeStep({
 }) {
   const t = useTranslations("applySteps.purpose");
   const tVisa = useTranslations("visaConfig");
-  const purposeOptions = getTranslatedEnumOptions(tVisa, "purposeOfVisit", PURPOSE_OF_VISIT);
+  const purposeOptions = getTranslatedPurposeOptionsForCategory(tVisa, form.visaCategory);
 
   return (
     <SectionCard subtitle={t("subtitle")}>

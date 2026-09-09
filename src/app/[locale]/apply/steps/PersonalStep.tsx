@@ -163,7 +163,7 @@ export default function PersonalStep({
         <p className="text-xs font-semibold text-gray-600 mb-3">{t("contactTitle")}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block mb-1 font-medium">{t("phone")}</label>
+            <label className="block mb-1 font-medium">{t("cellular")}</label>
             <input
               type="text"
               inputMode="numeric"
@@ -205,20 +205,6 @@ export default function PersonalStep({
               value={form.addressCanadaFax}
               onChange={handleChange}
               maxLength={20}
-            />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">
-              {t("cellular")}{" "}
-              <span className="text-gray-400 font-normal">{tCommon("optional")}</span>
-            </label>
-            <input
-              className={fieldCls(false)}
-              name="addressCanadaCell"
-              value={form.addressCanadaCell}
-              onChange={handleChange}
-              maxLength={20}
-              placeholder={t("cellularPlaceholder")}
             />
           </div>
         </div>
