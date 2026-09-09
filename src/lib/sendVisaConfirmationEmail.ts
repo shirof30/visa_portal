@@ -1,3 +1,17 @@
+function formatSlotDate(slot: string): string {
+  const [datePart] = slot.split("T");
+  const [year, month, day] = datePart.split("-").map(Number);
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"];
+  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const dow = new Date(year, month - 1, day).getDay();
+  return `${dayNames[dow]}, ${day} ${monthNames[month - 1]} ${year}`;
+}
+
+function formatSlotTime(slot: string): string {
+  return slot.split("T")[1].slice(0, 5);
+}
+
 async function getAccessToken(): Promise<string> {
   const res = await fetch(
     `https://login.microsoftonline.com/${process.env.AZURE_TENANT_ID}/oauth2/v2.0/token`,
@@ -23,18 +37,20 @@ export async function sendVisaConfirmationEmail({
   applicationRef,
   reason,
   submissionMethod,
+  appointmentSlot,
 }: {
   toEmail: string;
   fullName: string;
   applicationRef: string;
   reason: string;
   submissionMethod?: string | null;
+  appointmentSlot?: string | null;
 }): Promise<void> {
   const token = await getAccessToken();
 
   const isMailIn = submissionMethod === "mail";
 
-  const methodNoticeHtml = isMailIn
+  const appointmentHtml = isMailIn
     ? `
     <!-- Mail-in notice -->
     <tr><td style="padding:16px 36px 0;">
@@ -49,8 +65,43 @@ export async function sendVisaConfirmationEmail({
         </div>
       </div>
     </td></tr>`
-    : `
-    <!-- Appointment reminder -->
+    : appointmentSlot
+      ? `
+    <!-- Your appointment -->
+    <tr><td style="padding:24px 36px 0;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#94a3b8;margin-bottom:8px;">Your Appointment</div>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border:2px solid #0d2b5e;border-radius:10px;overflow:hidden;">
+        <tr>
+          <td align="center" style="background:#0d2b5e;padding:20px 18px;">
+            <div style="font-size:34px;font-weight:800;line-height:1;color:#ffffff;letter-spacing:1px;">${formatSlotTime(appointmentSlot)}</div>
+            <div style="font-size:12px;color:#bfdbfe;margin-top:7px;">Vancouver time</div>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="background:#f8fafc;padding:17px 18px;font-size:16px;font-weight:700;color:#0d2b5e;">
+            ${formatSlotDate(appointmentSlot)}
+          </td>
+        </tr>
+      </table>
+    </td></tr>`
+      : "";
+
+  const rescheduleHtml = isMailIn || !appointmentSlot ? "" : `
+    <!-- Need to reschedule -->
+    <tr><td style="padding:16px 36px 0;">
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 18px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#475569;margin-bottom:6px;">
+          🔄 Need to Reschedule?
+        </div>
+        <div style="font-size:13px;color:#334155;line-height:1.6;">
+          Visit <a href="https://visa.indonesiavancouver.org/en/check" style="color:#0d2b5e;font-weight:700;">visa.indonesiavancouver.org/en/check</a>
+          and enter your reference number above to change your appointment date or time.
+        </div>
+      </div>
+    </td></tr>`;
+
+  const whatToBringHtml = isMailIn ? "" : `
+    <!-- What to bring -->
     <tr><td style="padding:16px 36px 0;">
       <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 18px;">
         <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#15803d;margin-bottom:6px;">
@@ -59,6 +110,21 @@ export async function sendVisaConfirmationEmail({
         <div style="font-size:13px;color:#166534;line-height:1.8;">
           1. Your <strong>original passport</strong>, valid for more than 6 months beyond your intended stay<br>
           2. One recent <strong>passport-size photo</strong> (4×6 cm, taken within the last 6 months)
+        </div>
+      </div>
+    </td></tr>`;
+
+  const dressCodeHtml = isMailIn ? "" : `
+    <!-- Dress code guidelines -->
+    <tr><td style="padding:16px 36px 0;">
+      <div style="background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:10px;padding:14px 18px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#6d28d9;margin-bottom:6px;">
+          👔 Dress Code Guidelines
+        </div>
+        <div style="font-size:13px;color:#4c1d95;line-height:1.6;">
+          Please dress neatly and modestly for your visit or interview at the Consulate —
+          business-casual attire is appropriate. Please avoid sleeveless tops, shorts,
+          flip-flops, or beachwear.
         </div>
       </div>
     </td></tr>`;
@@ -78,18 +144,26 @@ export async function sendVisaConfirmationEmail({
     [style*="background:white"]     { background-color: #ffffff !important; }
     [style*="background:#f8fafc"]   { background-color: #f8fafc !important; }
     [style*="background:#dde3ec"]   { background-color: #dde3ec !important; }
+    [style*="background:#eff6ff"]   { background-color: #eff6ff !important; }
+    [style*="background:#f0fdf4"]   { background-color: #f0fdf4 !important; }
+    [style*="background:#f5f3ff"]   { background-color: #f5f3ff !important; }
     [style*="color:#94a3b8"]        { color: #94a3b8 !important; }
     [style*="color:#1e293b"]        { color: #1e293b !important; }
     [style*="color:#334155"]        { color: #334155 !important; }
     [style*="color:#713f12"]        { color: #713f12 !important; }
+    [style*="color:#475569"]        { color: #475569 !important; }
   }
   [data-ogsc] [style*="background:white"]   { background-color: #ffffff !important; }
   [data-ogsc] [style*="background:#f8fafc"] { background-color: #f8fafc !important; }
   [data-ogsc] [style*="background:#dde3ec"] { background-color: #dde3ec !important; }
+  [data-ogsc] [style*="background:#eff6ff"] { background-color: #eff6ff !important; }
+  [data-ogsc] [style*="background:#f0fdf4"] { background-color: #f0fdf4 !important; }
+  [data-ogsc] [style*="background:#f5f3ff"] { background-color: #f5f3ff !important; }
   [data-ogsc] [style*="color:#94a3b8"]      { color: #94a3b8 !important; }
   [data-ogsc] [style*="color:#1e293b"]      { color: #1e293b !important; }
   [data-ogsc] [style*="color:#334155"]      { color: #334155 !important; }
   [data-ogsc] [style*="color:#713f12"]      { color: #713f12 !important; }
+  [data-ogsc] [style*="color:#475569"]      { color: #475569 !important; }
 </style>
 </head>
 <body style="margin:0;padding:0;background:#dde3ec;">
@@ -153,6 +227,8 @@ export async function sendVisaConfirmationEmail({
         </tr>
       </table>
     </td></tr>
+${appointmentHtml}
+${rescheduleHtml}
 
     <!-- Next steps -->
     <tr><td style="padding:20px 36px 0;">
@@ -160,27 +236,13 @@ export async function sendVisaConfirmationEmail({
       <div style="background:#f8fafc;border-radius:10px;padding:16px 20px;">
         <ol style="margin:0;padding-left:18px;color:#334155;font-size:13px;line-height:1.9;">
           <li>Your application will be reviewed by consular staff.</li>
-          <li>You may be contacted for additional documents or to schedule an interview.</li>
-          <li>Visit <strong>1630 Alberni St, Vancouver, BC</strong> during office hours if required.</li>
+          <li>You may be contacted for additional documents.</li>
           <li>Use your reference number to check your application status online.</li>
         </ol>
       </div>
     </td></tr>
-${methodNoticeHtml}
-
-    <!-- Dress code guidelines (placeholder — pending final KJRI-approved wording) -->
-    <tr><td style="padding:16px 36px 0;">
-      <div style="background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:10px;padding:14px 18px;">
-        <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#6d28d9;margin-bottom:6px;">
-          👔 Dress Code Guidelines
-        </div>
-        <div style="font-size:13px;color:#4c1d95;line-height:1.6;">
-          Please dress neatly and modestly for your visit or interview at the Consulate —
-          business-casual attire is appropriate. Please avoid sleeveless tops, shorts,
-          flip-flops, or beachwear.
-        </div>
-      </div>
-    </td></tr>
+${whatToBringHtml}
+${dressCodeHtml}
 
     <!-- Office hours -->
     <tr><td style="padding:20px 36px 0;">

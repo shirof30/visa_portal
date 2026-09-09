@@ -158,6 +158,7 @@ export async function POST(req: NextRequest) {
         applicationRef: existing.applicationRef,
         reason: existing.reason,
         submissionMethod: existing.submissionMethod,
+        appointmentSlot: updated.appointmentSlot,
       }).catch((err) => console.error("Confirmation email failed:", err));
     }
     return NextResponse.json(updated);

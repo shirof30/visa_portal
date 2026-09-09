@@ -276,13 +276,9 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
 
         <div>
           <label className="block mb-1 font-medium">{t("country")}</label>
-          <input
-            className={fieldCls(false)}
-            name="addressCanadaCountry"
-            value={form.addressCanadaCountry}
-            maxLength={60}
-            onChange={handleChange}
-          />
+          <div className="w-full rounded-md border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-base text-gray-600">
+            {form.addressCanadaCountry || tCommon("dash")}
+          </div>
         </div>
       </div>
     </SectionCard>

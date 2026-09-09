@@ -255,6 +255,7 @@ export async function listSubmissionsBySlotDateRange(
         gte: fromRange.start,   // start of fromYmd in Vancouver (=08:00 UTC)
         lte: toRange.end,       // end   of toYmd   in Vancouver (=07:59:59.999 UTC next day)
       },
+      portalType: "visa",
     },
     orderBy: { appointmentSlot: "asc" },
   });
@@ -274,7 +275,7 @@ export async function bookSlot(id: string, slotIso: string, capacity = 3): Promi
   const slotDate = slotToDate(slotIso);
 
   const count = await prisma.submission.count({
-    where: { appointmentSlot: slotDate, NOT: { id } },
+    where: { appointmentSlot: slotDate, portalType: "visa", NOT: { id } },
   });
 
   if (count >= capacity) return null;
@@ -308,7 +309,7 @@ export async function rescheduleSlotByRegistrationId(
   }
 
   const count = await prisma.submission.count({
-    where: { appointmentSlot: slotToDate(newSlotIso), NOT: { id: sub.id } },
+    where: { appointmentSlot: slotToDate(newSlotIso), portalType: "visa", NOT: { id: sub.id } },
   });
   if (count >= capacity) return { ok: false, error: "Slot sudah penuh" };
 
