@@ -149,7 +149,7 @@ export default function ApplicantTypeStep({
       {isNationalityBlocked && (
         <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
           <p className="font-semibold mb-1">{t("nationalityBlockedTitle")}</p>
-          <p>{t("nationalityBlockedBody")}</p>
+          <p>{t("nationalityBlockedBody", { nationality })}</p>
         </div>
       )}
 
@@ -163,7 +163,7 @@ export default function ApplicantTypeStep({
       {showModal === "nationality" && (
         <BlockingModal
           title={t("nationalityBlockedTitle")}
-          body={t("nationalityBlockedBody")}
+          body={t("nationalityBlockedBody", { nationality })}
           onClose={() => setShowModal(null)}
         />
       )}

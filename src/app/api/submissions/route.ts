@@ -16,6 +16,7 @@ import fs from "fs/promises";
 import { getSiteConfig } from "@/lib/siteConfig";
 import { randomUUID } from "crypto";
 import { sendVisaConfirmationEmail } from "@/lib/sendVisaConfirmationEmail";
+import { isTravelDocumentApplicant } from "@/app/[locale]/apply/config/visaConfig";
 
 function safeSlug(input: string) {
   return (
@@ -340,9 +341,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Canadian/Refugee Travel Document holders cannot apply through AURORA — enforced
+  // Travel Document holders cannot apply through AURORA — enforced
   // here too, not just as a blocking popup in the wizard.
-  if (applicantType === "CANADIAN_TRAVEL_DOC" || applicantType === "REFUGEE_TRAVEL_DOC") {
+  if (isTravelDocumentApplicant(applicantType)) {
     return NextResponse.json(
       { error: "Applications from Canadian/Refugee Travel Document holders are not accepted through this portal. Please apply via evisa.imigrasi.go.id through a guarantor/sponsor in Indonesia." },
       { status: 400 }

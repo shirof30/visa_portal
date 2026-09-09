@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
 
 import ProcessingOverlay from "@/components/ProcessingOverlay";
-import { getTranslatedUploads, CATEGORY_OTHERS_DEFAULT, CATEGORY_PURPOSE_MAP } from "@/lib/visaConfigI18n";
+import { getTranslatedUploads, CATEGORY_PURPOSE_MAP } from "@/lib/visaConfigI18n";
 
 import TermsStep from "./steps/TermsStep";
 import ApplicantTypeStep from "./steps/ApplicantTypeStep";
@@ -692,7 +692,7 @@ export default function VisaWizard() {
                         ...p,
                         visaCategory: categoryCode,
                         purposeOfVisit,
-                        purposeOther: purposeOfVisit === "Others" ? (CATEGORY_OTHERS_DEFAULT[categoryCode] ?? "") : "",
+                        purposeOther: "",
                         hasInvitationLetter: categoryCode === "C1" ? false : p.hasInvitationLetter,
                       };
                     })

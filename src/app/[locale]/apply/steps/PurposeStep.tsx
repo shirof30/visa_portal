@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import SectionCard from "../ui/SectionCard";
 import FieldError from "../ui/FieldError";
-import { getTranslatedPurposeOptionsForCategory, CATEGORY_OTHERS_DEFAULT } from "@/lib/visaConfigI18n";
+import { getTranslatedPurposeOptionsForCategory, CATEGORY_OTHERS_PLACEHOLDER } from "@/lib/visaConfigI18n";
 
 export default function PurposeStep({
   form,
@@ -72,7 +72,7 @@ export default function PurposeStep({
               value={form.purposeOther}
               maxLength={200}
               onChange={(e) => onChangePurposeOther(e.target.value)}
-              placeholder={locked ? t("specifyPlaceholder") : CATEGORY_OTHERS_DEFAULT[form.visaCategory] ?? t("specifyPlaceholder")}
+              placeholder={CATEGORY_OTHERS_PLACEHOLDER[form.visaCategory] ?? t("specifyPlaceholder")}
             />
             <FieldError show={inv(!form.purposeOther.trim())} message={t("specifyError")} />
           </div>

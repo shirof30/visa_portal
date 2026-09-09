@@ -264,7 +264,7 @@
       "travelDocBlockedTitle": "This application cannot continue through AURORA",
       "travelDocBlockedBody": "Canadian Travel Document and Refugee Travel Document holders cannot apply for an Indonesian visa through this portal. Please follow the official eVisa procedure at evisa.imigrasi.go.id — your visa type needs to be applied for by a guarantor/sponsor in Indonesia, which may include a travel agent or visa agent in Indonesia. KJRI Vancouver cannot provide information or check the status of applications submitted through an Indonesian travel agent.",
       "nationalityBlockedTitle": "This application cannot continue through AURORA",
-      "nationalityBlockedBody": "Your visa type needs to be applied for by a guarantor/sponsor in Indonesia, which may include a travel agent or visa agent in Indonesia. KJRI Vancouver cannot provide information or check the status of applications submitted through an Indonesian travel agent."
+      "nationalityBlockedBody": "Nationality chosen: {nationality}. This nationality cannot apply for an Indonesian visa through this portal. Please follow the official eVisa procedure at evisa.imigrasi.go.id — your visa type needs to be applied for by a guarantor/sponsor in Indonesia, which may include a travel agent or visa agent in Indonesia. KJRI Vancouver cannot provide information or check the status of applications submitted through an Indonesian travel agent."
     },
     "category": {
       "subtitle": "Select the visa category that matches the purpose of your visit to Indonesia.",
@@ -526,15 +526,10 @@
         "sub": "Non-Kanada",
         "hint": "You are not a Canadian citizen but currently reside in Canada (study / work / PR / visitor)."
       },
-      "CANADIAN_TRAVEL_DOC": {
-        "label": "Canadian Travel Document holder",
+      "TRAVEL_DOC": {
+        "label": "Travel Document holder",
         "sub": "Travel Document",
-        "hint": "You travel using a Canadian Travel Document rather than a passport."
-      },
-      "REFUGEE_TRAVEL_DOC": {
-        "label": "Refugee Travel Document holder",
-        "sub": "Travel Document",
-        "hint": "You travel using a Refugee Travel Document rather than a passport."
+        "hint": "You travel using a Canadian or Refugee Travel Document rather than a passport."
       }
     },
     "categories": {

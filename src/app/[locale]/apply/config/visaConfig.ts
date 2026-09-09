@@ -8,8 +8,11 @@ import type { UploadItem } from "../ui/UploadRow";
 // ─────────────────────────────────────────────────────────────────────────────
 export const APPLICANT_WN_KANADA = "WN_KANADA";
 export const APPLICANT_NON_KANADA = "NON_KANADA";
-export const APPLICANT_CANADIAN_TRAVEL_DOC = "CANADIAN_TRAVEL_DOC";
-export const APPLICANT_REFUGEE_TRAVEL_DOC = "REFUGEE_TRAVEL_DOC";
+export const APPLICANT_TRAVEL_DOC = "TRAVEL_DOC";
+// Legacy values kept only so isTravelDocumentApplicant still recognizes submissions
+// made before the two Travel Document options were combined into one.
+const APPLICANT_CANADIAN_TRAVEL_DOC_LEGACY = "CANADIAN_TRAVEL_DOC";
+const APPLICANT_REFUGEE_TRAVEL_DOC_LEGACY = "REFUGEE_TRAVEL_DOC";
 
 export const APPLICANT_TYPES = [
   {
@@ -25,23 +28,21 @@ export const APPLICANT_TYPES = [
     hint: "You are not a Canadian citizen but currently reside in Canada (study / work / PR / visitor).",
   },
   {
-    value: APPLICANT_CANADIAN_TRAVEL_DOC,
-    label: "Canadian Travel Document holder",
+    value: APPLICANT_TRAVEL_DOC,
+    label: "Travel Document holder",
     sub: "Travel Document",
-    hint: "You travel using a Canadian Travel Document rather than a passport.",
-  },
-  {
-    value: APPLICANT_REFUGEE_TRAVEL_DOC,
-    label: "Refugee Travel Document holder",
-    sub: "Travel Document",
-    hint: "You travel using a Refugee Travel Document rather than a passport.",
+    hint: "You travel using a Canadian or Refugee Travel Document rather than a passport.",
   },
 ] as const;
 
-/** Canadian/Refugee Travel Document holders cannot apply through AURORA — they must
+/** Travel Document holders cannot apply through AURORA — they must
  *  go through evisa.imigrasi.go.id via a guarantor/sponsor in Indonesia. */
 export function isTravelDocumentApplicant(applicantType: string): boolean {
-  return applicantType === APPLICANT_CANADIAN_TRAVEL_DOC || applicantType === APPLICANT_REFUGEE_TRAVEL_DOC;
+  return (
+    applicantType === APPLICANT_TRAVEL_DOC ||
+    applicantType === APPLICANT_CANADIAN_TRAVEL_DOC_LEGACY ||
+    applicantType === APPLICANT_REFUGEE_TRAVEL_DOC_LEGACY
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -128,6 +129,19 @@ export const CATEGORY_OTHERS_DEFAULT: Record<string, string> = {
   C2: "Goods Purchase",
   C3: "Medical Care",
   C4: "Official Government Duty",
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Placeholder text (not a prefilled value) shown in the "Please specify" field
+// when Others is selected — the applicant must type their own answer. Differs
+// from CATEGORY_OTHERS_DEFAULT above, which is just a plain label; these are
+// phrased as fill-in-the-blank hints.
+// ─────────────────────────────────────────────────────────────────────────────
+export const CATEGORY_OTHERS_PLACEHOLDER: Record<string, string> = {
+  C1: "Medical Treatment",
+  C2: "Goods Purchase",
+  C3: "Medical Treatment at ...",
+  C4: "Specify government duty in Indonesia",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
