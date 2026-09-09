@@ -112,18 +112,16 @@ function RequirementsModal({
             </p>
           </div>
 
+          {categoryCode === "C5" && (
+            <div className="rounded-xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800">
+              <p className="font-bold text-amber-900 mb-1">{t("requirementsModal.c5ExtraNoteTitle")}</p>
+              <p>{t("requirementsModal.c5ExtraNote")}</p>
+            </div>
+          )}
+
           <p className="text-xs text-[#8C909D] leading-relaxed">
             {t("requirementsModal.submitNote")}
           </p>
-        </div>
-
-        <div className="px-6 pb-6">
-          <Link
-            href="/apply"
-            className="block w-full text-center rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition"
-          >
-            {t("requirementsModal.startApplication")}
-          </Link>
         </div>
       </div>
     </div>
@@ -186,7 +184,7 @@ export default function HomePage() {
                         <span className="text-[15px] font-medium text-[#4B5060]">{t(`serviceHours.${dayKey}`)}</span>
                         <div className="text-right">
                           <div className="text-[15px] font-semibold text-[#111318] tabular-nums">{t1}</div>
-                          <div className="text-[13px] text-[#8C909D] tabular-nums">{t2}</div>
+                          <div className="text-[15px] font-semibold text-[#111318] tabular-nums">{t2}</div>
                         </div>
                       </div>
                     </div>

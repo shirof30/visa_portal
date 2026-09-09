@@ -290,6 +290,7 @@ export async function POST(req: NextRequest) {
   const occupationPhone = String(formData.get("occupationPhone") || "");
   const occupationFax = String(formData.get("occupationFax") || "");
 
+  const applicantType = String(formData.get("applicantType") || "");
   const typeOfVisaRequested = String(formData.get("typeOfVisaRequested") || "");
   const visaCategory = String(formData.get("visaCategory") || "");
   const visaProductCode = String(formData.get("visaProductCode") || "");
@@ -335,6 +336,15 @@ export async function POST(req: NextRequest) {
   if (!disclaimerAccepted) {
     return NextResponse.json(
       { error: "Disclaimer must be accepted" },
+      { status: 400 }
+    );
+  }
+
+  // Canadian/Refugee Travel Document holders cannot apply through AURORA — enforced
+  // here too, not just as a blocking popup in the wizard.
+  if (applicantType === "CANADIAN_TRAVEL_DOC" || applicantType === "REFUGEE_TRAVEL_DOC") {
+    return NextResponse.json(
+      { error: "Applications from Canadian/Refugee Travel Document holders are not accepted through this portal. Please apply via evisa.imigrasi.go.id through a guarantor/sponsor in Indonesia." },
       { status: 400 }
     );
   }

@@ -21,6 +21,8 @@ const CA_PROVINCE_BY_CODE: Record<string, string> = {
   YT: "Yukon",
 };
 
+const PROVINCE_OPTIONS = Object.values(CA_PROVINCE_BY_CODE).sort((a, b) => a.localeCompare(b));
+
 type Suggestion = {
   placeId: string;
   text: string;
@@ -35,10 +37,6 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
     addressCanadaUnit: string;
     addressCanadaPostalCode: string;
     addressCanadaCountry: string;
-    addressCanadaFax: string;
-    addressCanadaCell: string;
-    phoneNumber: string;
-    email: string;
   };
   inv: (cond: boolean) => boolean;
   fieldCls: (invalid: boolean, extra?: string) => string;
@@ -246,31 +244,20 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
 
         <div>
           <label className="block mb-1 font-medium">{t("province")}</label>
-          <input
+          <select
             className={fieldCls(inv(!form.addressCanadaProvince.trim()))}
             name="addressCanadaProvince"
             value={form.addressCanadaProvince}
-            maxLength={30}
-            onBlur={(e) => {
-              const raw = (e.target.value || "").trim();
-              if (!raw) return;
-              const upper = raw.toUpperCase();
-              if (CA_PROVINCE_BY_CODE[upper]) {
-                setForm((prev: any) => ({ ...prev, addressCanadaProvince: CA_PROVINCE_BY_CODE[upper] }));
-                return;
-              }
-              const normalized = Object.values(CA_PROVINCE_BY_CODE).find(
-                (x) => x.toLowerCase() === raw.toLowerCase()
-              );
-              if (normalized) {
-                setForm((prev: any) => ({ ...prev, addressCanadaProvince: normalized }));
-                return;
-              }
-              setForm((prev: any) => ({ ...prev, addressCanadaProvince: "" }));
-            }}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">{t("provincePlaceholder")}</option>
+            {PROVINCE_OPTIONS.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
           <FieldError show={inv(!form.addressCanadaProvince.trim())} message={t("errors.province")} />
         </div>
 
@@ -296,49 +283,6 @@ export default function CanadaAddressStep({ form, inv, fieldCls, handleChange, s
             maxLength={60}
             onChange={handleChange}
           />
-        </div>
-      </div>
-
-      <div className="border-t border-gray-100 pt-4">
-        <p className="text-xs font-semibold text-gray-600 mb-3">{t("contactTitle")}</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-1 font-medium">{t("phone")}</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              className={fieldCls(inv(form.phoneNumber.replace(/\D/g, "").length !== 10))}
-              name="phoneNumber"
-              value={form.phoneNumber}
-              onChange={(e) =>
-                handleChange({
-                  target: { name: "phoneNumber", value: e.target.value.replace(/\D/g, "").slice(0, 10) },
-                } as unknown as React.ChangeEvent<HTMLInputElement>)
-              }
-              placeholder={t("phonePlaceholder")}
-              required
-            />
-            <FieldError show={inv(form.phoneNumber.replace(/\D/g, "").length !== 10)} message={t("errors.phone")} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">
-              {t("fax")}{" "}
-              <span className="text-gray-400 font-normal">{tCommon("optional")}</span>
-            </label>
-            <input className={fieldCls(false)} name="addressCanadaFax" value={form.addressCanadaFax} onChange={handleChange} maxLength={20} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">
-              {t("cellular")}{" "}
-              <span className="text-gray-400 font-normal">{tCommon("optional")}</span>
-            </label>
-            <input className={fieldCls(false)} name="addressCanadaCell" value={form.addressCanadaCell} onChange={handleChange} maxLength={20} placeholder={t("cellularPlaceholder")} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">{t("email")}</label>
-            <input type="email" className={fieldCls(inv(!form.email.trim()))} name="email" value={form.email} onChange={handleChange} maxLength={254} placeholder={t("emailPlaceholder")} required />
-            <FieldError show={inv(!form.email.trim())} message={t("errors.email")} />
-          </div>
         </div>
       </div>
     </SectionCard>

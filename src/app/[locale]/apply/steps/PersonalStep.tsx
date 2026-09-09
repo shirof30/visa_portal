@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { useTranslations } from "next-intl";
 import SectionCard from "../ui/SectionCard";
 import FieldError from "../ui/FieldError";
 import DateSelect from "@/components/DateSelect";
 import { MARITAL_STATUSES } from "../config/visaConfig";
-import { COUNTRIES } from "@/lib/countries";
 import { getTranslatedEnumOptions } from "@/lib/visaConfigI18n";
 
 export default function PersonalStep({
@@ -15,7 +14,6 @@ export default function PersonalStep({
   inv,
   fieldCls,
   handleChange,
-  excludedNationalities = [],
 }: {
   form: {
     firstName: string;
@@ -26,12 +24,15 @@ export default function PersonalStep({
     dateOfBirth: string;
     nationality: string;
     maritalStatus: string;
+    phoneNumber: string;
+    email: string;
+    addressCanadaFax: string;
+    addressCanadaCell: string;
   };
   todayStr: string;
   inv: (cond: boolean) => boolean;
   fieldCls: (invalid: boolean, extra?: string) => string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
-  excludedNationalities?: string[];
 }) {
   const t = useTranslations("applySteps.personal");
   const tCommon = useTranslations("common");
@@ -39,11 +40,6 @@ export default function PersonalStep({
 
   const sexOptions = getTranslatedEnumOptions(tVisa, "sex", ["Male", "Female"]);
   const maritalOptions = getTranslatedEnumOptions(tVisa, "maritalStatus", MARITAL_STATUSES);
-
-  const nationalityOptions = useMemo(() => {
-    const excluded = new Set(excludedNationalities);
-    return COUNTRIES.filter((c) => !excluded.has(c) || c === form.nationality);
-  }, [excludedNationalities, form.nationality]);
 
   return (
     <SectionCard subtitle={t("subtitle")}>
@@ -142,21 +138,10 @@ export default function PersonalStep({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block mb-1 font-medium">{t("nationality")}</label>
-          <select
-            className={fieldCls(inv(!form.nationality.trim()))}
-            name="nationality"
-            value={form.nationality}
-            onChange={handleChange}
-            required
-          >
-            <option value="">{tCommon("select")}</option>
-            {nationalityOptions.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-          <FieldError show={inv(!form.nationality.trim())} message={t("errors.nationality")} />
+          <div className="w-full rounded-md border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-base text-gray-600">
+            {form.nationality || tCommon("dash")}
+          </div>
+          <p className="mt-1 text-[11px] text-gray-400">{t("nationalityLockedHint")}</p>
         </div>
         <div>
           <label className="block mb-1 font-medium">
@@ -171,6 +156,71 @@ export default function PersonalStep({
               </option>
             ))}
           </select>
+        </div>
+      </div>
+
+      <div className="border-t border-gray-100 pt-4">
+        <p className="text-xs font-semibold text-gray-600 mb-3">{t("contactTitle")}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block mb-1 font-medium">{t("phone")}</label>
+            <input
+              type="text"
+              inputMode="numeric"
+              className={fieldCls(inv(form.phoneNumber.replace(/\D/g, "").length !== 10))}
+              name="phoneNumber"
+              value={form.phoneNumber}
+              onChange={(e) =>
+                handleChange({
+                  target: { name: "phoneNumber", value: e.target.value.replace(/\D/g, "").slice(0, 10) },
+                } as unknown as React.ChangeEvent<HTMLInputElement>)
+              }
+              placeholder={t("phonePlaceholder")}
+              required
+            />
+            <FieldError show={inv(form.phoneNumber.replace(/\D/g, "").length !== 10)} message={t("errors.phone")} />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">{t("email")}</label>
+            <input
+              type="email"
+              className={fieldCls(inv(!form.email.trim()))}
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              maxLength={254}
+              placeholder={t("emailPlaceholder")}
+              required
+            />
+            <FieldError show={inv(!form.email.trim())} message={t("errors.email")} />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">
+              {t("fax")}{" "}
+              <span className="text-gray-400 font-normal">{tCommon("optional")}</span>
+            </label>
+            <input
+              className={fieldCls(false)}
+              name="addressCanadaFax"
+              value={form.addressCanadaFax}
+              onChange={handleChange}
+              maxLength={20}
+            />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">
+              {t("cellular")}{" "}
+              <span className="text-gray-400 font-normal">{tCommon("optional")}</span>
+            </label>
+            <input
+              className={fieldCls(false)}
+              name="addressCanadaCell"
+              value={form.addressCanadaCell}
+              onChange={handleChange}
+              maxLength={20}
+              placeholder={t("cellularPlaceholder")}
+            />
+          </div>
         </div>
       </div>
     </SectionCard>

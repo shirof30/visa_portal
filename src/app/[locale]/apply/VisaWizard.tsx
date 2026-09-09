@@ -27,6 +27,7 @@ import {
   APPLICANT_WN_KANADA,
   APPLICANT_NON_KANADA,
   categoryNeedsSponsorLetter,
+  isTravelDocumentApplicant,
   buildReason,
 } from "./config/visaConfig";
 
@@ -36,8 +37,8 @@ type StepId =
   | "address" | "occupation" | "indonesia" | "sponsor" | "background" | "uploads" | "delivery" | "review";
 
 const STEP_IDS: StepId[] = [
-  "terms", "applicant", "category", "purpose", "personal", "passport",
-  "address", "otp", "occupation", "indonesia", "sponsor", "background",
+  "terms", "applicant", "category", "purpose", "personal", "otp", "passport",
+  "address", "occupation", "indonesia", "sponsor", "background",
   "uploads", "delivery", "review",
 ];
 
@@ -217,7 +218,13 @@ export default function VisaWizard() {
       case "terms":
         return form.termsAccepted;
       case "applicant":
-        return !!form.applicantType;
+        if (!form.applicantType) return false;
+        if (isTravelDocumentApplicant(form.applicantType)) return false;
+        if (form.applicantType === APPLICANT_NON_KANADA) {
+          if (!form.nationality.trim()) return false;
+          if (excludedNationalities.includes(form.nationality)) return false;
+        }
+        return true;
       case "category":
         return !!form.visaCategory;
       case "purpose":
@@ -232,7 +239,10 @@ export default function VisaWizard() {
           !!form.sex &&
           !!form.placeOfBirth.trim() &&
           !!form.dateOfBirth &&
-          !!form.nationality.trim()
+          !!form.nationality.trim() &&
+          form.phoneNumber.replace(/\D/g, "").length === 10 &&
+          !!form.email.trim() &&
+          emailRe.test(form.email)
         );
       case "otp":
         return otpVerified;
@@ -248,10 +258,7 @@ export default function VisaWizard() {
           !!form.addressStreet.trim() &&
           !!form.addressCity.trim() &&
           !!form.addressProvince.trim() &&
-          !!form.addressPostalCode.trim() &&
-          form.phoneNumber.replace(/\D/g, "").length === 10 &&
-          !!form.email.trim() &&
-          emailRe.test(form.email)
+          !!form.addressPostalCode.trim()
         );
       case "occupation":
         return true;
@@ -276,7 +283,7 @@ export default function VisaWizard() {
       default:
         return true;
     }
-  }, [stepId, form, files, otpVerified, sponsorRequired, uploadItems]);
+  }, [stepId, form, files, otpVerified, sponsorRequired, uploadItems, excludedNationalities]);
 
   // ── Navigation ─────────────────────────────────────────────────────────────
   function scrollTop() {
@@ -412,6 +419,7 @@ export default function VisaWizard() {
       fd.append("occupationPhone", form.occupationPhone);
       fd.append("occupationFax", form.occupationFax);
       fd.append("stayStatus", form.applicantType === APPLICANT_WN_KANADA ? "WN Kanada" : "Non-Kanada");
+      fd.append("applicantType", form.applicantType);
       // parents / spouse (n/a for visa)
       ["fatherName","fatherBirthPlace","fatherBirthDate","fatherNationality","fatherAddress",
        "motherName","motherBirthPlace","motherBirthDate","motherNationality","motherAddress",
@@ -662,14 +670,25 @@ export default function VisaWizard() {
                           : p.nationality,
                     }))
                   }
-                  showError={inv(!form.applicantType)}
+                  nationality={form.nationality}
+                  onSelectNationality={(v) => setField("nationality", v)}
+                  excludedNationalities={excludedNationalities}
+                  showError={inv(!stepIsValid)}
                 />
               )}
 
               {stepId === "category" && (
                 <VisaCategoryStep
                   value={form.visaCategory}
-                  onSelect={(categoryCode) => setForm((p) => ({ ...p, visaCategory: categoryCode, purposeOfVisit: "", purposeOther: "" }))}
+                  onSelect={(categoryCode) =>
+                    setForm((p) => ({
+                      ...p,
+                      visaCategory: categoryCode,
+                      purposeOfVisit: "",
+                      purposeOther: "",
+                      hasInvitationLetter: categoryCode === "C1" ? false : p.hasInvitationLetter,
+                    }))
+                  }
                   showError={inv(!form.visaCategory)}
                 />
               )}
@@ -695,7 +714,6 @@ export default function VisaWizard() {
                   inv={inv}
                   fieldCls={fieldCls}
                   handleChange={handleChange}
-                  excludedNationalities={excludedNationalities}
                 />
               )}
 
@@ -738,10 +756,6 @@ export default function VisaWizard() {
                     addressCanadaUnit: form.addressUnit,
                     addressCanadaPostalCode: form.addressPostalCode,
                     addressCanadaCountry: form.addressCanadaCountry,
-                    addressCanadaFax: form.addressCanadaFax,
-                    addressCanadaCell: form.addressCanadaCell,
-                    phoneNumber: form.phoneNumber,
-                    email: form.email,
                   }}
                   inv={inv}
                   fieldCls={fieldCls}
@@ -783,6 +797,7 @@ export default function VisaWizard() {
                   todayStr={todayStr}
                   hasInvitationLetter={form.hasInvitationLetter}
                   onToggleInvitationLetter={(v) => setForm((p) => ({ ...p, hasInvitationLetter: v }))}
+                  visaCategory={form.visaCategory}
                 />
               )}
 

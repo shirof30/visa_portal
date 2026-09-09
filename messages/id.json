@@ -134,7 +134,8 @@
       "processingLabel": "Waktu pemrosesan:",
       "processingTime": "kira-kira 5–7 hari kerja setelah permohonan Anda disetujui (tambahkan 5 hari kerja jika mengirim dokumen melalui pos).",
       "submitNote": "Ajukan permohonan dan dokumen Anda melalui formulir daring di bawah — Anda akan memilih di akhir apakah akan mengirim dokumen asli melalui pos atau membuat janji temu untuk datang langsung. Ajukan paling lambat 14 hari sebelum keberangkatan dan paling banyak 90 hari sebelum meninggalkan Kanada.",
-      "startApplication": "Mulai Permohonan Ini →",
+      "c5ExtraNoteTitle": "Persyaratan tambahan untuk visa Jurnalistik (C5)",
+      "c5ExtraNote": "Permohonan visa jurnalistik mungkin memerlukan dokumen tambahan di luar daftar di atas. Persyaratan ini masih menunggu konfirmasi akhir dari tim konsuler KJRI — mohon hubungi konsulat sebelum mengajukan permohonan jika Anda mengajukan visa C5.",
       "mandatory": [
         "Paspor asli yang masih berlaku lebih dari 6 bulan setelah rencana lama tinggal Anda, dengan minimal 2 halaman kosong (halaman amendemen/endorsement tidak dihitung)",
         "Formulir Permohonan Visa yang telah diisi lengkap",
@@ -257,13 +258,20 @@
     },
     "applicant": {
       "subtitle": "Ini menentukan dokumen pendukung yang perlu Anda unggah.",
-      "selectError": "Mohon pilih jenis pemohon Anda."
+      "selectError": "Mohon pilih jenis pemohon Anda.",
+      "nationalityLabel": "Negara / Kewarganegaraan",
+      "nationalityError": "Mohon pilih negara/kewarganegaraan Anda.",
+      "travelDocBlockedTitle": "Permohonan ini tidak dapat dilanjutkan melalui AURORA",
+      "travelDocBlockedBody": "Pemegang Canadian Travel Document dan Refugee Travel Document tidak dapat mengajukan visa Indonesia melalui portal ini. Mohon ikuti prosedur eVisa resmi di evisa.imigrasi.go.id — visa Anda harus diajukan oleh guarantor/sponsor di Indonesia, yang dapat mencakup travel agent atau visa agent di Indonesia. KJRI Vancouver tidak dapat memberikan informasi atau memeriksa status permohonan yang diajukan melalui travel agent di Indonesia.",
+      "nationalityBlockedTitle": "Permohonan ini tidak dapat dilanjutkan melalui AURORA",
+      "nationalityBlockedBody": "Visa Anda harus diajukan oleh guarantor/sponsor di Indonesia, yang dapat mencakup travel agent atau visa agent di Indonesia. KJRI Vancouver tidak dapat memberikan informasi atau memeriksa status permohonan yang diajukan melalui travel agent di Indonesia."
     },
     "category": {
       "subtitle": "Jenis Visa berdasarkan Tujuan Kunjungan — pilih kategori yang sesuai dengan alasan perjalanan Anda ke Indonesia.",
       "sponsorRequired": "Memerlukan surat sponsor/penjamin dari Indonesia",
       "selectError": "Mohon pilih kategori visa.",
-      "note": "Catatan: Warga Negara Indonesia yang memegang paspor Indonesia yang masih berlaku tidak memerlukan visa untuk memasuki Indonesia. Portal ini ditujukan bagi pemegang paspor non-Indonesia yang mengajukan visa Indonesia melalui KJRI Vancouver."
+      "note": "Catatan: Warga Negara Indonesia yang memegang paspor Indonesia yang masih berlaku tidak memerlukan visa untuk memasuki Indonesia. Portal ini ditujukan bagi pemegang paspor non-Indonesia yang mengajukan visa Indonesia melalui KJRI Vancouver.",
+      "needHelp": "Tidak yakin kategori mana yang sesuai dengan tujuan kunjungan Anda (misalnya kegiatan olahraga, pertukaran pelajar, atau kunjungan khusus lainnya)? Hubungi kami sebelum mengajukan permohonan:"
     },
     "purpose": {
       "subtitle": "Ini persis seperti yang tercantum di bagian atas Formulir Permohonan Visa resmi.",
@@ -283,16 +291,27 @@
       "placeOfBirth": "4. Tempat Lahir (kota & negara)",
       "dateOfBirth": "5. Tanggal Lahir",
       "nationality": "6. Kewarganegaraan",
+      "nationalityLockedHint": "Ditetapkan pada langkah Jenis Pemohon.",
       "maritalStatus": "12. Status Perkawinan",
       "asInPassport": "Sesuai paspor",
       "placeOfBirthPlaceholder": "contoh: Toronto, Kanada",
+      "contactTitle": "Informasi kontak",
+      "phone": "Telepon",
+      "phonePlaceholder": "6041234567",
+      "fax": "Faks",
+      "cellular": "Seluler / Mobile",
+      "cellularPlaceholder": "(604) 123-4567",
+      "email": "Email",
+      "emailPlaceholder": "email@anda.com",
       "errors": {
         "firstName": "Nama depan wajib diisi.",
         "familyName": "Nama belakang wajib diisi.",
         "sex": "Mohon pilih jenis kelamin Anda.",
         "placeOfBirth": "Tempat lahir wajib diisi.",
         "dateOfBirth": "Tanggal lahir wajib diisi.",
-        "nationality": "Kewarganegaraan wajib diisi."
+        "nationality": "Kewarganegaraan wajib diisi.",
+        "phone": "Nomor telepon harus tepat 10 digit.",
+        "email": "Email wajib diisi."
       }
     },
     "passport": {
@@ -324,23 +343,14 @@
       "unitPlaceholder": "contoh: Unit 302, Apt 4B",
       "city": "Kota",
       "province": "Provinsi",
+      "provincePlaceholder": "Pilih Provinsi/Teritori",
       "postalCode": "Kode Pos",
       "country": "Negara",
-      "contactTitle": "Kontak di alamat ini",
-      "phone": "Telepon",
-      "phonePlaceholder": "6041234567",
-      "fax": "Faks",
-      "cellular": "Seluler / Mobile",
-      "cellularPlaceholder": "(604) 123-4567",
-      "email": "Email",
-      "emailPlaceholder": "email@anda.com",
       "errors": {
         "street": "Alamat jalan wajib diisi.",
         "city": "Kota wajib diisi.",
         "province": "Provinsi wajib diisi.",
-        "postalCode": "Kode pos wajib diisi.",
-        "phone": "Nomor telepon harus tepat 10 digit.",
-        "email": "Email wajib diisi."
+        "postalCode": "Kode pos wajib diisi."
       }
     },
     "occupation": {
@@ -420,6 +430,7 @@
       "inPersonHint": "Kunjungi KJRI Vancouver secara langsung. Anda akan memilih tanggal dan waktu janji temu berikutnya.",
       "mailLabel": "Saya akan mengirim dokumen melalui pos",
       "mailHint": "Kirim dokumen permohonan Anda ke KJRI Vancouver melalui pos. Tidak perlu janji temu — kami akan memproses permohonan setelah dokumen diterima.",
+      "mailReturnShippingNote": "Anda wajib menyertakan label pengiriman balik yang sudah dibayar (prepaid) atau amplop balasan beralamat sendiri yang biaya pengirimannya telah dibayar, agar dokumen yang telah diproses dapat dikirim kembali kepada Anda. Pastikan alamat pengembalian Anda lengkap dan benar.",
       "selectError": "Mohon pilih cara penyerahan permohonan Anda."
     },
     "review": {
@@ -509,6 +520,16 @@
         "label": "Non-Kanada",
         "sub": "Non-Kanada",
         "hint": "Anda bukan warga negara Kanada namun saat ini tinggal di Kanada (studi / kerja / PR / pengunjung)."
+      },
+      "CANADIAN_TRAVEL_DOC": {
+        "label": "Pemegang Canadian Travel Document",
+        "sub": "Travel Document",
+        "hint": "Anda bepergian menggunakan Canadian Travel Document, bukan paspor."
+      },
+      "REFUGEE_TRAVEL_DOC": {
+        "label": "Pemegang Refugee Travel Document",
+        "sub": "Travel Document",
+        "hint": "Anda bepergian menggunakan Refugee Travel Document, bukan paspor."
       }
     },
     "categories": {

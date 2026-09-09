@@ -168,6 +168,20 @@ export async function sendVisaConfirmationEmail({
     </td></tr>
 ${methodNoticeHtml}
 
+    <!-- Dress code guidelines (placeholder — pending final KJRI-approved wording) -->
+    <tr><td style="padding:16px 36px 0;">
+      <div style="background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:10px;padding:14px 18px;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#6d28d9;margin-bottom:6px;">
+          👔 Dress Code Guidelines
+        </div>
+        <div style="font-size:13px;color:#4c1d95;line-height:1.6;">
+          Please dress neatly and modestly for your visit or interview at the Consulate —
+          business-casual attire is appropriate. Please avoid sleeveless tops, shorts,
+          flip-flops, or beachwear.
+        </div>
+      </div>
+    </td></tr>
+
     <!-- Office hours -->
     <tr><td style="padding:20px 36px 0;">
       <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 18px;">

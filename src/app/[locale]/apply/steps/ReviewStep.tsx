@@ -80,7 +80,10 @@ export default function ReviewStep({
           </div>
           <div className="mt-2 space-y-1">
             <Row label={t("labels.applicantType")} value={applicantLabel} />
-            <Row label={t("labels.visaCategory")} value={categoryTitle} />
+            <Row
+              label={t("labels.visaCategory")}
+              value={form.visaCategory ? `${form.visaCategory} — ${categoryTitle}` : categoryTitle}
+            />
           </div>
         </div>
 
@@ -124,6 +127,8 @@ export default function ReviewStep({
               label={t("labels.maritalStatus")}
               value={show(translateEnumLabel(tVisa, "maritalStatus", form.maritalStatus))}
             />
+            <Row label={t("labels.phone")} value={show(form.phoneNumber)} />
+            <Row label={t("labels.email")} value={show(form.email)} />
           </div>
         </div>
 
@@ -158,8 +163,6 @@ export default function ReviewStep({
             <Row label={t("labels.city")} value={show(form.addressCity)} />
             <Row label={t("labels.province")} value={show(form.addressProvince)} />
             <Row label={t("labels.postalCode")} value={show(form.addressPostalCode)} />
-            <Row label={t("labels.phone")} value={show(form.phoneNumber)} />
-            <Row label={t("labels.email")} value={show(form.email)} />
           </div>
         </div>
 

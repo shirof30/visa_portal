@@ -8,6 +8,8 @@ import type { UploadItem } from "../ui/UploadRow";
 // ─────────────────────────────────────────────────────────────────────────────
 export const APPLICANT_WN_KANADA = "WN_KANADA";
 export const APPLICANT_NON_KANADA = "NON_KANADA";
+export const APPLICANT_CANADIAN_TRAVEL_DOC = "CANADIAN_TRAVEL_DOC";
+export const APPLICANT_REFUGEE_TRAVEL_DOC = "REFUGEE_TRAVEL_DOC";
 
 export const APPLICANT_TYPES = [
   {
@@ -22,7 +24,25 @@ export const APPLICANT_TYPES = [
     sub: "Non-Kanada",
     hint: "You are not a Canadian citizen but currently reside in Canada (study / work / PR / visitor).",
   },
+  {
+    value: APPLICANT_CANADIAN_TRAVEL_DOC,
+    label: "Canadian Travel Document holder",
+    sub: "Travel Document",
+    hint: "You travel using a Canadian Travel Document rather than a passport.",
+  },
+  {
+    value: APPLICANT_REFUGEE_TRAVEL_DOC,
+    label: "Refugee Travel Document holder",
+    sub: "Travel Document",
+    hint: "You travel using a Refugee Travel Document rather than a passport.",
+  },
 ] as const;
+
+/** Canadian/Refugee Travel Document holders cannot apply through AURORA — they must
+ *  go through evisa.imigrasi.go.id via a guarantor/sponsor in Indonesia. */
+export function isTravelDocumentApplicant(applicantType: string): boolean {
+  return applicantType === APPLICANT_CANADIAN_TRAVEL_DOC || applicantType === APPLICANT_REFUGEE_TRAVEL_DOC;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP: Visa Category — "Jenis Visa berdasarkan Tujuan Kunjungan" (C1–C5).

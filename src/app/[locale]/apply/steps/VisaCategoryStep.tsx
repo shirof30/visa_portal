@@ -59,6 +59,12 @@ export default function VisaCategoryStep({
       </div>
       <FieldError show={showError} message={t("selectError")} />
       <p className="text-[11px] text-gray-400">{t("note")}</p>
+      <p className="text-[11px] text-gray-400">
+        {t("needHelp")}{" "}
+        <a href="mailto:consular@indonesiavancouver.org" className="text-emerald-700 font-medium hover:underline">
+          consular@indonesiavancouver.org
+        </a>
+      </p>
     </SectionCard>
   );
 }

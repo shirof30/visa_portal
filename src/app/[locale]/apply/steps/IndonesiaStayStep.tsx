@@ -11,6 +11,7 @@ export default function IndonesiaStayStep({
   todayStr,
   hasInvitationLetter,
   onToggleInvitationLetter,
+  visaCategory,
 }: {
   form: {
     intendedAddressIndonesia: string;
@@ -28,6 +29,7 @@ export default function IndonesiaStayStep({
   todayStr: string;
   hasInvitationLetter: boolean;
   onToggleInvitationLetter: (v: boolean) => void;
+  visaCategory: string;
 }) {
   const t = useTranslations("applySteps.indonesia");
   const tCommon = useTranslations("common");
@@ -121,31 +123,33 @@ export default function IndonesiaStayStep({
         </div>
       </div>
 
-      <div className="border-t border-gray-100 pt-4">
-        <p className="text-xs font-semibold text-gray-600 mb-2">{t("invitationTitle")}</p>
-        <div className="flex gap-6">
-          {[
-            { label: tCommon("yes"), val: true },
-            { label: tCommon("no"), val: false },
-          ].map((opt) => (
-            <label key={String(opt.val)} className="flex items-center gap-2 cursor-pointer text-sm">
-              <input
-                type="radio"
-                name="hasInvitationLetter"
-                checked={hasInvitationLetter === opt.val}
-                onChange={() => onToggleInvitationLetter(opt.val)}
-                className="accent-red-600"
-              />
-              {opt.label}
-            </label>
-          ))}
+      {visaCategory !== "C1" && (
+        <div className="border-t border-gray-100 pt-4">
+          <p className="text-xs font-semibold text-gray-600 mb-2">{t("invitationTitle")}</p>
+          <div className="flex gap-6">
+            {[
+              { label: tCommon("yes"), val: true },
+              { label: tCommon("no"), val: false },
+            ].map((opt) => (
+              <label key={String(opt.val)} className="flex items-center gap-2 cursor-pointer text-sm">
+                <input
+                  type="radio"
+                  name="hasInvitationLetter"
+                  checked={hasInvitationLetter === opt.val}
+                  onChange={() => onToggleInvitationLetter(opt.val)}
+                  className="accent-red-600"
+                />
+                {opt.label}
+              </label>
+            ))}
+          </div>
+          {hasInvitationLetter && (
+            <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] text-amber-800">
+              {t("invitationYesNote")}
+            </p>
+          )}
         </div>
-        {hasInvitationLetter && (
-          <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] text-amber-800">
-            {t("invitationYesNote")}
-          </p>
-        )}
-      </div>
+      )}
     </SectionCard>
   );
 }

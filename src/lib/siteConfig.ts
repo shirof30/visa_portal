@@ -21,6 +21,13 @@ export type SiteConfig = {
   excludedNationalities: string[];
 };
 
+// Calling-visa / restricted-nationality countries that must be blocked in AURORA and
+// routed to a guarantor/sponsor in Indonesia instead. This list is a placeholder for
+// the three countries explicitly named in the AURORA spec (Iran, Yemen, Bangladesh) —
+// the full/final calling-visa list still needs confirmation from the consular team,
+// and can be edited via whatever admin tool manages `excludedNationalities`.
+const DEFAULT_EXCLUDED_NATIONALITIES = ["Iran", "Yemen", "Bangladesh"];
+
 const DEFAULT_CONFIG: SiteConfig = {
   enableSameDayService: false,
   holidays: [],
@@ -28,7 +35,7 @@ const DEFAULT_CONFIG: SiteConfig = {
   weekdaySlotInterval: 30,
   weekendSlotInterval: 15,
   weekendHours: { saturday: "CLOSED", sunday: "CLOSED" },
-  excludedNationalities: [],
+  excludedNationalities: DEFAULT_EXCLUDED_NATIONALITIES,
 };
 
 export async function getSiteConfig(): Promise<SiteConfig> {

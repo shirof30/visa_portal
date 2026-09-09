@@ -61,6 +61,11 @@ export default function DeliveryMethodStep({
           );
         })}
       </div>
+      {value === "mail" && (
+        <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] text-amber-800">
+          {t("mailReturnShippingNote")}
+        </p>
+      )}
       <FieldError show={showError} message={t("selectError")} />
     </SectionCard>
   );

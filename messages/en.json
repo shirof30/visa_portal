@@ -134,7 +134,8 @@
       "processingLabel": "Processing time:",
       "processingTime": "approximately 5–7 business days after your application is approved (allow 5 extra business days if sending documents by mail).",
       "submitNote": "Submit your application and documents through the online form below — you'll choose at the end whether to mail your original documents or book an appointment to visit in person. Apply no later than 14 days before departure and no more than 90 days before leaving Canada.",
-      "startApplication": "Start This Application →",
+      "c5ExtraNoteTitle": "Additional requirement for Journalism (C5) visas",
+      "c5ExtraNote": "Journalism visa applications may require additional documentation beyond the list above. This requirement is pending final confirmation from the KJRI consular team — please contact the consulate before applying if you hold a C5 visa.",
       "mandatory": [
         "Original passport valid for more than 6 months beyond your intended length of stay, with at least 2 blank pages (amendment/endorsement pages don't count)",
         "Completed Visa Application Form",
@@ -257,13 +258,20 @@
     },
     "applicant": {
       "subtitle": "This determines the supporting documents you will need to upload.",
-      "selectError": "Please select your applicant type."
+      "selectError": "Please select your applicant type.",
+      "nationalityLabel": "Country / Nationality",
+      "nationalityError": "Please select your country/nationality.",
+      "travelDocBlockedTitle": "This application cannot continue through AURORA",
+      "travelDocBlockedBody": "Canadian Travel Document and Refugee Travel Document holders cannot apply for an Indonesian visa through this portal. Please follow the official eVisa procedure at evisa.imigrasi.go.id — your visa type needs to be applied for by a guarantor/sponsor in Indonesia, which may include a travel agent or visa agent in Indonesia. KJRI Vancouver cannot provide information or check the status of applications submitted through an Indonesian travel agent.",
+      "nationalityBlockedTitle": "This application cannot continue through AURORA",
+      "nationalityBlockedBody": "Your visa type needs to be applied for by a guarantor/sponsor in Indonesia, which may include a travel agent or visa agent in Indonesia. KJRI Vancouver cannot provide information or check the status of applications submitted through an Indonesian travel agent."
     },
     "category": {
       "subtitle": "Select the visa category that matches the purpose of your visit to Indonesia.",
       "sponsorRequired": "Requires a sponsor/guarantor letter from Indonesia",
       "selectError": "Please select a visa category.",
-      "note": "Note: Indonesian citizens holding a valid Indonesian passport do not require a visa to enter Indonesia. This portal is for non-Indonesian passport holders applying for an Indonesian visa through KJRI Vancouver."
+      "note": "Note: Indonesian citizens holding a valid Indonesian passport do not require a visa to enter Indonesia. This portal is for non-Indonesian passport holders applying for an Indonesian visa through KJRI Vancouver.",
+      "needHelp": "Not sure which category fits your purpose of visit (e.g. sports events, academic exchange, or other special-purpose visits)? Contact us before applying:"
     },
     "purpose": {
       "subtitle": "This is exactly what appears at the top of the official Visa Application Form.",
@@ -283,16 +291,27 @@
       "placeOfBirth": "4. Place of Birth (city & country)",
       "dateOfBirth": "5. Date of Birth",
       "nationality": "6. Nationality",
+      "nationalityLockedHint": "Set in the Applicant Type step.",
       "maritalStatus": "12. Marital Status",
       "asInPassport": "As in passport",
       "placeOfBirthPlaceholder": "e.g. Toronto, Canada",
+      "contactTitle": "Contact information",
+      "phone": "Phone",
+      "phonePlaceholder": "6041234567",
+      "fax": "Fax",
+      "cellular": "Cellular / Mobile",
+      "cellularPlaceholder": "(604) 123-4567",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
       "errors": {
         "firstName": "First name is required.",
         "familyName": "Family name is required.",
         "sex": "Please select your sex.",
         "placeOfBirth": "Place of birth is required.",
         "dateOfBirth": "Date of birth is required.",
-        "nationality": "Nationality is required."
+        "nationality": "Nationality is required.",
+        "phone": "Phone number must be exactly 10 digits.",
+        "email": "Email is required."
       }
     },
     "passport": {
@@ -324,23 +343,14 @@
       "unitPlaceholder": "e.g. Unit 302, Apt 4B",
       "city": "City",
       "province": "Province",
+      "provincePlaceholder": "Select Province/Territory",
       "postalCode": "Postal Code",
       "country": "Country",
-      "contactTitle": "Contact at this address",
-      "phone": "Phone",
-      "phonePlaceholder": "6041234567",
-      "fax": "Fax",
-      "cellular": "Cellular / Mobile",
-      "cellularPlaceholder": "(604) 123-4567",
-      "email": "Email",
-      "emailPlaceholder": "your@email.com",
       "errors": {
         "street": "Street address is required.",
         "city": "City is required.",
         "province": "Province is required.",
-        "postalCode": "Postal code is required.",
-        "phone": "Phone number must be exactly 10 digits.",
-        "email": "Email is required."
+        "postalCode": "Postal code is required."
       }
     },
     "occupation": {
@@ -420,6 +430,7 @@
       "inPersonHint": "Visit KJRI Vancouver in person. You'll pick an appointment date and time next.",
       "mailLabel": "I'll mail my documents",
       "mailHint": "Send your application documents to KJRI Vancouver by mail. No appointment needed — we'll process your application once your documents arrive.",
+      "mailReturnShippingNote": "You must include a prepaid return shipping label or a self-addressed envelope with postage already paid, so your processed documents can be mailed back to you. Make sure your return address is complete and correct.",
       "selectError": "Please choose how you'll submit your application."
     },
     "review": {
@@ -509,6 +520,16 @@
         "label": "Non-Canadian",
         "sub": "Non-Kanada",
         "hint": "You are not a Canadian citizen but currently reside in Canada (study / work / PR / visitor)."
+      },
+      "CANADIAN_TRAVEL_DOC": {
+        "label": "Canadian Travel Document holder",
+        "sub": "Travel Document",
+        "hint": "You travel using a Canadian Travel Document rather than a passport."
+      },
+      "REFUGEE_TRAVEL_DOC": {
+        "label": "Refugee Travel Document holder",
+        "sub": "Travel Document",
+        "hint": "You travel using a Refugee Travel Document rather than a passport."
       }
     },
     "categories": {
