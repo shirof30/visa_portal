@@ -223,10 +223,16 @@ export default function HomePage() {
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                 />
                 <p className="relative flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.1em] text-[#8C909D] mb-3">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600" />
-                  </span>
+                  <motion.svg
+                    aria-hidden
+                    className="h-3.5 w-3.5 text-emerald-600 shrink-0"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    animate={{ y: [0, -3, 0], x: [0, 2, 0], rotate: [0, 6, 0] }}
+                    transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <path d="M21.5 2.5c.6 0 1 .4 1 1 0 3.6-1.4 7-4 9.5l-2.2 2.2.7 4.9c.1.5-.1 1-.5 1.3l-1.6 1.2a1 1 0 0 1-1.6-.6l-1.5-5-2.4 2.4.4 2.4a1 1 0 0 1-.3.9l-.8.8a1 1 0 0 1-1.5-.1l-2-2.7-2.7-2a1 1 0 0 1-.1-1.5l.8-.8c.2-.2.6-.4.9-.3l2.4.4 2.4-2.4-5-1.5a1 1 0 0 1-.6-1.6l1.2-1.6c.3-.4.8-.6 1.3-.5l4.9.7 2.2-2.2c2.5-2.6 5.9-4 9.5-4Z" />
+                  </motion.svg>
                   {t("hero.eyebrow")}
                 </p>
                 <h1 className="relative font-['Plus_Jakarta_Sans',sans-serif] text-[64px] font-extrabold leading-none tracking-[-2px] text-[#111318] mb-1">
