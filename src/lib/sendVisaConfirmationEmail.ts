@@ -191,13 +191,16 @@ export async function sendVisaConfirmationEmail({
 
     <!-- Success badge -->
     <tr><td style="padding:28px 36px 0;">
-      <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:22px;">✅</span>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#15803d;">Application Successfully Submitted</div>
-          <div style="font-size:12px;color:#166534;margin-top:2px;">Your Indonesian visa application has been received.</div>
-        </div>
-      </div>
+      <table width="100%" cellpadding="0" cellspacing="0"
+             style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;">
+        <tr>
+          <td width="44" valign="top" style="padding:16px 0 16px 20px;font-size:22px;color:#15803d;">&#10003;</td>
+          <td style="padding:16px 20px 16px 8px;">
+            <div style="font-size:14px;font-weight:700;color:#15803d;">Application Successfully Submitted</div>
+            <div style="font-size:12px;color:#166534;margin-top:2px;">Your Indonesian visa application has been received.</div>
+          </td>
+        </tr>
+      </table>
     </td></tr>
 
     <!-- Reference number -->
