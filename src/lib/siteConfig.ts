@@ -19,6 +19,9 @@ export type SiteConfig = {
   weekendSlotInterval: number;
   weekendHours: WeekendHours;
   excludedNationalities: string[];
+  // Visa's own admin-configurable interval/capacity — weekday-only, see AppointmentPageClient.tsx.
+  visaSlotInterval: number;
+  visaSlotCapacity: number;
 };
 
 // Calling-visa / restricted-nationality countries that must be blocked in AURORA and
@@ -36,6 +39,8 @@ const DEFAULT_CONFIG: SiteConfig = {
   weekendSlotInterval: 15,
   weekendHours: { saturday: "CLOSED", sunday: "CLOSED" },
   excludedNationalities: DEFAULT_EXCLUDED_NATIONALITIES,
+  visaSlotInterval: 30,
+  visaSlotCapacity: 1,
 };
 
 export async function getSiteConfig(): Promise<SiteConfig> {
@@ -53,6 +58,8 @@ export async function getSiteConfig(): Promise<SiteConfig> {
     weekendSlotInterval: (row as any).weekendSlotInterval ?? 15,
     weekendHours: (row as any).weekendHours ?? { saturday: "CLOSED", sunday: "CLOSED" },
     excludedNationalities: ((row as any).excludedNationalities as string[]) ?? [],
+    visaSlotInterval: (row as any).visaSlotInterval ?? 30,
+    visaSlotCapacity: (row as any).visaSlotCapacity ?? 1,
   };
 }
 

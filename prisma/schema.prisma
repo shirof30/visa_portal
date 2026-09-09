@@ -197,6 +197,8 @@ model SiteConfig {
   excludedNationalities Json    @default("[]")
   weekdaySlotCapacity  Int      @default(3)
   weekendSlotCapacity  Int      @default(5)
+  visaSlotInterval     Int      @default(30)
+  visaSlotCapacity     Int      @default(1)
   updatedAt            DateTime @updatedAt
 
   @@map("site_config")

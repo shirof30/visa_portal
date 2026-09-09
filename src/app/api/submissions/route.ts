@@ -116,13 +116,6 @@ function slugifyName(name: string) {
 export async function GET(req: NextRequest) {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 }
-function getSlotCapacity(slotIso: string): number {
-  const dateStr = slotIso.split("T")[0];
-  const [y, m, d] = dateStr.split("-").map(Number);
-  const dow = new Date(y, m - 1, d).getDay();
-  return (dow === 0 || dow === 6) ? 5 : 3;
-}
-
 export async function POST(req: NextRequest) {
   const contentType = req.headers.get("content-type") ?? "";
 
@@ -149,7 +142,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const capacity = getSlotCapacity(slotIso);
+    const { visaSlotCapacity } = await getSiteConfig();
+    const capacity = visaSlotCapacity ?? 1;
     const updated = await bookSlot(id, slotIso, capacity);
     if (!updated) {
       return NextResponse.json(

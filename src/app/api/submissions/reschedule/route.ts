@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendConfirmationEmail } from "@/lib/sendConfirmationEmail";
+import { getSiteConfig } from "@/lib/siteConfig";
 import {
   rescheduleSlotByRegistrationId,
   getSubmissionByRegistrationIdAndDob,
@@ -22,11 +23,6 @@ function isLockedSameDayOrPast(slotIso: string | null) {
   const apptDate = vancouverDateStr(new Date(slotIso));
   const today = vancouverDateStr(new Date());
   return apptDate <= today; // today OR past
-}
-function getSlotCapacity(_slotIso: string): number {
-  // Visa appointments allow a maximum of 2 applications per time slot.
-  // Keep this aligned with AppointmentPageClient.tsx.
-  return 2;
 }
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -67,7 +63,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const capacity = getSlotCapacity(body.slotIso);
+  const { visaSlotCapacity } = await getSiteConfig();
+  const capacity = visaSlotCapacity ?? 1;
 
   let updated;
   if (hasApplicationRef) {

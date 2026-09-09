@@ -27,20 +27,15 @@ type SiteConfig = {
   weekdaySlotInterval: number;
   weekendSlotInterval: number;
   weekendHours: WeekendHours;
+  visaSlotInterval: number;
+  visaSlotCapacity: number;
 };
 
 type Window = { startMin: number; endMin: number };
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const DEFAULT_STEP_MIN = 30;
-const WEEKDAY_SLOT_CAPACITY = 2;
-const WEEKEND_SLOT_CAPACITY = 2;
-
-function getSlotCapacity(dateStr: string): number {
-  const [y, m, d] = dateStr.split("-").map(Number);
-  const dow = new Date(y, m - 1, d).getDay();
-  return 2; // Visa: max 2 per slot
-}
+const DEFAULT_SLOT_CAPACITY = 1;
 const SAME_DAY_LAST_MIN = 11 * 60 + 30;
 const SAME_DAY_BUFFER_MIN = 15;
 
@@ -408,13 +403,14 @@ export default function AppointmentPageClient() {
       const res = await fetch("/api/config", { cache: "no-store" });
       if (!alive || !res.ok) { setConfigLoading(false); return; }
       const cfg = await res.json() as SiteConfig;
-      // Slot interval & weekend hours are admin-configurable for the Passport
-      // portal only (see admin "Passport Settings"). Visa always uses a fixed
-      // 30-minute interval and stays weekday-only, regardless of what's set
-      // there. Holidays still apply to both portals — left untouched below.
+      // Weekend hours/interval are admin-configurable for the Passport portal
+      // only (see admin "Passport Settings"). Visa stays weekday-only,
+      // regardless of what's set there, but has its own admin-configurable
+      // interval/capacity ("Visa Settings" → Interval Slot Waktu / Kapasitas
+      // Slot). Holidays still apply to both portals — left untouched below.
       setSiteConfig({
         ...cfg,
-        weekdaySlotInterval: DEFAULT_STEP_MIN,
+        weekdaySlotInterval: cfg.visaSlotInterval ?? DEFAULT_STEP_MIN,
         weekendSlotInterval: DEFAULT_STEP_MIN,
         weekendHours: { saturday: "CLOSED", sunday: "CLOSED" },
       });
@@ -530,8 +526,8 @@ export default function AppointmentPageClient() {
       return normalizeSlot(s.appointmentSlot) === norm ? acc + 1 : acc;
     }, 0);
 
-    return count >= getSlotCapacity(slot.split("T")[0]);
-  }, [existing]);
+    return count >= (siteConfig?.visaSlotCapacity ?? DEFAULT_SLOT_CAPACITY);
+  }, [existing, siteConfig]);
 
   const bookingCountByDate = useMemo(() => {
     const map = new Map<string, number>();
@@ -545,9 +541,9 @@ export default function AppointmentPageClient() {
   }, [existing]);
 
   const isDateFullyBooked = useCallback((dateStr: string) => {
-    const capacityForDay = maxSlotsForDate(dateStr, specialHoursMap, siteConfig?.weekendHours, getStepMin(dateStr)) * getSlotCapacity(dateStr);
+    const capacityForDay = maxSlotsForDate(dateStr, specialHoursMap, siteConfig?.weekendHours, getStepMin(dateStr)) * (siteConfig?.visaSlotCapacity ?? DEFAULT_SLOT_CAPACITY);
     return (bookingCountByDate.get(dateStr) ?? 0) >= capacityForDay;
-  }, [bookingCountByDate, specialHoursMap, siteConfig?.weekendHours, getStepMin]);
+  }, [bookingCountByDate, specialHoursMap, siteConfig, getStepMin]);
 
   const slotsForSelectedDate = useMemo(
     () => generateSlotsForDate(selectedDate, isSameDayService, specialHoursMap, siteConfig?.weekendHours, getStepMin(selectedDate)),
