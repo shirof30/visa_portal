@@ -166,30 +166,6 @@ function RequirementsModal({
   );
 }
 
-// Decorative, purely visual — slow-drifting blurred color fields glowing at
-// the edges of the panel.
-function AmbientBackdrop() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      <motion.div
-        className="absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-emerald-300/30 blur-[90px]"
-        animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
-        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute top-40 -right-32 h-[380px] w-[380px] rounded-full bg-amber-200/30 blur-[100px]"
-        animate={{ x: [0, -25, 0], y: [0, 30, 0] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      />
-      <motion.div
-        className="absolute bottom-0 left-1/3 h-[320px] w-[320px] rounded-full bg-sky-200/25 blur-[90px]"
-        animate={{ x: [0, 20, 0], y: [0, -20, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      />
-    </div>
-  );
-}
-
 export default function HomePage() {
   const t = useTranslations("home");
   const [activeCategory, setActiveCategory] = useState<VisaCategoryCode | null>(null);
@@ -207,8 +183,6 @@ export default function HomePage() {
     <div className="relative text-gray-900 pt-14 overflow-hidden">
       <main>
         <div className="relative mx-auto max-w-[1160px] px-4 sm:px-6 py-10 sm:py-14">
-          <AmbientBackdrop />
-
           {/* One unified panel holds every section — keeps the page feeling
               like a single coherent sheet instead of scattered floating cards. */}
           <div className="relative bg-white/92 backdrop-blur-lg rounded-3xl border border-white/70 shadow-2xl shadow-black/10 overflow-hidden">
