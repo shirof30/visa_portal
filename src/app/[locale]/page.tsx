@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
+import AnnouncementBanner from "@/components/AnnouncementBanner";
 
 const VISA_CATEGORY_CODES = ["C1", "C2", "C3", "C4", "C5"] as const;
 type VisaCategoryCode = (typeof VISA_CATEGORY_CODES)[number];
@@ -282,6 +283,9 @@ export default function HomePage() {
                       {t("serviceHours.inquiries")}
                     </p>
                   </motion.div>
+
+                  {/* Announcement banner */}
+                  <AnnouncementBanner />
                 </motion.div>
 
                 {/* Visa categories */}

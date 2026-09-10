@@ -26,13 +26,19 @@ export default function Header() {
           <span className="text-sm font-semibold">{tNav("menu")}</span>
         </button>
 
-        <Link href="/" className="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-white/10 transition cursor-pointer" aria-label={tCommon("home")}>
+        <a
+          href="https://indonesiavancouver.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-white/10 transition cursor-pointer"
+          aria-label={tCommon("home")}
+        >
           <img src="/og-kjri.png" alt={tCommon("logoAlt")} className="h-7 w-7 rounded-full bg-white object-contain" />
           <div className="leading-tight">
             <div className="text-[11px] font-semibold text-white/90">{tNav("consulateGeneral")}</div>
             <div className="text-[12px] font-bold tracking-wide">{tNav("kjriVisa")}</div>
           </div>
-        </Link>
+        </a>
 
         <LanguageSwitcher />
       </div>
