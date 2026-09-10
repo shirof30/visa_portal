@@ -249,7 +249,7 @@ en = {
             "specifyError": "Please describe your purpose.",
         },
         "personal": {
-            "subtitle": "Sections 1–6 & 12 of the Visa Application Form — enter your details exactly as they appear in your passport.",
+            "subtitle": "Enter your details exactly as they appear in your passport.",
             "firstName": "1. First Name",
             "middleName": "2. Middle Name",
             "familyName": "3. Family Name",
